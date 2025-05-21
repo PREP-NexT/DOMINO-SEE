@@ -1,0 +1,19 @@
+name: DOMINO-SEE
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - cartopy
+  - matplotlib
+  - numba
+  - numpy>=1.24
+  - pandas
+  - scikit-learn
+  - scipy
+  - xarray
+  - bottleneck
+  - dask
+  - netcdf4
+  - mpi4py>=3.1
+  - mpich=3.3.2
