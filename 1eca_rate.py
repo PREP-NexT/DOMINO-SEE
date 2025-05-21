@@ -33,7 +33,7 @@ def eca_window(b, symdelt=2):
 
 
 def eca_mpnb_poisson(bX, bY, bwX, bwY, datanm, direc, th, core):
-    path = '/home/climate/hmwang/PycharmProjects/StandardIndex_SPI1_dT0/2eca'
+    path = '2eca'
     bX = bX.toarray()
     bY = bY.toarray()
     # bY = bX if bY is bX else bY.toarray()  #目前无法避免
@@ -56,7 +56,7 @@ def eca_mpnb_poisson(bX, bY, bwX, bwY, datanm, direc, th, core):
 def master():
     print("Start Time: ", time.asctime())
 
-    datanm = "spimv2"
+    datanm = "spimv2fkt"
     print("Dataset: ", datanm)
     lon = np.load('0data/{}_lon.npy'.format(datanm))
     lat = np.load('0data/{}_lat.npy'.format(datanm))
@@ -65,7 +65,7 @@ def master():
 
     noc = 450  # 50
     th = 1.5
-    dT = 0
+    dT = 1
 
     direc = "01"
     print('Direction: ', direc)
@@ -89,11 +89,14 @@ def master():
         evwY = csr_matrix(evwY)
     print("Reading Data th{}: {:.2f}s".format(th, np.nan))
 
+    total_rows = latlon.shape[0]
     for core in range(noc):
-        rows = np.arange(int(latlon.shape[0] / noc * core), int(latlon.shape[0] / noc * (core + 1)))
-        mpi.submit_call("eca_mpnb_poisson", (evX[rows, :], evY, evwX[rows, :], evwY, datanm, direc, th, core), id=core)  # TODO: 选行之后X is Y识别不出来
+        start_idx = int(total_rows / noc * core)
+        end_idx = int(total_rows / noc * (core + 1)) if core < noc - 1 else total_rows
+        rows = np.arange(start_idx, end_idx)
+        mpi.submit_call("eca_mpnb_poisson", (evX[rows, :], evY, evwX[rows, :], evwY, datanm, direc, th, core), id=core)
         # eca_mpnb_poisson(ev, evw, 2, rows, datanm, th, core)
-        print("batch %d submitted ..." % core)
+        print(f"batch {core} submitted for rows from {start_idx} to {end_idx}...")
 
     print("End Time: ", time.asctime(), "Process Time: ", time.process_time())
 

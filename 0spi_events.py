@@ -7,19 +7,20 @@ from pandas import to_datetime
 from itertools import product, groupby
 
 tic = time.time()
-datanm = "spimv2"
-data = xr.open_dataset("0data/SPI1_monthly_0.250deg_1950_2016.nc")
+datanm = "spimv2fkt"
+data = xr.open_dataset("0data/Fekete/SPI1_monthly_fekete025_1948_2016.nc").rename({"time": "t", 
+                                                                                   "SPI1": "spi1"}).sel(t=slice("1950", "2016"))
 
 # %% 读入数据
 lat = data.lat.to_numpy()
 lon = data.lon.to_numpy()
 np.save('0data/{}_lat.npy'.format(datanm), np.array(lat))
 np.save('0data/{}_lon.npy'.format(datanm), np.array(lon))
-latlon = np.array(list(product(lat, lon)))
+latlon = np.array(list(product(lat, lon))) if data.spi1.ndim == 3 else np.array([lat, lon]).T
 np.save('0data/{}_latlon.npy'.format(datanm), latlon)
 ddate = to_datetime(data.t.to_numpy())
 np.save('0data/{}_date.npy'.format(datanm), ddate)  # [ddate.year >= 1990]
-spi = data.spi1[:, :, :].to_numpy()  #[:] 读出来耗时100s
+spi = data.spi1.stack(latlon=("lat", "lon")).to_numpy().T if data.spi1.ndim == 3 else data.spi1.to_numpy().T # 先滚经度再滚纬度
 # ddate.year >= 1990
 # ddate = ddate[ddate.year >= 1990]
 # pcp = xr.open_dataarray("data/PGFv3_prec_yearly_0.250deg_1948_2016.nc").datanm[2:, :, :]
@@ -30,7 +31,6 @@ lo = lon.shape[0]  # 经度数量 = 1440
 n = la * lo  # 空间点的数量 = 576000
 if np.ma.isMaskedArray(spi):
     spi = spi.filled(0)
-spi = spi.reshape((spi.shape[0], n)).T   # 先滚经度再滚纬度
 
 y = ddate.year.max() - ddate.year.min() + 1  # 年份数量
 # season_split = {0: [12, 1, 2], 1: [3, 4, 5],

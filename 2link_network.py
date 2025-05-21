@@ -14,15 +14,15 @@ from numba import njit, prange, set_num_threads
 set_num_threads(24)
 
 
-datanm = "spimv2"
+datanm = "spimv2fkt"
 lon = np.load('0data/{}_lon.npy'.format(datanm))
 lat = np.load('0data/{}_lat.npy'.format(datanm))
 latlon = np.load('0data/{}_latlon.npy'.format(datanm))
 ddate = to_datetime(np.load('0data/{}_date.npy'.format(datanm)))
-vp = np.load("0data/prcp_validpoint_annual_100.npy")
+vp = np.load("0data/prcpfkt_validpoint_annual_100.npy")
 vp = vp.reshape(vp.size)
 
-path = '/home/climate/hmwang/PycharmProjects/StandardIndex_SPI1_temp'
+path = ""
 opath = ""
 th = 1.5
 sig = 0.005
@@ -68,7 +68,7 @@ def direc_dist(direc):
     tic = time.time()
 
     # %% link collection
-    link = sp.load_npz("{}/3link/link{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th))
+    link = sp.load_npz("{}3link/link{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th))
     print("Link Fraction: {:.2f}%".format(link.size / (vp.sum() ** 2) * 100))
 
     # %% link to angular distance
@@ -103,6 +103,6 @@ def dist_split(dist):
 
 if __name__ == "__main__":
     for direc in ["00", "01", "11"]:
-        print("direc: ", direc)
         dist = direc_dist(direc)
+        dist_split(dist)
         del dist

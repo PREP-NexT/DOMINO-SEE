@@ -4,7 +4,7 @@ import numpy as np
 from pandas import to_datetime
 from scipy.stats import binom
 
-datanm = "spimv2"
+datanm = "spimv2fkt"
 lon = np.load('0data/{}_lon.npy'.format(datanm))
 lat = np.load('0data/{}_lat.npy'.format(datanm))
 latlon = np.load('0data/{}_latlon.npy'.format(datanm))
@@ -16,7 +16,7 @@ dT = 1
 
 ev = (np.load("1event/{}_glb_spi1_event_drt{}.npz".format(datanm, th))["ev"]).sum(axis=1)
 print("actual max:", ev.max())
-evmax = 100
+evmax = 110
 print("evmax set:", evmax)
 na = np.arange(evmax).reshape(evmax, 1)
 nb = np.arange(evmax).reshape(1, evmax)

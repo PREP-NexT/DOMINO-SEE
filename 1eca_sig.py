@@ -8,18 +8,17 @@
 import numpy as np
 import time
 from pandas import to_datetime
-# from scipy.stats import binom
 import multiprocessing
 import scipy.sparse as sp
 from numba import njit, prange, set_num_threads
 set_num_threads(24)
 
-datanm = "spimv2"
+datanm = "spimv2fkt"
 lon = np.load('0data/{}_lon.npy'.format(datanm))
 lat = np.load('0data/{}_lat.npy'.format(datanm))
 latlon = np.load('0data/{}_latlon.npy'.format(datanm))
 ddate = to_datetime(np.load('0data/{}_date.npy'.format(datanm)))
-vp = np.load("0data/prcp_validpoint_annual_100.npy")
+vp = np.load("0data/prcpfkt_validpoint_annual_100.npy")
 vp = vp.reshape(-1)
 
 noc = 450  # 50
@@ -44,12 +43,12 @@ else:
 NA = np.sum(ev0, axis=1).reshape(ev0.shape[0], 1)
 NB = np.sum(ev1, axis=1).reshape(1, ev1.shape[0])
 del ev0, ev1
-Nnull = 100
+Nnull = 110
 assert (NA.max() <= Nnull) & (NB.max() <= Nnull), "Event number in null model is not sufficiently large"
 ecanull = np.load("2eca/null/ecanull_{}_win{}_sig{}_evmax{}.npy".format(datanm, dT, sig, Nnull))
 print("Reading Data th{}: {:.2f}s".format(th, np.nan))
 
-path = '/home/climate/hmwang/PycharmProjects/StandardIndex_SPI1'
+path = '.'
 
 
 @njit(parallel=True)
@@ -65,8 +64,9 @@ def null_compare_nb(nu, NA, NB):
 
 
 def null_compare_mp(core):
-    # print("core {}: start".format(core))
-    rows = np.arange(int(latlon.shape[0] / noc * core), int(latlon.shape[0] / noc * (core + 1)))
+    start_idx = int(latlon.shape[0] / noc * core)
+    end_idx = int(latlon.shape[0] / noc * (core + 1)) if core < noc - 1 else latlon.shape[0]
+    rows = np.arange(start_idx, end_idx)
     nu = np.load("{}/2eca/ecaevents_{}_glb_event{}_{}_c{}.npz".format(path, datanm, direc, th, core))["nu"]
     na = NA[rows, :]
     link = null_compare_nb(nu, na.ravel(), NB.ravel())
@@ -74,7 +74,7 @@ def null_compare_mp(core):
     link[~vp[rows], :] = False  # Memory explode if put outside1
     link[:, ~vp] = False
     link = sp.coo_array(link)  # TODO: 原来这里是csr
-    print("core {}: frac {:.5f}%".format(core, link.sum() / np.product(link.shape) * 100))
+    print("core {}: frac {:.5f}%".format(core, link.sum() / np.prod(link.shape) * 100))
     return link
 
 
@@ -96,7 +96,7 @@ def null_compare_mp(core):
 
 print("Start Time: ", time.asctime())
 # link = null_compare_mp(0)
-with multiprocessing.Pool(processes=22) as p:
+with multiprocessing.Pool(processes=40) as p:
     link = sp.vstack(p.map(null_compare_mp, np.arange(noc), chunksize=1))
 print("Significance End: ", time.asctime())
 # sp.save_npz("{}/3link/link{}_{}_glb_event{}_{}_all.npz".format(path, sig, datanm, direc, th), link, compressed=False)
