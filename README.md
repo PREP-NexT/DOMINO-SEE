@@ -1,92 +1,114 @@
 <p align="center">
   <a href="https://prep-next.github.io/PREP-SHOT/">
-    <img src="https://user-images.githubusercontent.com/50036800/221886195-3113531b-f9c4-4c6a-bb66-612c8b9c3d9a.png" width="550" alt="PREP-SHOT logo">
+    <img src="https://raw.githubusercontent.com/Hem-W/dominosee-dev/refs/heads/main/docs/logos/DOMINO-SEE%20Horizontal.svg" width="550" alt="DOMINO-SEE logo">
   </a>
 </p>
 
 <p align="center">
   <a href="https://www.python.org/"><img alt="Build" src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg?color=purple"></a>
-  <a href="https://github.com/PREP-NexT/PREP-SHOT"><img src="https://img.shields.io/github/contributors/PREP-NexT/PREP-SHOT.svg" alt="GitHub contributors"></a>
-  <a href="https://github.com/PREP-NexT/PREP-SHOT"><img src="https://img.shields.io/github/issues/PREP-NexT/PREP-SHOT.svg" alt="GitHub issues"></a>
+  <a href="https://github.com/PREP-NexT/DOMINO-SEE"><img src="https://img.shields.io/github/contributors/PREP-NexT/DOMINO-SEE.svg" alt="GitHub contributors"></a>
+  <a href="https://github.com/PREP-NexT/DOMINO-SEE"><img src="https://img.shields.io/github/issues/PREP-NexT/DOMINO-SEE.svg" alt="GitHub issues"></a>
   <a href="https://twitter.com/PREPNexT_Lab"><img src="https://img.shields.io/twitter/follow/PREPNexT_Lab.svg?label=Follow&style=social" alt="Twitter Follow"></a>
-  <a href="https://github.com/PREP-NexT/PREP-SHOT"><img src="https://img.shields.io/github/license/PREP-NexT/PREP-SHOT.svg" alt="License"></a>
-  <a href="https://github.com/PREP-NexT/PREP-SHOT"><img src="https://badges.frapsoft.com/os/v1/open-source.svg?v=103" alt="Download"></a>
-  <a href="https://colab.research.google.com/github/PREP-NexT/PREP-SHOT/blob/main/example/single_node_with_hydro/main.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab"></a>
+  <a href="https://github.com/PREP-NexT/DOMINO-SEE"><img src="https://img.shields.io/github/license/PREP-NexT/DOMINO-SEE.svg" alt="License"></a>
+  <a href="https://github.com/PREP-NexT/DOMINO-SEE"><img src="https://badges.frapsoft.com/os/v1/open-source.svg?v=103" alt="Download"></a>
 </p>
 
 <p align="center">
   <a href="#overview">Overview</a> |
   <a href="#key-features">Features</a> |
   <a href="#getting-started">Quick Start</a> |
-  <a href="#how-to-contribute">Contribute</a> |
-  <a href="#roadmap">Roadmap</a> |
   <a href="#citation">Citation</a>
 </p>
 
 ## Overview
 
-**DOMINO-SEE** (**D**athways for **R**enewable **E**nergy **P**lanning coupling **S**hort-term **H**ydropower **O**pera**T**ion) is a xxx model, offering xxx. It's developed by [Hui-Min Wang](xxx) and [Xiaogang He](https://cde.nus.edu.sg/cee/staff/he-xiaogang/) from the [PREP-NexT](https://github.com/PREP-NexT) Lab at the [National University of Singapore](https://nus.edu.sg/).
+**DOMINO-SEE** (**D**etection Of **M**ulti-layer **IN**terconnected **O**ccurrences for **S**patial **E**xtreme **E**vents) is a data-driven statistical framework for detecting spatially co-occurrences of hydroclimatic extreme events across locations, inspired by complex network science, powered by `xarray` architecture. It's developed by [Hui-Min Wang](https://orcid.org/0000-0002-5878-7542) and [Xiaogang He](https://cde.nus.edu.sg/cee/staff/he-xiaogang/) from the [PREP-NexT](https://github.com/PREP-NexT) Lab at the [National University of Singapore](https://nus.edu.sg/).
 
-This project is licensed under the [GNU General Public License 3.0](https://github.com/PREP-NexT/PREP-SHOT/blob/main/LICENSE).
+This project is licensed under the [GNU General Public License 2.0](https://github.com/PREP-NexT/DOMINO-SEE/blob/main/LICENSE).
 
 ## Why the Name?
 
-xxx
+The name **DOMINO-SEE** represents our approach to detecting and analyzing interconnected occurrences of hydroclimatic extreme events across spatial locations, inspired by the cascade effect of **DOMINO**es falling in a chain reaction. The **SEE** highlights the framework's ability to capture the spatial synchronization and propagation of extreme events, emphasizing the interconnectedness inherent in complex environmental systems.
 
-## Key Features
+## How to Use?
 
-- xxx
-- xxx
-- xxx
+This repository stores the code for reproducing the results in the paper. A more general repository for constructing event-based climate networks using `xarray` can be found [here](https://github.com/Hem-W/DOMINOSEE-dev).
 
-## Getting Started
+## Prerequisites
 
-This section includes a brief tutorial on running your first PREP-SHOT model.
+This section includes a brief tutorial on running your first DOMINO-SEE model.
 
 1. Clone the repo
 
-    ```bash
-    git clone https://github.com/PREP-NexT/PREP-SHOT.git
-    ```
+```bash
+git clone https://github.com/PREP-NexT/DOMINO-SEE.git
+```
 
 2. Install the dependencies
 
-    ```bash
-    cd PREP-SHOT
-    conda create -n prep-shot python=3.8
-    conda activate prep-shot
-    pip install -r requirements.txt
-    ```
+```bash
+cd DOMINO-SEE
+conda env create -f environment.yml
+conda activate DOMINO-SEE
+```
 
-3. Run your first model
+3. Prepare the data
 
-    ```bash
-    python run.py
-    ```
++ SPI1 data: placed at `0data/SPI1_monthly_0.250deg_1950_2016.nc`.
++ A boolean array of valid points with monthly precipitation data > 100mm: placed at `0data/prcpfkt_validpoint_annual_100.npy`.
++ SST data: placed at `0data/sst.mnmean.nc`.
 
-## 🤝 How to Contribute
+## Run the scripts
 
-To contribute to this project, please read our [Contributing Guidelines](https://prep-next.github.io/DOMINO-SEE/xxx).
+*The scripts should be run in the following order:*
+
+#### 1. `0spi_events.py`
+
+Loads SPI (Standardized Precipitation Index) data and identifies drought/flood events based on predefined thresholds (e.g., SPI ≤ -1.5 for drought, SPI ≥ 1.5 for flood). Calculates event timing, bursts, and durations, and saves results in `1events/`.
+
+#### 2. `1eca_rate.py`
+
+Implements Event Coincidence Analysis (ECA) to detect synchronous events across different locations, which are saved in `2eca/`.
+
+#### 3. `1eca_null.py`
+
+Generates a null model distribution for statistical significance testing of ECA, which are saved in `2eca/null/`.
+
+#### 4. `1eca_sig.py`
+
+Compares actual Event Coincidence Analysis results against the null model to identify statistically significant coincidence rates, which are saved in `3link/`.
+
+#### 5. `2link_network.py`
+
+Constructs a network from significant ECA links and calculates the great circle distances between connected locations. Separates links into teleconnections (≥2500km) and short-range connections (<2500km). 
+
+#### 6. `3bipartite_network.py`
+
+Analyzes teleconnection networks between different geographical regions using kernel density estimation. Identifies significant spatial link densities and linked regional bundles between regions.
+
+*The plotting functions are also available as follows:*
+
+* **plot_event_number.ipynb** - Plots the annual mean number of drought/flood events across the global domain.
+
+* **plot_link_distance_compare.py** - Compares the distance distributions of links across different network types (drought-drought, pluvial-pluvial, drought-pluvial).
+
+* **plot_global_degree_tele.py** - Produces maps of teleconnection network links (≥ 2500km) showing the spatial distribution of long-distance connections.
+
+* **plot_global_degree_short.py** - Generates maps of short-distance network connections (< 2500km) showing the spatial distribution of link densities for drought and pluvial networks.
+
+* **plot_crop_region.py** - Creates visualizations of specific geographical regions for detailed analysis of climate patterns.
+
+* **plot_bipartite_network.py** - Creates visualizations of teleconnection networks between different geographical regions, showing linked bundles and their spatial densities.
+
+* **plot_pairwise_network_density.py** - Visualizes the density of connections between specific regional pairs, highlighting the strength of climate teleconnections.
+
+* **plot_SST.py** - Visualizes sea surface temperature (SST) anomalies during synchronized climate events between different regions, with region boxes highlighting areas of interest.
 
 ## Contact Us
 
 If you have any questions, comments, or suggestions that aren't suitable for public discussion in the Issues section, please feel free to contact [Hui-Min Wang](mailto:wanghuimin@u.nus.edu).
 
-Please use the GitHub Issues for public discussions related to bugs, enhancements, or other project-related discussions.
-
-## Roadmap
-
-- [x] `Benders` decomposition-based fast solution framework
-- [x] [`PyOptInterface`](https://github.com/metab0t/PyOptInterface)-based low-memory and fast modelling engine
-- [x] Support for xxx
-- [ ] Support for xxx
-
 ## Disclaimer
 
-The DOMINO-SEE model is an academic project and is not intended to be used as a precise prediction tool for xxx purposes. The developers will not be held liable for any decisions made based on the use of this model. We recommend applying it in conjunction with expert judgment and other modeling tools in a decision-making context.
-
----
-
-## Repo Activity
-![Repo Analytics](https://repobeats.axiom.co/api/embed/159a603ee4c6124a5addc35d47b3cb02e3fc39f0.svg "Repo analytics")
+The DOMINO-SEE model is an academic project and is not intended to be used as a precise prediction tool for commercial or policy-making purposes without expert oversight. The developers will not be held liable for any decisions made based on the use of this model. We recommend applying it in conjunction with expert judgment and other modeling tools in a decision-making context.
 
