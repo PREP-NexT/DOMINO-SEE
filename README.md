@@ -15,9 +15,10 @@
 
 <p align="center">
   <a href="#overview">Overview</a> |
-  <a href="#key-features">Features</a> |
-  <a href="#getting-started">Quick Start</a> |
-  <a href="#citation">Citation</a>
+  <a href="#how-to-use">How to Use?</a> |
+  <a href="#prerequisites">Prerequisites</a> |
+  <a href="#run-scripts">Run Scripts</a> |
+  <a href="#contact-us">Contact Us</a>
 </p>
 
 ## Overview
@@ -58,7 +59,7 @@ conda activate DOMINO-SEE
 + A boolean array of valid points with monthly precipitation data > 100mm: placed at `0data/prcpfkt_validpoint_annual_100.npy`.
 + SST data: placed at `0data/sst.mnmean.nc`.
 
-## Run the scripts
+## Run scripts
 
 *The scripts should be run in the following order:*
 
