@@ -1,6 +1,6 @@
 <p align="center">
-  <a href="https://prep-next.github.io/PREP-SHOT/">
-    <img src="https://raw.githubusercontent.com/Hem-W/dominosee-dev/refs/heads/main/docs/logos/DOMINO-SEE%20Horizontal.svg" width="550" alt="DOMINO-SEE logo">
+  <a href="https://github.com/PREP-NexT/DOMINO-SEE">
+    <img src="https://raw.githubusercontent.com/Hem-W/dominosee-dev/refs/heads/main/docs/source/_static/DOMINO-SEE%20Horizontal.svg" width="550" alt="DOMINO-SEE logo">
   </a>
 </p>
 
