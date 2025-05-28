@@ -4,6 +4,12 @@
 2eca
 3link
 
+# 图库
+pics
+
+# vscode
+.vscode
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
