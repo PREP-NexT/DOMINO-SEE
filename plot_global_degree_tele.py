@@ -20,7 +20,6 @@ datanm = "spimv2"
 lon = np.load('0data/{}_lon.npy'.format(datanm))
 lat = np.load('0data/{}_lat.npy'.format(datanm))
 latlon = np.load('0data/{}_latlon.npy'.format(datanm))
-cos_lat = np.cos(latlon[:, 0] * np.pi / 180).reshape(lat.size, lon.size)
 ddate = to_datetime(np.load('0data/{}_date.npy'.format(datanm)))
 vp = np.load("0data/prcp_validpoint_annual_100.npy")
 path = '/home/climate/hmwang/PycharmProjects/StandardIndex_SPI1_temp'
@@ -73,10 +72,6 @@ for nax in range(len(ax)):
     direc = DIREC[nax]
     degree_tel0 = np.load("{}/3link/linkdegtel{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th))["degree0"]
     degree_tel1 = np.load("{}/3link/linkdegtel{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th))["degree1"]
-    # np.savez("{}/3link/linkdeg{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th),
-    #          degree0=degree0, degree1=degree1)
-    # np.savez("{}/3link/linkdegtel{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th),
-    #          degree0=degree_tel0, degree1=degree_tel1)
     cmap = CMAP[nax]
     if nax == 0:
         px, cs = plot_joint_degree(ax[nax], degree_tel0, cmap=cmap)
