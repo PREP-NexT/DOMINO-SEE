@@ -73,7 +73,7 @@ def direc_dist(direc):
 
     # %% link to angular distance
     dist = link_to_grtdst(link)
-    sp.save_npz("3link{}/linkdist{}_{}_glb_event{}_{}.npz".format(opath, sig, datanm, direc, th), dist)
+    sp.save_npz("{}3link/linkdist{}_{}_glb_event{}_{}.npz".format(opath, sig, datanm, direc, th), dist)
     print("Link Distances: {:.2f}s".format(time.time() - tic))
     print("Link Ref: ", sys.getrefcount(link))
 
@@ -89,11 +89,11 @@ def dist_split(dist):
     linkidx = dist.data >= distth
     lnk_tel = sp.csr_array((np.ones(linkidx.sum(), dtype='bool'), (dist.row[linkidx], dist.col[linkidx])),
                            shape=dist.shape)
-    sp.save_npz("{}/3link/linktel{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th), lnk_tel)
+    sp.save_npz("{}3link/linktel{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th), lnk_tel)
     del lnk_tel
     lnk_sht = sp.csr_array((np.ones((~linkidx).sum(), dtype='bool'), (dist.row[~linkidx], dist.col[~linkidx])),
                            shape=dist.shape)
-    sp.save_npz("{}/3link/linkshr{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th), lnk_sht)
+    sp.save_npz("{}3link/linkshr{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th), lnk_sht)
     del lnk_sht
     print("Distribution Ref: ", sys.getrefcount(dist))
     # del dist
