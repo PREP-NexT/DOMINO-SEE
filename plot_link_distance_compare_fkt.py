@@ -116,7 +116,7 @@ def output_figcase(figcase):
                 logp = loghist[0]
             np.savez("3link/{}disthist{}_{}_glb_event{}_{}.npz".format(path2, sig, datanm, direc, th), logx=logx, logp=logp)
         print("Sum of p is ", logp.sum())
-        ax1.loglog(logx, logp, color=clrs[direc], ls='None', marker=mkrs[direc], alpha=0.5, ms=6,
+        ax1.loglog(logx, logp, color=clrs[direc], ls='None', marker=mkrs[direc], alpha=0.5, ms=5,
                    label=lbls[direc])
 
     ax1.axvline(x=2500, color='gray', linestyle="--", alpha=.6,
