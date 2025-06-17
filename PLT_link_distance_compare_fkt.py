@@ -79,7 +79,7 @@ def output_figcase(figcase):
     fig.show()
     clrs = {"00": "tab:red", "11": "tab:blue", "01": 'tab:purple'}
     lbls = {"00": "Drought-Drought", "11": "Pluvial-Pluvial", "01": "Drought-Pluvial"}
-    mkrs = {"00": "o", "11": "o", "01": "o"}
+    mkrs = {"00": "d", "11": "X", "01": "o"}
     density = False
     for direc in ["00", "11", "01"]:
         print('Direction ', direc)
@@ -116,18 +116,17 @@ def output_figcase(figcase):
                 logp = loghist[0]
             np.savez("3link/{}disthist{}_{}_glb_event{}_{}.npz".format(path2, sig, datanm, direc, th), logx=logx, logp=logp)
         print("Sum of p is ", logp.sum())
-        ax1.loglog(logx, logp, color=clrs[direc], ls='None', marker=mkrs[direc], alpha=0.7, ms=6,
+        ax1.loglog(logx, logp, color=clrs[direc], ls='None', marker=mkrs[direc], alpha=0.5, ms=6,
                    label=lbls[direc])
 
     ax1.axvline(x=2500, color='gray', linestyle="--", alpha=.6,
                 label="Distance=2500 km")
     ax1.set_xlim(50, 30000)
     ax1.set_ylim(10**-5 if density else 10**4)
-    ax1.set(xlabel='Distance [km]', ylabel='Probability [-]' if density else "Frequency [-]",
+    ax1.set(xlabel='Distance [km]', ylabel='Probability [-]' if density else "Frequency of link distances [-]",
             title=title)
-    ax1.set(xticks=[100, 1000, 2500, 10000])
-    ax1.set(xticklabels=["$\\mathdefault{100}$", "$\\mathdefault{1000}$", "$\\mathdefault{2500}$",
-                            "$\\mathdefault{10000}$"])
+    ax1.set(xticks=[100, 1000, 10000])
+    ax1.set(xticklabels=["$\\mathdefault{100}$", "$\\mathdefault{1000}$", "$\\mathdefault{10000}$"])
 
     fig.savefig('pics/dist/{}densities_angdist{}_{}_glb_compare_{}.pdf'.format(path2, sig, datanm, th), bbox_inches='tight')
     print()
