@@ -8,8 +8,7 @@ import xarray as xr
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
-# from matplotlib.font_manager import font_scalings
-# font_scalings["larger"] = 1.3
+from scipy import stats
 import proplot as pplt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
@@ -96,10 +95,10 @@ def add_box(ax, lon, lat, edgecolor="tab:blue", facecolor="none", linewidth=1):
 
 # %%
 C0 = {"0": "salmon", "1": "tab:cyan"}
-RPS = {0: [{"rx": "East Africa", "ry": "India", "direction": "00", "clvl": (-0.5, 0.55, 0.05)},
-           {"rx": "Australia", "ry": "South Africa", "direction": "11", "clvl": (-0.5, 0.55, 0.05)}], 
-       1: [{"rx": "Mexico", "ry": "West US", "direction": "10", "clvl": (-0.5, 0.55, 0.05)},
-           {"rx": "Canada", "ry": "Argentina", "direction": "01", "clvl": (-0.5, 0.55, 0.05)},]}
+RPS = {0: [{"rx": "East Africa", "ry": "India", "direction": "00", "clvl": (-1, 1.1, 0.1)}, #-0.5, 0.55, 0.05
+           {"rx": "Australia", "ry": "South Africa", "direction": "11", "clvl": (-1, 1.1, 0.1)}], #-0.5, 0.55, 0.05
+       1: [{"rx": "Mexico", "ry": "West US", "direction": "10", "clvl": (-1, 1.1, 0.1)}, #-0.5, 0.55, 0.05
+           {"rx": "Canada", "ry": "Argentina", "direction": "01", "clvl": (-1, 1.1, 0.1)}]} #-0.5, 0.55, 0.05
 LABELS = {0: ["F", "G"], 1: ["D", "E"]}
 SAVENMS = {0: "intra", 1: "inter"}
 
@@ -153,11 +152,40 @@ for i, rp in enumerate(rps):
     evort = (evx0 | evy0) & ~ecat
 
     lag = 0
-    sstandm = sstA.sel(time=ddate[np.where(ecat)[1] - lag]).mean(dim="time")
+    # 获取样本数据 - 用于计算平均值的所有时间点的数据
+    sample_times = ddate[np.where(ecat)[1] - lag]
+    sst_samples = sstA.sel(time=sample_times).sst
+    
+    # 计算平均值
+    sstandm = sstA.sel(time=sample_times).mean(dim="time")
     sstan3 = sstandm.sst
+    
+    # 使用xarray的apply_ufunc函数进行t检验
+    def t_test(x):
+        # 移除NaN值并进行t检验
+        valid = x[~np.isnan(x)]
+        if len(valid) > 1:  # 确保有足够的样本
+            return stats.ttest_1samp(valid, 0)[1]  # 返回p值
+        else:
+            return np.nan
+    
+    # 沿时间维度应用t检验
+    p_values = xr.apply_ufunc(
+        t_test,
+        sst_samples,
+        input_core_dims=[["time"]],
+        vectorize=True
+    )
+    
+    # 创建显著性掩膜 (p < 0.05)
+    significance_mask = p_values < 0.05
+    
+    # 绘制SST异常场
     ms = ax.pcolormesh(sstan3.lon, sstan3.lat, sstan3, transform=ccrs.PlateCarree(), 
                        levels=np.arange(*clvl), extend="both", zorder=0, rasterized=True)
-
+    # ms = sstan3.plot(levels=np.arange(*clvl), extend="both",  # xarray的extend参数有问题，导致colorbar不显示extend
+    #                 add_colorbar=False, 
+    #                 ax=ax)
     ax.set_extent([-180, 180, -60, 90], crs=ccrs.PlateCarree())
     ttl = ax.set_title("Both {} {} and {} {}".format(rx, "drought" if direc[0] == "0" else "pluvial", 
                                                     ry, "drought" if direc[1] == "0" else "pluvial", lag))
@@ -167,6 +195,18 @@ for i, rp in enumerate(rps):
     gl = ax.gridlines(draw_labels=["left", "bottom"], linestyle=":", linewidth=0.3, color='k', zorder=10)
     add_box(ax, (pxlatlon[:, 1].min(), pxlatlon[:, 1].max()), (pxlatlon[:, 0].min(), pxlatlon[:, 0].max()), edgecolor="r", facecolor="r")
     add_box(ax, (pylatlon[:, 1].min(), pylatlon[:, 1].max()), (pylatlon[:, 0].min(), pylatlon[:, 0].max()), edgecolor="r", facecolor="r")
+    
+    # 在图上添加显著性掩膜（使用斜线填充标记p<0.05的区域）
+    # 使用contourf绘制显著区域，并用斜线填充
+    hatches = ax.contourf(significance_mask.lon, significance_mask.lat, 
+                          significance_mask.astype(float),  # 转为浮点数以供contourf使用
+                          levels=[-0.5, 0.5, 1.5],  # 确保只有两个区间：不显著和显著
+                          hatches=['', '/////'],  # 只在显著区域(第二个区间)添加斜线填充
+                          colors='none',  # 不使用颜色填充
+                          transform=ccrs.PlateCarree(),
+                          zorder=15,  # 确保在其他图层之上
+                          extend='neither')
+    
     fig.text(-0.09, 1, LABELS[figcase][i], va="baseline", ha="left", fontsize="large", fontweight="bold", transform=ttl.get_transform())
 
 fig.colorbar(ms, label="SST anomaly [K]", loc="r", width=0.1, rows=(1, 2), ticks=np.arange(*clvl)[::2], extend="both")
