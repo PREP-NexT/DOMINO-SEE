@@ -1,0 +1,129 @@
+/* Custom CSS for Jupyter Notebooks in documentation with Furo theme */
+
+/* Notebook cell styling */
+div.nbinput div.input_area {
+    border: 1px solid var(--color-background-border);
+    border-radius: 5px;
+    background-color: var(--color-code-background);
+    padding: 0.8em;
+    margin-bottom: 1em;
+}
+
+/* Styling for cell outputs */
+div.nboutput div.output_area {
+    padding: 0.8em 1em;
+    margin: 0.5em 0 1.5em 0;
+    border-radius: 5px;
+    background-color: var(--color-background-secondary);
+    border-left: 3px solid var(--color-brand-primary);
+    font-size: 0.85rem; /* Reduced font size for outputs */
+}
+
+/* Custom class from our nbsphinx config */
+.furo-notebook-cell {
+    background-color: var(--color-code-background);
+    border-radius: 5px;
+    margin: 1em 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Remove cell prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    display: none;
+}
+
+/* Improve text cell spacing */
+div.nbinput.text_cell {
+    margin-bottom: 1.5em;
+}
+
+/* Enhance images in notebooks */
+div.nboutput img {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin: 1em 0;
+    max-width: 100%;
+    height: auto !important;
+}
+
+/* Make tables look better */
+div.nboutput table {
+    border-collapse: collapse;
+    margin: 1em 0;
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+    font-size: 0.85rem; /* Reduced font size for tables */
+}
+
+div.nboutput th {
+    background-color: var(--color-api-background);
+    padding: 0.5em 0.8em;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid var(--color-background-border);
+}
+
+div.nboutput td {
+    padding: 0.5em 0.8em;
+    border-bottom: 1px solid var(--color-background-border);
+}
+
+/* Download button styling */
+.admonition.tip a {
+    display: inline-block;
+    background-color: var(--color-brand-primary);
+    color: var(--color-background-primary) !important;
+    padding: 0.5em 1em;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    margin-top: 0.5em;
+    transition: background-color 0.2s ease;
+}
+
+.admonition.tip a:hover {
+    background-color: var(--color-brand-content);
+    text-decoration: none;
+}
+
+/* Code output styling */
+div.nboutput pre {
+    padding: 0.7em 1em;
+    overflow-x: auto;
+    background-color: var(--color-code-background);
+    border-radius: 5px;
+    font-size: 0.85rem; /* Reduced font size for code outputs */
+}
+
+/* Matplotlib figure improvements */
+div.nboutput .output_png img,
+div.nboutput .output_svg svg {
+    max-width: 100%;
+    height: auto !important;
+    margin: 1em auto;
+    display: block;
+}
+
+/* Improve cell execution count display */
+div.nbinput div.prompt_container {
+    display: none;
+}
+
+/* Fix equation rendering */
+div.nboutput .MathJax_Display {
+    margin: 0.5em 0 !important;
+}
+
+/* Responsive styling for small screens */
+@media (max-width: 800px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        padding: 0.5em;
+    }
+    
+    div.nboutput table {
+        font-size: 0.9em;
+    }
+}

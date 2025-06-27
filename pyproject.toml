@@ -1,0 +1,92 @@
+[build-system]
+requires = ["setuptools>=42.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dominosee"
+version = "0.0.1"
+description = "A tool for spatial climate network analysis"
+readme = "README.md"
+authors = [
+    {name = "Huimin Wang", email = "wanghuimin@u.nus.edu"},
+]
+license = {text = "GNU General Public License v2 or later (GPLv2+)"}
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Atmospheric Science",
+    "Topic :: Scientific/Engineering :: Hydrology",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "xarray>=0.20.0",
+    "dask",
+    "numpy>=1.20.0",
+    "pandas",
+    "scipy",
+    "numba>=0.55.0",
+    "netCDF4",
+    "cf-xarray",
+    "bottleneck",
+    "ipykernel",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov",
+    "black",
+    "isort",
+    "matplotlib",
+    "cartopy",
+]
+docs = [
+    "sphinx>=4.0.0",
+    "sphinx-rtd-theme>=1.0.0",
+    "furo>=2023.9.10",
+    "nbsphinx>=0.8.0",
+    "sphinx-copybutton>=0.5.0",
+    "jupyter-sphinx>=0.3.2",
+    "sphinx-autodoc-typehints>=1.15.0",
+    "matplotlib",
+    "cartopy"
+]
+
+[project.urls]
+homepage = "https://github.com/Hem-W/dominosee-dev"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["dominosee*"]
+exclude = ["tests.*"]
+
+[tool.setuptools.package-data]
+"tests.data" = ["test_*.nc"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::UserWarning"
+]
+
+
+[tool.black]
+line-length = 88
+target-version = ['py39', 'py310', 'py311', 'py312']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+line_length = 88
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true

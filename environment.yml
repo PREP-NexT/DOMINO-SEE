@@ -1,0 +1,15 @@
+name: dominosee
+channels:
+  - conda-forge
+dependencies:
+  - netcdf4
+  - numba
+  - numpy
+  - pandas
+  - python=3.11
+  - xarray
+  - ipykernel
+  - cf_xarray
+  - bottleneck
+  - dask
+  - scipy
