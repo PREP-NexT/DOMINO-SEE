@@ -128,32 +128,36 @@ div.nboutput .MathJax_Display {
     }
 }
 
-/* Improve xarray dataset display in dark mode */
+/* Improve xarray dataset display in dark mode - with more aggressive selectors */
+/* Target with every possible dark mode selector combination for maximum coverage */
 [data-theme="dark"] div.nboutput .xr-wrap,
 html[data-theme="dark"] div.nboutput .xr-wrap,
 html.dark div.nboutput .xr-wrap,
-body.dark div.nboutput .xr-wrap {
+body.dark div.nboutput .xr-wrap,
+/* Direct targeting without theme selectors - will apply in dark mode due to !important */
+div.nboutput .xr-wrap {
     --xr-font-color0: rgba(255, 255, 255, 0.95) !important;
     --xr-font-color2: rgba(255, 255, 255, 0.7) !important;
     --xr-font-color3: rgba(255, 255, 255, 0.5) !important;
     --xr-border-color: rgba(255, 255, 255, 0.2) !important;
     --xr-disabled-color: rgba(255, 255, 255, 0.4) !important;
-    --xr-background-color: var(--color-code-background) !important;
-    --xr-background-color-row-even: var(--color-code-background) !important;
-    --xr-background-color-row-odd: var(--color-background-secondary) !important;
+    --xr-background-color: rgba(40, 40, 40, 0.95) !important;
+    --xr-background-color-row-even: rgba(40, 40, 40, 0.95) !important;
+    --xr-background-color-row-odd: rgba(50, 50, 50, 0.95) !important;
 }
 
 /* Ensure xarray section items are visible */
 [data-theme="dark"] div.nboutput .xr-section-summary,
 html[data-theme="dark"] div.nboutput .xr-section-summary,
 html.dark div.nboutput .xr-section-summary,
-body.dark div.nboutput .xr-section-summary {
-    color: var(--xr-font-color0) !important;
-    background-color: var(--color-background-secondary) !important;
-    border-color: var(--xr-border-color) !important;
+body.dark div.nboutput .xr-section-summary,
+div.nboutput .xr-section-summary {
+    color: rgba(255, 255, 255, 0.95) !important;
+    background-color: rgba(60, 60, 60, 0.95) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
 }
 
-/* Make xarray text more visible */
+/* Make xarray text more visible with ultra-specific selectors */
 [data-theme="dark"] div.nboutput .xr-array-name, 
 [data-theme="dark"] div.nboutput .xr-array-dimensions,
 html[data-theme="dark"] div.nboutput .xr-array-name,
@@ -161,6 +165,35 @@ html[data-theme="dark"] div.nboutput .xr-array-dimensions,
 html.dark div.nboutput .xr-array-name,
 html.dark div.nboutput .xr-array-dimensions,
 body.dark div.nboutput .xr-array-name,
-body.dark div.nboutput .xr-array-dimensions {
-    color: var(--xr-font-color0) !important;
+body.dark div.nboutput .xr-array-dimensions,
+div.nboutput .xr-array-name,
+div.nboutput .xr-array-dimensions {
+    color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* Target all xarray elements directly with high specificity */
+div.nboutput .xr-section,
+div.nboutput .xr-section-summary,
+div.nboutput .xr-section-inline,
+div.nboutput .xr-section-item,
+div.nboutput .xr-index,
+div.nboutput .xr-attrs,
+div.nboutput .xr-array-name,
+div.nboutput .xr-array-dimensions,
+div.nboutput .xr-dim-list {
+    color: rgba(255, 255, 255, 0.95) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Force background colors for sections */
+div.nboutput .xr-section-summary-in {
+    background-color: rgba(60, 60, 60, 0.95) !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* Ensure borders are visible */
+div.nboutput .xr-section-summary,
+div.nboutput .xr-section,
+div.nboutput .xr-array-wrap {
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
