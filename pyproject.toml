@@ -56,7 +56,7 @@ docs = [
 ]
 
 [project.urls]
-homepage = "https://github.com/Hem-W/dominosee-dev"
+homepage = "https://github.com/PREP-NexT/DOMINO-SEE"
 
 [tool.setuptools.packages.find]
 where = ["."]
