@@ -56,6 +56,6 @@ jobs:
           folder: docs/_build/html
           branch: gh-pages  # The branch the action should deploy to
           clean: true  # Automatically remove deleted files from the deploy branch
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          token: ${{ github.token }}
           repository-name: ${{ github.repository_owner }}/${{ github.event.repository.name }}
           commit-message: 'Deploy docs: ${{ github.sha }}'
