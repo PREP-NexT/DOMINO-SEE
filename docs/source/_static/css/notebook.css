@@ -127,3 +127,40 @@ div.nboutput .MathJax_Display {
         font-size: 0.9em;
     }
 }
+
+/* Improve xarray dataset display in dark mode */
+[data-theme="dark"] div.nboutput .xr-wrap,
+html[data-theme="dark"] div.nboutput .xr-wrap,
+html.dark div.nboutput .xr-wrap,
+body.dark div.nboutput .xr-wrap {
+    --xr-font-color0: rgba(255, 255, 255, 0.95) !important;
+    --xr-font-color2: rgba(255, 255, 255, 0.7) !important;
+    --xr-font-color3: rgba(255, 255, 255, 0.5) !important;
+    --xr-border-color: rgba(255, 255, 255, 0.2) !important;
+    --xr-disabled-color: rgba(255, 255, 255, 0.4) !important;
+    --xr-background-color: var(--color-code-background) !important;
+    --xr-background-color-row-even: var(--color-code-background) !important;
+    --xr-background-color-row-odd: var(--color-background-secondary) !important;
+}
+
+/* Ensure xarray section items are visible */
+[data-theme="dark"] div.nboutput .xr-section-summary,
+html[data-theme="dark"] div.nboutput .xr-section-summary,
+html.dark div.nboutput .xr-section-summary,
+body.dark div.nboutput .xr-section-summary {
+    color: var(--xr-font-color0) !important;
+    background-color: var(--color-background-secondary) !important;
+    border-color: var(--xr-border-color) !important;
+}
+
+/* Make xarray text more visible */
+[data-theme="dark"] div.nboutput .xr-array-name, 
+[data-theme="dark"] div.nboutput .xr-array-dimensions,
+html[data-theme="dark"] div.nboutput .xr-array-name,
+html[data-theme="dark"] div.nboutput .xr-array-dimensions,
+html.dark div.nboutput .xr-array-name,
+html.dark div.nboutput .xr-array-dimensions,
+body.dark div.nboutput .xr-array-name,
+body.dark div.nboutput .xr-array-dimensions {
+    color: var(--xr-font-color0) !important;
+}
