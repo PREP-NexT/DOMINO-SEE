@@ -1,0 +1,6 @@
+﻿dominosee.eca.get\_trig\_confidence
+===================================
+
+.. currentmodule:: dominosee.eca
+
+.. autofunction:: get_trig_confidence

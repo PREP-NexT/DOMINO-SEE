@@ -1,0 +1,222 @@
+/* Custom CSS for dominosee documentation */
+
+/* Enhance code blocks */
+div.highlight {
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* API function names styling */
+dl.py.function > dt, 
+dl.py.class > dt,
+dl.py.method > dt,
+.sig.sig-object.py,
+.sig.sig-object.py:not(.current) {
+    padding: 0;
+    margin: 0 0 15px 0;
+    background-color: transparent !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+    max-width: 100%;
+    display: block;
+    border: none;
+}
+
+/* Fix for long function names and signatures */
+.sig {
+    font-family: var(--font-stack--monospace);
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    display: inline !important;
+}
+
+/* Function name styling */
+.sig-name {
+    white-space: normal;
+    color: #a94442;  /* Red color matching xclim */
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-stack--monospace);
+}
+
+/* Module/class prefix */
+.sig-prename {
+    white-space: normal;
+    color: #a94442;  /* Same red as function name */
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-stack--monospace);
+}
+
+/* Signature styling - reset color for the container */
+.sig-inline {
+    color: var(--color-content-foreground);
+}
+
+/* Function name in signature */
+.sig-name {
+    color: #a94442;  /* Red for function name only */
+}
+
+/* Reset all other signature elements to grey */
+.sig-paren,
+.sig-param,
+.sig-param .n,
+.sig-param .p,
+.sig-param .default_value,
+.sig-return-typehint,
+.sig-return-hint,
+.sig-return-annotation {
+    color: var(--color-content-foreground);
+    opacity: 0.9;
+}
+
+/* Keep the equals sign slightly lighter */
+.sig-param .o {
+    opacity: 0.7;
+}
+
+/* Add hover effect */
+.sig-name:hover,
+.sig-prename:hover {
+    color: #843534;  /* Darker red on hover */
+    text-decoration: underline;
+}
+
+/* Signature parameters and return types */
+.sig-param,
+.sig-return-typehint,
+.sig-return-hint,
+.sig-return-annotation,
+.sig-paren {
+    margin: 0;
+    padding: 0;
+}
+
+/* Signature container */
+.sig-inline {
+    display: inline !important;
+    white-space: normal;
+    margin: 0;
+    padding: 0;
+}
+
+/* Parameter list */
+.sig-params {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+/* Fix for the module/class prefix spacing */
+.sig-prename + .sig-name {
+    margin-left: 0;
+}
+
+/* Fix for parameter lists */
+.sig-params {
+    margin: 0;
+    padding: 0;
+    display: inline;
+}
+
+.sig-param {
+    display: inline;
+}
+
+/* Improve table styling */
+table.docutils {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin-bottom: 24px;
+}
+
+table.docutils th {
+    background-color: rgba(0, 119, 181, 0.1);
+}
+
+/* Make note boxes more prominent */
+div.admonition.note {
+    border-left-color: #0077B5;
+}
+
+div.admonition.note > .admonition-title {
+    background-color: rgba(0, 119, 181, 0.1);
+}
+
+/* Enhance the sidebar navigation */
+.sidebar-tree .toctree-l1 > .reference {
+    font-weight: 600;
+}
+
+.sidebar-tree .toctree-l2 > .reference {
+    font-size: 0.95rem;
+}
+
+/* Responsive iframe for notebook embedding */
+.nb-wrapper {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+}
+
+.responsive-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Fix for long function signatures */
+dt[id] {
+    word-wrap: break-word;
+}
+
+/* Make autosummary tables span full width */
+.table.autosummary {
+    width: 100%;
+    margin: 1em 0;
+}
+
+/* Ensure the table container takes full width */
+.autosummary.contents {
+    width: 100%;
+}
+
+/* Make sure the table cells use available space */
+.autosummary table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+/* Adjust the autosummary table cells */
+.autosummary td, 
+.autosummary th {
+    padding: 0.5em 1em;
+    word-wrap: break-word;
+}
+
+/* Make sure the autosummary section takes full width */
+.section > .autosummary {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Ensure the autosummary wrapper doesn't constrain width */
+.autosummary-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+}

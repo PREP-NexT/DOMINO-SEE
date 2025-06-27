@@ -1,0 +1,6 @@
+﻿dominosee.es.\_DataArrayTime\_to\_timeindex
+===========================================
+
+.. currentmodule:: dominosee.es
+
+.. autofunction:: _DataArrayTime_to_timeindex

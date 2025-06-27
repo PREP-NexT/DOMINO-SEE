@@ -1,0 +1,6 @@
+﻿dominosee.eca.get\_eca\_precursor\_from\_events
+===============================================
+
+.. currentmodule:: dominosee.eca
+
+.. autofunction:: get_eca_precursor_from_events

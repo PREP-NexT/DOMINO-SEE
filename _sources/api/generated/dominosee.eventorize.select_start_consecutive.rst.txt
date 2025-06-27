@@ -1,0 +1,6 @@
+﻿dominosee.eventorize.select\_start\_consecutive
+===============================================
+
+.. currentmodule:: dominosee.eventorize
+
+.. autofunction:: select_start_consecutive

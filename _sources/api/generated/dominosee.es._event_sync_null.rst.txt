@@ -1,0 +1,6 @@
+﻿dominosee.es.\_event\_sync\_null
+================================
+
+.. currentmodule:: dominosee.es
+
+.. autofunction:: _event_sync_null

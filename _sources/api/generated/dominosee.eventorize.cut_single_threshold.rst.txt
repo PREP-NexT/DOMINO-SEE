@@ -1,0 +1,6 @@
+﻿dominosee.eventorize.cut\_single\_threshold
+===========================================
+
+.. currentmodule:: dominosee.eventorize
+
+.. autofunction:: cut_single_threshold

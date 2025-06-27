@@ -1,0 +1,6 @@
+﻿dominosee.eca.get\_eca\_trigger
+===============================
+
+.. currentmodule:: dominosee.eca
+
+.. autofunction:: get_eca_trigger

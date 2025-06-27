@@ -1,0 +1,6 @@
+﻿dominosee.eca.get\_eca\_precursor\_window
+=========================================
+
+.. currentmodule:: dominosee.eca
+
+.. autofunction:: get_eca_precursor_window

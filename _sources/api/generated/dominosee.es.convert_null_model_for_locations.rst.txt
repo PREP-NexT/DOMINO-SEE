@@ -1,0 +1,6 @@
+﻿dominosee.es.convert\_null\_model\_for\_locations
+=================================================
+
+.. currentmodule:: dominosee.es
+
+.. autofunction:: convert_null_model_for_locations

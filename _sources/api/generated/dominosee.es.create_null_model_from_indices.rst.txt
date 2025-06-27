@@ -1,0 +1,6 @@
+﻿dominosee.es.create\_null\_model\_from\_indices
+===============================================
+
+.. currentmodule:: dominosee.es
+
+.. autofunction:: create_null_model_from_indices

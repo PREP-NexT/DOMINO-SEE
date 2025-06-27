@@ -1,0 +1,6 @@
+﻿dominosee.eventorize.\_select\_wane
+===================================
+
+.. currentmodule:: dominosee.eventorize
+
+.. autofunction:: _select_wane

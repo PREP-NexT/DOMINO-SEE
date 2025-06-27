@@ -1,0 +1,6 @@
+﻿dominosee.es.get\_event\_positions
+==================================
+
+.. currentmodule:: dominosee.es
+
+.. autofunction:: get_event_positions

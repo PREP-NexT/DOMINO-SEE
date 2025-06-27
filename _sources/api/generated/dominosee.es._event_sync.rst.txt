@@ -1,0 +1,6 @@
+﻿dominosee.es.\_event\_sync
+==========================
+
+.. currentmodule:: dominosee.es
+
+.. autofunction:: _event_sync

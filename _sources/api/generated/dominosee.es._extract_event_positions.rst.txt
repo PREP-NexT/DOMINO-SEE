@@ -1,0 +1,6 @@
+﻿dominosee.es.\_extract\_event\_positions
+========================================
+
+.. currentmodule:: dominosee.es
+
+.. autofunction:: _extract_event_positions

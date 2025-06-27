@@ -1,0 +1,6 @@
+﻿dominosee.es.get\_event\_time\_differences
+==========================================
+
+.. currentmodule:: dominosee.es
+
+.. autofunction:: get_event_time_differences

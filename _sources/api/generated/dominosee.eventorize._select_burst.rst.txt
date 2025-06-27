@@ -1,0 +1,6 @@
+﻿dominosee.eventorize.\_select\_burst
+====================================
+
+.. currentmodule:: dominosee.eventorize
+
+.. autofunction:: _select_burst

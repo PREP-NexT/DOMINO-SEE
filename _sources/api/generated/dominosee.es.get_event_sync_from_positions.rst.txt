@@ -1,0 +1,6 @@
+﻿dominosee.es.get\_event\_sync\_from\_positions
+==============================================
+
+.. currentmodule:: dominosee.es
+
+.. autofunction:: get_event_sync_from_positions

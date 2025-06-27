@@ -1,0 +1,6 @@
+﻿dominosee.eventorize.\_end\_consecutive
+=======================================
+
+.. currentmodule:: dominosee.eventorize
+
+.. autofunction:: _end_consecutive

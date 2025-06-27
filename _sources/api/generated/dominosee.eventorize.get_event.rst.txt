@@ -1,0 +1,6 @@
+﻿dominosee.eventorize.get\_event
+===============================
+
+.. currentmodule:: dominosee.eventorize
+
+.. autofunction:: get_event

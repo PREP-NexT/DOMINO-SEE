@@ -1,0 +1,6 @@
+﻿dominosee.eca.get\_prec\_confidence
+===================================
+
+.. currentmodule:: dominosee.eca
+
+.. autofunction:: get_prec_confidence

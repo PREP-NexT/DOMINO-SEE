@@ -1,0 +1,6 @@
+﻿dominosee.network.get\_link\_from\_confidence
+=============================================
+
+.. currentmodule:: dominosee.network
+
+.. autofunction:: get_link_from_confidence

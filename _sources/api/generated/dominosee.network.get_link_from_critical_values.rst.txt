@@ -1,0 +1,6 @@
+﻿dominosee.network.get\_link\_from\_critical\_values
+===================================================
+
+.. currentmodule:: dominosee.network
+
+.. autofunction:: get_link_from_critical_values
