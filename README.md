@@ -69,7 +69,7 @@ Loads SPI (Standardized Precipitation Index) data and identifies drought/flood e
 
 #### 2. `1eca_rate.py`
 
-Implements Event Coincidence Analysis (ECA) to detect synchronous events across different locations, which are saved in `2eca/`.
+Implements Event Coincidence Analysis (ECA) to detect synchronous events across different locations, which are saved in `2eca/`. This is a MPI-parallelized script. Run the script with `mpirun -n <number_of_cores> python -u 1eca_rate.py`.
 
 #### 3. `1eca_null.py`
 
