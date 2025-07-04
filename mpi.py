@@ -201,7 +201,7 @@ if am_master:
         if id is None:
             id = numpy.random.uniform()
         if id in assigned:
-            raise MPIException("id ", str(id), " already in queue!")
+            raise MPIException("id " + str(id) + " already in queue!")
         if slave is not None and am_slave:
             raise MPIException(
                 "only the master can use slave= in submit_call()")
