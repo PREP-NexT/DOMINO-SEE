@@ -25,7 +25,7 @@
 
 **DOMINO-SEE** (**D**etection Of **M**ulti-layer **IN**terconnected **O**ccurrences for **S**patial **E**xtreme **E**vents) is a data-driven statistical framework for detecting spatially co-occurrences of hydroclimatic extreme events across locations, inspired by complex network science, powered by `xarray` architecture. It's developed by [Hui-Min Wang](https://orcid.org/0000-0002-5878-7542) and [Xiaogang He](https://cde.nus.edu.sg/cee/staff/he-xiaogang/) from the [PREP-NexT](https://github.com/PREP-NexT) Lab at the [National University of Singapore](https://nus.edu.sg/).
 
-This project is licensed under the [GNU General Public License 2.0](https://github.com/PREP-NexT/DOMINO-SEE/blob/main/LICENSE).
+This project is licensed under the [GNU General Public License 3.0](https://github.com/PREP-NexT/DOMINO-SEE/blob/main/LICENSE).
 
 ## Why the Name?
 
@@ -33,7 +33,7 @@ The name **DOMINO-SEE** represents our approach to detecting and analyzing inter
 
 ## How to Use?
 
-This repository stores the code for reproducing the results in the paper. A more general repository for constructing event-based climate networks using `xarray` can be found [here](https://github.com/Hem-W/DOMINOSEE-dev).
+This repository stores the code for reproducing the results in the paper. A more general repository for constructing event-based climate networks using `xarray` can be found [here](https://prep-next.github.io/DOMINO-SEE/).
 
 ## Prerequisites
 
@@ -42,7 +42,7 @@ This section includes a brief tutorial on running your first DOMINO-SEE model.
 1. Clone the repo
 
 ```bash
-git clone https://github.com/PREP-NexT/DOMINO-SEE.git
+git clone -b paper https://github.com/PREP-NexT/DOMINO-SEE.git
 ```
 
 2. Install the dependencies
@@ -81,9 +81,13 @@ Compares actual Event Coincidence Analysis results against the null model to ide
 
 #### 5. `2link_network.py`
 
-Constructs a network from significant ECA links and calculates the great circle distances between connected locations. Separates links into teleconnections (≥2500km) and short-range connections (<2500km). 
+Constructs a network from significant ECA links and calculates the great circle distances between connected locations. Separates links into teleconnections (≥2500km) and short-distance connections (<2500km). 
 
-#### 6. `3bipartite_network.py`
+#### 6. `2global_degree.py`
+
+Calculates the global degree of teleconnections and short-distance connections.
+
+#### 7. `3bipartite_network.py`
 
 Analyzes teleconnection networks between different geographical regions using kernel density estimation. Identifies significant spatial link densities and linked regional bundles between regions.
 
@@ -104,6 +108,23 @@ Analyzes teleconnection networks between different geographical regions using ke
 * **plot_pairwise_network_density.py** - Visualizes the density of connections between specific regional pairs, highlighting the strength of climate teleconnections.
 
 * **plot_SST.py** - Visualizes sea surface temperature (SST) anomalies during synchronized climate events between different regions, with region boxes highlighting areas of interest.
+
+* **plots_fekete/\*.py** - Plots for the results on the Fekete grid.
+
+### Estimated Running Time
+
+The following table provides estimated running times for the non-plotting scripts on a workstation with 56 cores (Intel Xeon W9-3495X 1.9GHz) and 512GB RAM. If there are less cores or less RAM, please increase the `noc` parameter in `1eca_rate.py` and reduce MPI cores or multiprocessing pool sizes, but these will significantly increase the running time.
+
+| Script | Estimated Running Time | Notes |
+|--------|------------------------|-------|
+| Environment installation | < 10 minutes | Depends on the speed of conda solver and internet connection |
+| `0spi_events.py` | < 5 minutes | |
+| `1eca_rate.py` | ~36 hours | Highly dependent on number of cores used with MPI, which is 56 |
+| `1eca_null.py` | < 5 minutes | |
+| `1eca_sig.py` | ~2 hours | Depends on the pool size used with multiprocessing |
+| `2link_network.py` | ~4 hours | |
+| `2global_degree.py` | ~2 hours | |
+| `3bipartite_network.py` | ~48 hours | Depends on the pool size used with multiprocessing |
 
 ## Contact Us
 
