@@ -101,8 +101,6 @@ Analyzes teleconnection networks between different geographical regions using ke
 
 * **plot_global_degree_short.py** - Generates maps of short-distance network connections (< 2500km) showing the spatial distribution of link densities for drought and pluvial networks.
 
-* **plot_crop_region.py** - Creates visualizations of specific geographical regions for detailed analysis of climate patterns.
-
 * **plot_bipartite_network.py** - Creates visualizations of teleconnection networks between different geographical regions, showing linked bundles and their spatial densities.
 
 * **plot_pairwise_network_density.py** - Visualizes the density of connections between specific regional pairs, highlighting the strength of climate teleconnections.
