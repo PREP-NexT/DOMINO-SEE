@@ -14,12 +14,14 @@ from numba import njit, prange, set_num_threads
 set_num_threads(24)
 
 
-datanm = "spimv2fkt"
+datanm = "spimv2"
+# datanm = "spimv2fkt"  # For Fekete grid
 lon = np.load('0data/{}_lon.npy'.format(datanm))
 lat = np.load('0data/{}_lat.npy'.format(datanm))
 latlon = np.load('0data/{}_latlon.npy'.format(datanm))
 ddate = to_datetime(np.load('0data/{}_date.npy'.format(datanm)))
-vp = np.load("0data/prcpfkt_validpoint_annual_100.npy")
+vp = np.load("0data/prcp_validpoint_annual_100.npy")
+# vp = np.load("0data/prcpfkt_validpoint_annual_100.npy")  # For Fekete grid
 vp = vp.reshape(vp.size)
 
 path = ""
@@ -40,7 +42,7 @@ def angdist_mb(lnk_n2n):
     :param lnk_n2n: (2 * no. of links) row node index to column node index
     :return: angdist: angular great distances
     """
-    angdist = np.zeros(lnk_n2n.shape[1], dtype='uint16')
+    angdist = np.zeros(lnk_n2n.shape[1], dtype='float32')
     for l in prange(lnk_n2n.shape[1]):
         t = sin_lat[lnk_n2n[0, l]] * sin_lat[lnk_n2n[1, l]] + cos_lat[lnk_n2n[0, l]] * cos_lat[lnk_n2n[1, l]] * (
                 sin_lon[lnk_n2n[0, l]] * sin_lon[lnk_n2n[1, l]] + cos_lon[lnk_n2n[0, l]] * cos_lon[lnk_n2n[1, l]])
@@ -48,7 +50,7 @@ def angdist_mb(lnk_n2n):
             t = 1.0
         elif t < -1.0:
             t = -1.0
-        angdist[l] = np.round(np.arccos(t) * 6371)
+        angdist[l] = np.arccos(t) * 6371
     return angdist
 
 
@@ -86,7 +88,7 @@ def direc_dist(direc):
 
 def dist_split(dist):
     distth = 2500
-    linkidx = dist.data >= distth
+    linkidx = dist.data > distth
     lnk_tel = sp.csr_array((np.ones(linkidx.sum(), dtype='bool'), (dist.row[linkidx], dist.col[linkidx])),
                            shape=dist.shape)
     sp.save_npz("{}3link/linktel{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th), lnk_tel)
@@ -102,7 +104,9 @@ def dist_split(dist):
 
 
 if __name__ == "__main__":
+    print("Start Time: ", time.asctime())
     for direc in ["00", "01", "11"]:
         dist = direc_dist(direc)
         dist_split(dist)
         del dist
+    print("End Time: ", time.asctime())

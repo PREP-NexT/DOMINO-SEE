@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 import time
 import numpy as np
-from pandas import to_datetime
 from scipy.sparse import csr_matrix
 from numba import njit
 import mpi
@@ -56,49 +55,53 @@ def eca_mpnb_poisson(bX, bY, bwX, bwY, datanm, direc, th, core):
 def master():
     print("Start Time: ", time.asctime())
 
-    datanm = "spimv2fkt"
+    datanm = "spimv2"
+    # datanm = "spimv2fkt"  # For Fekete grid
     print("Dataset: ", datanm)
-    lon = np.load('0data/{}_lon.npy'.format(datanm))
-    lat = np.load('0data/{}_lat.npy'.format(datanm))
     latlon = np.load('0data/{}_latlon.npy'.format(datanm))
-    ddate = to_datetime(np.load('0data/{}_date.npy'.format(datanm)))
 
     noc = 450  # 50
     th = 1.5
     dT = 1
 
-    direc = "01"
-    print('Direction: ', direc)
-    infileX = "{}_glb_spi1_event_{}.npz".format(datanm, "drt{}".format(-th) if direc[0] == "0" else "fld{}".format(th))
-    infileY = "{}_glb_spi1_event_{}.npz".format(datanm, "drt{}".format(-th) if direc[1] == "0" else "fld{}".format(th))
+    for direc in ["00", "01", "11"]:
+        """
+        direc = "00": drought synchronization
+        direc = "01": drought-pluvial synchronization
+        direc = "11": pluvial synchronization
+        """
+        # direc = "01"
+        print('Direction: ', direc)
+        infileX = "{}_glb_spi1_event_{}.npz".format(datanm, "drt{}".format(-th) if direc[0] == "0" else "fld{}".format(th))
+        infileY = "{}_glb_spi1_event_{}.npz".format(datanm, "drt{}".format(-th) if direc[1] == "0" else "fld{}".format(th))
 
-    evX = np.load("1event/{}".format(infileX))["ev"]
-    print("Data X: {}".format(infileX))
-    evwX = eca_window(evX, symdelt=dT)
-    evX = csr_matrix(evX)
-    evwX = csr_matrix(evwX)
-    if direc[1] == direc[0]:
-        evY = evX
-        print("Data Y is Data X")
-        evwY = evwX
-    else:
-        evY = np.load("1event/{}".format(infileY))["ev"]
-        print("Data Y: {}".format(infileY))
-        evwY = eca_window(evY, symdelt=dT)
-        evY = csr_matrix(evY)
-        evwY = csr_matrix(evwY)
-    print("Reading Data th{}: {:.2f}s".format(th, np.nan))
+        evX = np.load("1event/{}".format(infileX))["ev"]
+        print("Data X: {}".format(infileX))
+        evwX = eca_window(evX, symdelt=dT)
+        evX = csr_matrix(evX)
+        evwX = csr_matrix(evwX)
+        if direc[1] == direc[0]:
+            evY = evX
+            print("Data Y is Data X")
+            evwY = evwX
+        else:
+            evY = np.load("1event/{}".format(infileY))["ev"]
+            print("Data Y: {}".format(infileY))
+            evwY = eca_window(evY, symdelt=dT)
+            evY = csr_matrix(evY)
+            evwY = csr_matrix(evwY)
+        print("Reading Data th{}: {:.2f}s".format(th, np.nan))
 
-    total_rows = latlon.shape[0]
-    for core in range(noc):
-        start_idx = int(total_rows / noc * core)
-        end_idx = int(total_rows / noc * (core + 1)) if core < noc - 1 else total_rows
-        rows = np.arange(start_idx, end_idx)
-        mpi.submit_call("eca_mpnb_poisson", (evX[rows, :], evY, evwX[rows, :], evwY, datanm, direc, th, core), id=core)
-        # eca_mpnb_poisson(ev, evw, 2, rows, datanm, th, core)
-        print(f"batch {core} submitted for rows from {start_idx} to {end_idx}...")
+        total_rows = latlon.shape[0]
+        for core in range(noc):
+            start_idx = int(total_rows / noc * core)
+            end_idx = int(total_rows / noc * (core + 1)) if core < noc - 1 else total_rows
+            rows = np.arange(start_idx, end_idx)
+            mpi.submit_call("eca_mpnb_poisson", (evX[rows, :], evY, evwX[rows, :], evwY, datanm, direc, th, core), id=f"{direc}_{core}")
+            # eca_mpnb_poisson(ev, evw, 2, rows, datanm, th, core)
+            print(f"batch {core} submitted for rows from {start_idx} to {end_idx}...")
 
-    print("End Time: ", time.asctime(), "Process Time: ", time.process_time())
+        print("End Time: ", time.asctime(), "Process Time: ", time.process_time())
 
 
 mpi.run()

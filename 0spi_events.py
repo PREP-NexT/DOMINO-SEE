@@ -1,17 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import time
+from pathlib import Path
+from itertools import product, groupby
 import numpy as np
 import xarray as xr
 from pandas import to_datetime
-from itertools import product, groupby
 
 tic = time.time()
-datanm = "spimv2fkt"
-data = xr.open_dataset("0data/Fekete/SPI1_monthly_fekete025_1948_2016.nc").rename({"time": "t", 
-                                                                                   "SPI1": "spi1"}).sel(t=slice("1950", "2016"))
+datanm = "spimv2"  # Define dataset name for later use
+data = xr.open_dataset("0data/SPI1_monthly_0.250deg_1950_2016.nc").sel(t=slice("1950", "2016"))
+# datanm = "spimv2fkt"  # For Fekete grid
+# data = xr.open_dataset("0data/Fekete/SPI1_monthly_fekete025_1948_2016.nc").rename({"time": "t", 
+#                                                                                    "SPI1": "spi1"}).sel(t=slice("1950", "2016"))
 
-# %% 读入数据
+# %% Load data
 lat = data.lat.to_numpy()
 lon = data.lon.to_numpy()
 np.save('0data/{}_lat.npy'.format(datanm), np.array(lat))
@@ -25,16 +28,14 @@ spi = data.spi1.stack(latlon=("lat", "lon")).to_numpy().T if data.spi1.ndim == 3
 # ddate = ddate[ddate.year >= 1990]
 # pcp = xr.open_dataarray("data/PGFv3_prec_yearly_0.250deg_1948_2016.nc").datanm[2:, :, :]
 
-t = ddate.shape[0]  # 时间点数量 =
-la = lat.shape[0]  # 纬度数量 = 400
-lo = lon.shape[0]  # 经度数量 = 1440
-n = la * lo  # 空间点的数量 = 576000
+t = ddate.shape[0]  # Time points
+la = lat.shape[0]  # Latitude points
+lo = lon.shape[0]  # Longitude points
+n = la * lo  # Space points
 if np.ma.isMaskedArray(spi):
     spi = spi.filled(0)
 
-y = ddate.year.max() - ddate.year.min() + 1  # 年份数量
-# season_split = {0: [12, 1, 2], 1: [3, 4, 5],
-#                 2: [6, 7, 8], 3: [9, 10, 11]}
+y = ddate.year.max() - ddate.year.min() + 1  # Years
 
 
 # %% 计算bursts
@@ -70,6 +71,12 @@ def flood_time(ts, th, burst=False):
 
 
 print("Event timing starts: {:.3f}s".format(time.time() - tic))
+
+event_dir = Path("1event")
+if not event_dir.exists():
+    event_dir.mkdir()
+    print("Created directory: 1event")
+
 for perc in [-1.5]:  # [-1, -1.5, -2, -3]:
     ev, eb = drought_time(spi, perc, burst=True)
     np.savez_compressed("1event/{}_glb_spi1_event_drt{}".format(datanm, perc), ev=ev)  # event timing

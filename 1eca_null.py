@@ -4,18 +4,17 @@ import numpy as np
 from pandas import to_datetime
 from scipy.stats import binom
 
-datanm = "spimv2fkt"
-lon = np.load('0data/{}_lon.npy'.format(datanm))
-lat = np.load('0data/{}_lat.npy'.format(datanm))
-latlon = np.load('0data/{}_latlon.npy'.format(datanm))
+datanm = "spimv2"
+# datanm = "spimv2fkt"  # For Fekete grid
 ddate = to_datetime(np.load('0data/{}_date.npy'.format(datanm)))
-vp = np.load("0data/prcp_validpoint_annual_100.npy")
 
-th = -1.5  # Null结果与th无关
+th = 1.5  # Null结果与th无关，但需要知道最大值
 dT = 1
 
-ev = (np.load("1event/{}_glb_spi1_event_drt{}.npz".format(datanm, th))["ev"]).sum(axis=1)
-print("actual max:", ev.max())
+ev = (np.load("1event/{}_glb_spi1_event_drt{}.npz".format(datanm, -th))["ev"]).sum(axis=1)
+print("actual max (drought):", ev.max())
+ev = (np.load("1event/{}_glb_spi1_event_fld{}.npz".format(datanm, th))["ev"]).sum(axis=1)
+print("actual max (pluvial):", ev.max())
 evmax = 110
 print("evmax set:", evmax)
 na = np.arange(evmax).reshape(evmax, 1)
