@@ -6,7 +6,7 @@ import numpy as np
 from pandas import to_datetime
 import matplotlib as mpl
 import matplotlib.colors as mcolors
-import proplot as pplt
+import ultraplot as pplt
 import cartopy.crs as ccrs
 import cartopy.mpl.ticker as ticker  # Format Cartesian to Geo
 import colormaps as cmaps
@@ -22,7 +22,7 @@ lat = np.load('0data/{}_lat.npy'.format(datanm))
 latlon = np.load('0data/{}_latlon.npy'.format(datanm))
 ddate = to_datetime(np.load('0data/{}_date.npy'.format(datanm)))
 vp = np.load("0data/prcp_validpoint_annual_100.npy")
-path = '/home/climate/hmwang/PycharmProjects/StandardIndex_SPI1_temp'
+path = ''
 
 cmdry = mcolors.ListedColormap(cmaps.wind_17lev([1, 2, 7, 8, 10, 12, 13, 14]))
 cmdry.set_under(cmaps.wind_17lev(0))
@@ -46,8 +46,9 @@ def plot_joint_degree(ax, degree, cmap=mpl.cm.YlOrRd):
     bounds = np.array([150, 300, 500, 800, 1300, 2200, 3700, 6000, 10000]).astype('int')
 
     ax.set_facecolor("lightgray")
-    degree = np.ma.masked_array(degree, ~vp)
-    cs = ax.pcolormesh(lon, lat, degree, transform=ccrs.PlateCarree(),
+    degree = np.ma.masked_array(degree, ~vp).reshape(lat.shape[0], lon.shape[0])
+    cs = ax.pcolormesh(lon, lat, degree, 
+                       transform=ccrs.PlateCarree(),
                        cmap=cmap, norm=mpl.colors.BoundaryNorm(bounds, ncolors=cmap.N), extend="both", rasterized=True)
 
     pxr = ax.panel('r')
@@ -70,8 +71,8 @@ ax = fig.subplots(ncols=2, nrows=2, projection=ccrs.PlateCarree())
 ax.format(abc="A", abcloc="l")
 for nax in range(len(ax)):
     direc = DIREC[nax]
-    degree_tel0 = np.load("{}/3link/linkdegtel{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th))["degree0"]
-    degree_tel1 = np.load("{}/3link/linkdegtel{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th))["degree1"]
+    degree_tel0 = np.load("{}3link/linkdegtel{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th))["degree0"]
+    degree_tel1 = np.load("{}3link/linkdegtel{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th))["degree1"]
     cmap = CMAP[nax]
     if nax == 0:
         px, cs = plot_joint_degree(ax[nax], degree_tel0, cmap=cmap)
@@ -89,6 +90,6 @@ for nax in range(len(ax)):
 
 # %%
 if True:
-    fig.savefig("pics/dist/glbdegree_{}_{}_stat-tel.png".format(datanm, th), bbox_inches='tight')
+    # fig.savefig("pics/dist/glbdegree_{}_{}_stat-tel.png".format(datanm, th), bbox_inches='tight')
     fig.savefig("pics/dist/glbdegree_{}_{}_stat-tel.pdf".format(datanm, th), bbox_inches='tight')
 

@@ -7,7 +7,7 @@ import scipy.sparse as sp
 from pandas import to_datetime
 import matplotlib as mpl
 import matplotlib.colors as mcolors
-import proplot as pplt
+import ultraplot as pplt
 import cartopy.crs as ccrs
 import cartopy.mpl.ticker as ticker  # Format Cartesian to Geo
 import colormaps as cmaps
@@ -23,7 +23,7 @@ latlon = np.load('0data/{}_latlon.npy'.format(datanm))
 cos_lat = np.cos(latlon[:, 0] * np.pi / 180).reshape(lat.size, lon.size)
 ddate = to_datetime(np.load('0data/{}_date.npy'.format(datanm)))
 vp = np.load("0data/prcp_validpoint_annual_100.npy")
-path = '/home/climate/hmwang/PycharmProjects/StandardIndex_SPI1_temp'
+path = ''
 
 distth = 2500
 
@@ -98,7 +98,7 @@ ax = fig.subplots(ncols=2, nrows=2, projection=ccrs.PlateCarree())
 ax.format(abc="A", abcloc="l")
 for nax in range(len(ax)):
     direc = DIREC[nax]
-    lnk_shr = sp.load_npz("{}/3link/linkshr{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th))
+    lnk_shr = sp.load_npz("{}3link/linkshr{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th))
     print("Short Link Fraction: {:.2f}%".format(lnk_shr.size / (vp.size ** 2) * 100))
 
     degree_shr0 = np.array(lnk_shr.sum(axis=0).reshape(lat.size, lon.size))

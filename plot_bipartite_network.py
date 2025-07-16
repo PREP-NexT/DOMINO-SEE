@@ -6,6 +6,7 @@
 @Author   : WANG HUI-MIN
 @Update   : This is to separate the bundle calculation from the bundle plots
 """
+import os
 import numpy as np
 from utils.get_index_from_coord import get_index_for_square
 import matplotlib as mpl
@@ -13,7 +14,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
-from util.plot import truncate_colormap
+from utils.plot import truncate_colormap
 mpl.rcParams['font.family'] = 'Myriad Pro'
 mpl.rcParams['font.size'] = 9
 mpl.rcParams["figure.dpi"] = 300
@@ -25,7 +26,6 @@ datanm = "spimv2"
 lon = np.load('0data/{}_lon.npy'.format(datanm))
 lat = np.load('0data/{}_lat.npy'.format(datanm))
 latlon = np.load('0data/{}_latlon.npy'.format(datanm))
-path = '/home/climate/hmwang/PycharmProjects/StandardIndex_SPI1_temp'
 
 th = 1.5
 sig = 0.005
@@ -227,9 +227,5 @@ fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=CMRED),
 fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=CMBLUE),
              cax=fig.axes[2], orientation='vertical' if cblc == "right" else 'horizontal', label=cblabel) 
 
+os.makedirs("pics/pairwise_tele", exist_ok=True)
 fig.savefig("pics/pairwise_tele/bundlekde_{}_{}_areafrac.pdf".format(datanm, savenm), bbox_inches='tight')
-fig.savefig("pics/pairwise_tele/bundlekde_{}_{}_areafrac.png".format(datanm, savenm), bbox_inches='tight', dpi=330)
-
-print()
-
-# %%

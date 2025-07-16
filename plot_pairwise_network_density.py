@@ -11,14 +11,13 @@ import pandas as pd
 from pandas import to_datetime
 import scipy.sparse as sp
 import time
-from get_index_from_coord import get_index_for_square
+from utils.get_index_from_coord import get_index_for_square
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-# import matplotlib.patches as mpatches
 from matplotlib.tri import Triangulation
 from matplotlib.patches import Rectangle
-import seaborn as sns
-import proplot as pplt # TODO: 这个会改变rcParams
+# import seaborn as sns
+import ultraplot as pplt # TODO: 这个会改变rcParams
 pplt.rc["font.sans-serif"] = "Myriad Pro"
 pplt.rc["font.largesize"] = "large"
 pplt.rc["tick.minor"] = False
@@ -31,7 +30,7 @@ latlon = np.load('0data/{}_latlon.npy'.format(datanm))
 ddate = to_datetime(np.load('0data/{}_date.npy'.format(datanm)))
 vp = np.load("0data/prcp_validpoint_annual_100.npy")
 vp = vp.reshape(vp.size)
-path = '/home/climate/hmwang/PycharmProjects/StandardIndex_SPI1_temp'
+path = ''
 
 th = 1.5
 sig = 0.005
@@ -45,10 +44,6 @@ TYPEY = "Drought" if direc[1] == "0" else "Pluvial"
 TITLES = {"00": "Drought synchronization", "01": "Drought-pluvial synchronization", "10": "Pluvial-drought synchronization", "11": "Pluvial synchronization"}
 LABELS = {"00": "C", "01": "A", "10": "B", "11": "D"}
 RECTS = {"00": (4.5, -0.5), "01": (6.5, 4.5), "10": (9.5, 1.5), "11": (5.5, 0.5)}
-
-ff = np.load("4bundle/fracs_tele_{}_sig{}.npz".format(direc if direc != "10" else "01", sig))
-fracsx = ff["fracsx"] if direc != "10" else ff["fracsy"].T
-fracsy = ff["fracsy"] if direc != "10" else ff["fracsx"].T
 
 # %%  Multiple Regions
 regions = {"North China": ([33.25, 43.0], [102.5, 121.0]),
@@ -69,43 +64,30 @@ region_list = list(regions.keys())
 indices = {i: get_index_for_square(lat, lon, *c) for (i, c) in regions.items()}
 NR = len(regions)
 
-# %% Plot density plots
-link = sp.load_npz("{}/3link/linktel{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th))  # .tocoo()
-print("Tele, Number: {:.0f}, Fraction: {:.2f}%".format(link.size, link.size / (vp.size ** 2) * 100))
-
-# plot link fractions
-fracs = np.zeros((NR, NR))
+fracsx = np.zeros((NR, NR))
+fracsy = np.zeros((NR, NR))
 for x in range(NR):
     for y in range(NR):
         rx = region_list[x]
         ry = region_list[y]
-        link_x_y = link[indices[rx][2].reshape(-1, 1), indices[ry][2].reshape(1, -1)].A
-        nol = link_x_y.sum()
-        fracs[x, y] = nol / link_x_y.size * 100
 
-np.fill_diagonal(fracs, 0.)
-fracs = pd.DataFrame(data=fracs, index=region_list, columns=region_list)
-mask = np.triu(np.ones_like(fracs, dtype=bool))
+        bundle_file = np.load("4bundle/bundle_{}-{}_{}_event{}_{}.npz".format(rx, ry, datanm, direc, th))
+        bundlex, bundley = bundle_file["bundlex"], bundle_file["bundley"]
 
-fig, ax = plt.subplots(figsize=(4.4, 3.65), tight_layout=True)
-# cmap = mpl.cm.Reds
-CMAP = {"00": mpl.cm.Reds, "11": mpl.cm.Blues, "01": mpl.colors.LinearSegmentedColormap.from_list("tab:purples", ["white", "darkslateblue"])}
-sns.heatmap(fracs.iloc[:, :], cmap=CMAP[direc],  # mask=mask, # vmax=.3, center=0,
-            square=True, cbar_kws ={"label": "Network Density [%]", "fraction": 0.05},
-            ax=ax)  # "shrink": .5
-ax.set_xlabel(TYPEY, fontsize="large", fontweight='bold')
-ax.set_ylabel(TYPEX, fontsize="large", fontweight='bold')
-ax.set_xticklabels(region_list, rotation=45, ha="right", rotation_mode="anchor")
+        awghtx = np.cos(np.tile(indices[rx][0].reshape(-1, 1), indices[rx][1].size) / 180 * np.pi)
+        awghty = np.cos(np.tile(indices[ry][0].reshape(-1, 1), indices[ry][1].size) / 180 * np.pi)
 
-for ax0 in fig.axes:
-    for spine in ax0.spines.values():
-        spine.set_visible(True)
+        fracsx[x, y] = (bundlex * awghtx).sum() / awghtx.sum()
+        fracsy[x, y] = (bundley * awghty).sum() / awghty.sum()
 
-fig.show()
-fig.savefig("pics/pairwise_tele/pairfraction_{}_event{}_sig{}.png".format(datanm, direc, sig), dpi=300, bbox_inches='tight')
-fig.savefig("pics/pairwise_tele/pairfraction_{}_event{}_sig{}.pdf".format(datanm, direc, sig), bbox_inches='tight')
+np.savez("4bundle/fracs_tele_{}_sig{}".format(direc, sig), fracsx=fracsx, fracsy=fracsy)
+print()
+
 
 # %% Plot bundle area fraction
+ff = np.load("4bundle/fracs_tele_{}_sig{}.npz".format(direc if direc != "10" else "01", sig))
+fracsx = ff["fracsx"] if direc != "10" else ff["fracsy"].T
+fracsy = ff["fracsy"] if direc != "10" else ff["fracsx"].T
 M = NR
 N = NR
 CBLABELS = {"00": "Drought area fraction [-]", "11": "Pluvial area fraction [-]", 
