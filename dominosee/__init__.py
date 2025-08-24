@@ -7,6 +7,7 @@ __version__ = "0.0.1"
 from . import eca
 from . import es
 from . import eventorize
+from . import grid
 from . import network
 from . import utils
 

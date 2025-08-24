@@ -38,6 +38,15 @@ The name **DOMINO-SEE** represents our approach to detecting and analyzing inter
 - **Multi-dimensional Support**: Native support for `xarray` DataArrays to handle multi-dimensional gridded climate data
 - **Parallel Processing**: `dask` integration for efficient processing of large-scale climate datasets
 - **Blockwise Computation**: Utilities for splitting large spatial datasets into manageable blocks of netCDF datasets (see `dominosee/utils/blocking.py`).
+- **Grid Generation**: Various grid types for spatial analysis including regular, Gaussian, Fibonacci, and Fekete grids.
+
+<!-- ## Development Status
+
+This project is under active development. Current implementation status:
+
+- ✅ **FeketeGrid**: Equidistant grid on a sphere - fully implemented and tested -->
+
+The grid module is being uploaded as a work-in-progress to facilitate collaborative development. Only `BaseGrid` and `FeketeGrid` are currently recommended for production use.
 
 ## Getting Started
 

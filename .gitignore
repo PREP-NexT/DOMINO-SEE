@@ -1,3 +1,6 @@
+# In-development notebooks
+tests/notebooks/dev_*.ipynb
+
 # logs
 *.log
 tests/logs/

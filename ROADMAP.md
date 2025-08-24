@@ -9,6 +9,8 @@ This document outlines the planned future development for the DOMINO-SEE package
 - [x] Add basic tests to examine the correctness of calculations (In progress)
 - [ ] Add advanced tests to examine the bugs in various working environments
 - [x] Add basic documentation
+- [x] Implement BaseGrid and FeketeGrid classes
+- [ ] Complete and test grid implementation
 - [ ] Add regrid utilities for remapping to Fekete grid
 - [ ] Introduce `xclim` for time period subsetting (specific months/days)
 - [ ] Introduce `xclim` for event sub-selection
