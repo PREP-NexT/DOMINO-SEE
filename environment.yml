@@ -13,3 +13,4 @@ dependencies:
   - bottleneck
   - dask
   - scipy
+  - tqdm
