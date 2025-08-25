@@ -1,5 +1,6 @@
 # In-development notebooks
 tests/notebooks/dev_*.ipynb
+tests/scripts/demo_*.py
 
 # logs
 *.log
