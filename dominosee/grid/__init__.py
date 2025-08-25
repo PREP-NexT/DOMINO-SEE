@@ -27,8 +27,8 @@ from .grid import (
     cart_to_geo,
     geo_to_cart,
     geo_distance,
-    deg_to_eq_spacing,
-    eq_spacing_to_deg,
+    deg_to_equatorial_distance,
+    equatorial_distance_to_deg,
     neighbour_distance,
 )
 
@@ -48,7 +48,7 @@ __all__ = [
     'cart_to_geo',
     'geo_to_cart',
     'geo_distance',
-    'deg_to_eq_spacing',
-    'eq_spacing_to_deg',
+    'deg_to_equatorial_distance',
+    'equatorial_distance_to_deg',
     'neighbour_distance',
 ]

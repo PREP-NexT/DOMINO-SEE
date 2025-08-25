@@ -4,7 +4,7 @@ Tests for FeketeGrid generation and functionality
 import numpy as np
 import pytest
 
-from dominosee.grid import FeketeGrid, deg_to_eq_spacing, distance_to_grid_num, grid_num_to_distance
+from dominosee.grid import FeketeGrid, deg_to_equatorial_distance, distance_to_grid_num, grid_num_to_distance
 
 
 def test_fekete_grid_5_degree_resolution():
@@ -16,7 +16,7 @@ def test_fekete_grid_5_degree_resolution():
     """
     # Calculate distance equivalent to 5 degrees at equator
     target_resolution_deg = 5.0
-    target_distance_km = deg_to_eq_spacing(target_resolution_deg, radius=6371)
+    target_distance_km = deg_to_equatorial_distance(target_resolution_deg, radius=6371)
     
     # Calculate number of points needed for this resolution
     num_points = distance_to_grid_num(target_distance_km)
@@ -67,7 +67,7 @@ def test_fekete_grid_with_iterations():
     to verify the improvement functionality works.
     """
     # Use a smaller grid for faster testing with iterations
-    target_distance_km = deg_to_eq_spacing(10.0, radius=6371)  # 10-degree resolution
+    target_distance_km = deg_to_equatorial_distance(10.0, radius=6371)  # 10-degree resolution
     num_points = distance_to_grid_num(target_distance_km)
     
     # Create grid with a few iterations

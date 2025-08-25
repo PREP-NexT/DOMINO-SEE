@@ -160,7 +160,7 @@ class RegularGrid(BaseGrid):
         
     def get_distance_equator(self):
         """Return distance between points at the equator."""
-        d_lon = deg_to_eq_spacing(self.grid_step_lon, radius=6371)
+        d_lon = deg_to_equatorial_distance(self.grid_step_lon, radius=6371)
         return d_lon
     
     @staticmethod
@@ -220,7 +220,7 @@ class GaussianGrid(BaseGrid):
 
     def get_distance_equator(self):
         """Return distance between points at the equator."""
-        d_lon = deg_to_eq_spacing(self.grid_step_lon, radius=6371)
+        d_lon = deg_to_equatorial_distance(self.grid_step_lon, radius=6371)
         return d_lon
 
 
@@ -742,7 +742,7 @@ class FeketeGrid(BaseGrid):
     
     def to_gridfile(self, filepath = None, out_vertex = False):
         if filepath is None:
-            filepath = f'feketegrid_{self.num_points}_{self.num_iter}.txt'
+            filepath = f'feketegrid_n{self.num_points}_it{self.num_iter}.txt'
         with open(filepath, 'w') as fp:
             fp.write("gridtype\t= unstructured\n")
             fp.write(f"gridsize\t= {self.num_points}\n")
@@ -884,9 +884,7 @@ class FeketeGrid(BaseGrid):
         final_points = final_points / np.linalg.norm(final_points, axis=1, keepdims=True)
         
         # Convert back to spherical coordinates
-        new_lon, new_lat = cart_to_geo(final_points[:, 0], 
-                                               final_points[:, 1], 
-                                               final_points[:, 2])
+        new_lon, new_lat = cart_to_geo(final_points[:, 0], final_points[:, 1], final_points[:, 2])
         
         return {
             'lon': new_lon, 
@@ -1175,8 +1173,7 @@ def geo_distance(lon1: Union[float, np.ndarray], lat1: Union[float, np.ndarray],
     return radius * c
 
 
-
-def deg_to_eq_spacing(grid_step: float, radius: float = 6371) -> float:
+def deg_to_equatorial_distance(grid_step: float, radius: float = 6371) -> float:
     """Convert angular grid resolution (degrees) to equivalent distance at the equator (km).
     
     Args:
@@ -1194,7 +1191,8 @@ def deg_to_eq_spacing(grid_step: float, radius: float = 6371) -> float:
         
     return geo_distance(0, 0, grid_step, 0, radius=radius)
 
-def eq_spacing_to_deg(distance: float, radius: float = 6371) -> float:
+
+def equatorial_distance_to_deg(distance: float, radius: float = 6371) -> float:
     """Convert equatorial distance (km) to equivalent angular grid resolution (degrees).
     
     Args:
@@ -1212,7 +1210,7 @@ def eq_spacing_to_deg(distance: float, radius: float = 6371) -> float:
         
     return distance * 360 / (2 * np.pi * radius)
 
-# def min_dists(grid1, grid2 = None):
+# def min_dists(grid1, grid2 = None): TODO: implement grid2 but I dont know why need it
 #     if grid2 is None:
 #         lon1, lon2 = grid1['lon'], grid1['lon']
 #         lat1, lat2 = grid1['lat'], grid1['lat']
