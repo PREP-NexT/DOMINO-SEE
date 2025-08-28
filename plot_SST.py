@@ -3,13 +3,13 @@ import numpy as np
 from pandas import to_datetime
 import pandas as pd
 import time
-from get_index_from_coord import get_index_for_square
+from utils.get_index_from_coord import get_index_for_square
 import xarray as xr
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from scipy import stats
-import proplot as pplt
+import ultraplot as pplt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 pplt.rc["font.family"] = "Myriad Pro"
@@ -24,7 +24,6 @@ latlon = np.load('0data/{}_latlon.npy'.format(datanm))
 ddate = to_datetime(np.load('0data/{}_date.npy'.format(datanm)))
 vp = np.load("0data/prcp_validpoint_annual_100.npy")
 vp = vp.reshape(vp.size)
-path = '/home/climate/hmwang/PycharmProjects/StandardIndex_SPI1_temp'
 
 sst = xr.open_dataset("0data/sst.mnmean.nc")
 sst = sst.sel(time=slice("1950-01-01", "2016-12-31"))
@@ -97,9 +96,9 @@ def add_box(ax, lon, lat, edgecolor="tab:blue", facecolor="none", linewidth=1):
 C0 = {"0": "salmon", "1": "tab:cyan"}
 RPS = {0: [{"rx": "East Africa", "ry": "India", "direction": "00", "clvl": (-1, 1.1, 0.1)}, #-0.5, 0.55, 0.05
            {"rx": "Australia", "ry": "South Africa", "direction": "11", "clvl": (-1, 1.1, 0.1)}], #-0.5, 0.55, 0.05
-       1: [{"rx": "Mexico", "ry": "West US", "direction": "10", "clvl": (-1, 1.1, 0.1)}, #-0.5, 0.55, 0.05
-           {"rx": "Canada", "ry": "Argentina", "direction": "01", "clvl": (-1, 1.1, 0.1)}]} #-0.5, 0.55, 0.05
-LABELS = {0: ["F", "G"], 1: ["D", "E"]}
+       1: [{"rx": "Canada", "ry": "Argentina", "direction": "01", "clvl": (-1, 1.1, 0.1)}, #-0.5, 0.55, 0.05
+           {"rx": "Mexico", "ry": "West US", "direction": "10", "clvl": (-1, 1.1, 0.1)}]} #-0.5, 0.55, 0.05
+LABELS = {0: ["f", "g"], 1: ["d", "e"]}
 SAVENMS = {0: "intra", 1: "inter"}
 
 figcase = 1
@@ -209,5 +208,5 @@ for i, rp in enumerate(rps):
     
     fig.text(-0.09, 1, LABELS[figcase][i], va="baseline", ha="left", fontsize="large", fontweight="bold", transform=ttl.get_transform())
 
-fig.colorbar(ms, label="SST anomaly [K]", loc="r", width=0.1, rows=(1, 2), ticks=np.arange(*clvl)[::2], extend="both")
+fig.colorbar(ms, label="SST anomaly [K]", loc="r", width=0.1, rows=(1, 2), ticks=np.arange(*clvl)[::2], extend="both", labelrotation=90)
 fig.savefig("pics/sst/sstAand_{}_lag{}.pdf".format(SAVENMS[figcase], lag), dpi=300, bbox_inches="tight")
