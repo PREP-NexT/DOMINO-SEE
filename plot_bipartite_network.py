@@ -120,7 +120,7 @@ CMRED = truncate_colormap(mpl.cm.Reds, 0.1)
 CMRED.set_under('none')
 CMBLUE = truncate_colormap(mpl.cm.Blues, 0.1)
 CMBLUE.set_under('none')
-LC = {"00": "tab:red", "01": "grey", "10": "grey", "11": "tab:blue"}
+LC = {"00": "tab:red", "01": "mediumpurple", "10": "mediumpurple", "11": "tab:blue"}
 
 # %% Region 1 and 2
 figcase = 1
@@ -137,7 +137,7 @@ if figcase == 0:
     extent = (11.25, 159.75, -62.93, 33.37)
     title = "Intra-layer synchronized hotspots"
     savenm = "within"
-    label, offset = "E", -0.08
+    label, offset = "e", -0.08
     cblc = "bottom"
     cblabel = None
 elif figcase == 1:
@@ -149,7 +149,7 @@ elif figcase == 1:
     extent = (-133.62, -39.38, -40.88, 56.88)
     title = "Inter-layer synchronized hotspots"
     savenm = "cross"
-    label, offset = "C", -0.1
+    label, offset = "c", -0.1
     ax_kw = {"xmargin": 0.12, "ymargin": 0.02}
     line_kw = {"lw": 0.12}
     cblabel = None
@@ -215,7 +215,7 @@ for rp in rps:
     edgey = indices[ry][2][np.where(link_bundle)[1]]
     for e in range(0, link_bundle.sum(), 25):
         ax.plot(latlon[[edgex[e], edgey[e]], 1], latlon[[edgex[e], edgey[e]], 0],
-                LC[direc], alpha=0.075, **line_kw, transform=ccrs.Geodetic(), rasterized=True) #'darkgrey'
+                LC[direc], alpha=0.075, **line_kw, transform=ccrs.Geodetic()) #'darkgrey'
 
 ttl = ax.set_title(title)
 # ax.set(**ax_kw)

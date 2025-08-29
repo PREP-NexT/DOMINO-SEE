@@ -42,7 +42,7 @@ tic = time.time()
 TYPEX = "Drought" if direc[0] == "0" else "Pluvial"
 TYPEY = "Drought" if direc[1] == "0" else "Pluvial"
 TITLES = {"00": "Drought synchronization", "01": "Drought-pluvial synchronization", "10": "Pluvial-drought synchronization", "11": "Pluvial synchronization"}
-LABELS = {"00": "C", "01": "A", "10": "B", "11": "D"}
+LABELS = {"00": "c", "01": "a", "10": "b", "11": "d"}
 RECTS = {"00": (4.5, -0.5), "01": (6.5, 4.5), "10": (9.5, 1.5), "11": (5.5, 0.5)}
 
 # %%  Multiple Regions

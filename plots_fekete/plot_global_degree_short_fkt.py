@@ -84,7 +84,7 @@ TITLE_PRE = {0: "Drought layer ", 1: "Pluvial layer ", 2: "Drought layer ", 3: "
 # %% Short-distance
 fig = pplt.figure(figwidth=9, dpi=330, share=False)
 ax = fig.subplots(ncols=2, nrows=2, projection=ccrs.PlateCarree())
-ax.format(abc="A", abcloc="l")
+ax.format(abc="a", abcloc="l")
 for nax in range(len(ax)):
     direc = DIREC[nax]
     degree_shr0 = np.load("{}3link/linkdegshr{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th))["degree0"]
@@ -123,7 +123,7 @@ for nax in range(len(ax)):
     #     ax.format(title="Pluvial Layer, " + titles[direc])
     #     fig.show()
     #     fig.savefig("pics/dist/glbdegree{}_{}_event{}_{}_stat-shr.png".format(1, datanm, direc, th), dpi=300, bbox_inches='tight')
-fig.savefig("pics/dist/glbdegree_{}_{}_stat-shr.png".format(datanm, th), bbox_inches='tight')
+# fig.savefig("pics/dist/glbdegree_{}_{}_stat-shr.png".format(datanm, th), bbox_inches='tight')
 fig.savefig("pics/dist/glbdegree_{}_{}_stat-shr.pdf".format(datanm, th), bbox_inches='tight')
 print()
 

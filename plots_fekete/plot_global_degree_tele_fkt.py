@@ -80,7 +80,7 @@ TITLE_PRE = {0: "Drought layer ", 1: "Pluvial layer ", 2: "Drought layer ", 3: "
 # %% Teleconnection
 fig = pplt.figure(figwidth=9, dpi=330, share=False)
 ax = fig.subplots(ncols=2, nrows=2, projection=ccrs.PlateCarree())
-ax.format(abc="A", abcloc="l")
+ax.format(abc="a", abcloc="l")
 for nax in range(len(ax)):
     direc = DIREC[nax]
     degree_tel0 = np.load("{}3link/linkdegtel{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th))["degree0"]
@@ -105,6 +105,6 @@ for nax in range(len(ax)):
 
 # %%
 if True:
-    fig.savefig("pics/dist/glbdegree_{}_{}_stat-tel.png".format(datanm, th), bbox_inches='tight')
+    # fig.savefig("pics/dist/glbdegree_{}_{}_stat-tel.png".format(datanm, th), bbox_inches='tight')
     fig.savefig("pics/dist/glbdegree_{}_{}_stat-tel.pdf".format(datanm, th), bbox_inches='tight')
 
