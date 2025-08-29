@@ -37,13 +37,11 @@ th = 1.5
 sig = 0.005
 
 # Version 3
-def plot_joint_degree(ax, degree, cmap=mpl.cm.YlOrRd):
+def plot_joint_degree(ax, degree, cmap=mpl.cm.YlOrRd, bounds=None):
     ax.format(latlim=(lat.min(), lat.max()))
     ax.coastlines()
     # ax.add_feature(cfeature.BORDERS, ls=":", lw=0.5, facecolor='None', edgecolor='black')
     gl = ax.gridlines(draw_labels=False, linestyle=":", linewidth=0.3, color='k')
-
-    bounds = np.array([150, 300, 500, 800, 1300, 2200, 3700, 6000, 10000]).astype('int')
 
     ax.set_facecolor("lightgray")
     degree = np.ma.masked_array(degree, ~vp).reshape(lat.shape[0], lon.shape[0])
@@ -66,30 +64,36 @@ CMAP = {0: cmdry, 1: cmwet, 2: cmdry, 3: cmwet}
 TITLE_PRE = {0: "Drought layer ", 1: "Pluvial layer ", 2: "Drought layer ", 3: "Pluvial layer "}
 
 # %% Teleconnection
-fig = pplt.figure(figwidth=9, dpi=330)
+bounds = np.array([150, 300, 500, 800, 1300, 2200, 3700, 6000, 10000]).astype('int')
+fig = pplt.figure(figwidth=9, dpi=330, share=True)
 ax = fig.subplots(ncols=2, nrows=2, projection=ccrs.PlateCarree())
-ax.format(abc="A", abcloc="l")
+ax.format(abc="a", abcloc="l")
 for nax in range(len(ax)):
     direc = DIREC[nax]
     degree_tel0 = np.load("{}3link/linkdegtel{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th))["degree0"]
     degree_tel1 = np.load("{}3link/linkdegtel{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th))["degree1"]
     cmap = CMAP[nax]
     if nax == 0:
-        px, cs = plot_joint_degree(ax[nax], degree_tel0, cmap=cmap)
+        px, cs = plot_joint_degree(ax[nax], degree_tel0, cmap=cmap, bounds=bounds)
     elif nax == 1:
-        px, cs = plot_joint_degree(ax[nax], degree_tel1, cmap=cmap)
+        px, cs = plot_joint_degree(ax[nax], degree_tel1, cmap=cmap, bounds=bounds)
     elif nax == 2:
-        px, cs = plot_joint_degree(ax[nax], degree_tel0, cmap=cmap)
+        px, cs = plot_joint_degree(ax[nax], degree_tel0, cmap=cmap, bounds=bounds)
         cbar = ax[nax].colorbar(cs, location='bottom', orientation='horizontal', width=0.15, 
         label="No. of teleconnection links [-]", aspect=40)
+        cbar.ax.set_xticks(bounds)
+        cbar.ax.set_xticklabels(bounds)
     elif nax == 3:
-        px, cs = plot_joint_degree(ax[nax], degree_tel1, cmap=cmap)
+        px, cs = plot_joint_degree(ax[nax], degree_tel1, cmap=cmap, bounds=bounds)
         cbar = ax[nax].colorbar(cs, location='bottom', orientation='horizontal', width=0.15, 
         label="No. of teleconnection links [-]", aspect=40)
+        cbar.ax.set_xticks(bounds)
+        cbar.ax.set_xticklabels(bounds)
     ax[nax].format(title=TITLE_PRE[nax] + titles[direc])
 
 # %%
 if True:
     # fig.savefig("pics/dist/glbdegree_{}_{}_stat-tel.png".format(datanm, th), bbox_inches='tight')
     fig.savefig("pics/dist/glbdegree_{}_{}_stat-tel.pdf".format(datanm, th), bbox_inches='tight')
+
 

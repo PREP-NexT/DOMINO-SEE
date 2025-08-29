@@ -85,7 +85,7 @@ def plot_joint_degree(ax, degree, cmap=mpl.cm.YlOrRd):
     # pxb.format(xlim=(lon_new.min(), 180), ylim=(0, 4500),# fix 180 in x axis
     #            xticks=gl.xlocator, xticklabels=ticker.LongitudeFormatter(),
     #            yticks=[0, 2000, 4000])
-    return {'r': pxr, }, cs  #'b': pxb 
+    return {'r': pxr, }, cs, bounds  #'b': pxb 
 
 
 DIREC = {0: "00", 1: "11", 2: "01", 3: "01"}
@@ -95,7 +95,7 @@ TITLE_PRE = {0: "Drought layer ", 1: "Pluvial layer ", 2: "Drought layer ", 3: "
 # %% Short-distance
 fig = pplt.figure(figwidth=9, dpi=330, share=False)
 ax = fig.subplots(ncols=2, nrows=2, projection=ccrs.PlateCarree())
-ax.format(abc="A", abcloc="l")
+ax.format(abc="a", abcloc="l")
 for nax in range(len(ax)):
     direc = DIREC[nax]
     lnk_shr = sp.load_npz("{}3link/linkshr{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th))
@@ -106,21 +106,29 @@ for nax in range(len(ax)):
 
     cmap = CMAP[nax]
     if nax == 0:
-        px, cs = plot_joint_degree(ax[nax], degree_shr0, cmap=cmap)
+        px, cs, bounds = plot_joint_degree(ax[nax], degree_shr0, cmap=cmap)
         cbar = ax[nax].colorbar(cs, location='bottom', orientation='horizontal', width=0.15, 
                                 label="No. of short-distance links [-]", aspect=40)
+        cbar.ax.set_xticks(bounds)
+        cbar.ax.set_xticklabels(bounds)
     elif nax == 1:
-        px, cs = plot_joint_degree(ax[nax], degree_shr1, cmap=cmap)
+        px, cs, bounds = plot_joint_degree(ax[nax], degree_shr1, cmap=cmap)
         cbar = ax[nax].colorbar(cs, location='bottom', orientation='horizontal', width=0.15,
                                 label="No. of short-distance links [-]", aspect=40)
+        cbar.ax.set_xticks(bounds)
+        cbar.ax.set_xticklabels(bounds)
     elif nax == 2:
-        px, cs = plot_joint_degree(ax[nax], degree_shr0, cmap=cmap)
+        px, cs, bounds = plot_joint_degree(ax[nax], degree_shr0, cmap=cmap)
         cbar = ax[nax].colorbar(cs, location='bottom', orientation='horizontal', width=0.15, 
                                 label="No. of short-distance links [-]", aspect=40)
+        cbar.ax.set_xticks(bounds)
+        cbar.ax.set_xticklabels(bounds)
     elif nax == 3:
-        px, cs = plot_joint_degree(ax[nax], degree_shr1, cmap=cmap)
+        px, cs, bounds = plot_joint_degree(ax[nax], degree_shr1, cmap=cmap)
         cbar = ax[nax].colorbar(cs, location='bottom', orientation='horizontal', width=0.15, 
                                 label="No. of short-distance links [-]", aspect=40)
+        cbar.ax.set_xticks(bounds)
+        cbar.ax.set_xticklabels(bounds)
     ax[nax].format(title=TITLE_PRE[nax] + titles[direc])
     # if direc[0] == "0":
     #     fig, ax, px = plot_joint_degree(degree_shr0, cmap=color0)
@@ -132,7 +140,7 @@ for nax in range(len(ax)):
     #     ax.format(title="Pluvial Layer, " + titles[direc])
     #     fig.show()
     #     fig.savefig("pics/dist/glbdegree{}_{}_event{}_{}_stat-shr.png".format(1, datanm, direc, th), dpi=300, bbox_inches='tight')
-fig.savefig("pics/dist/glbdegree_{}_{}_stat-shr.png".format(datanm, th), bbox_inches='tight')
+# fig.savefig("pics/dist/glbdegree_{}_{}_stat-shr.png".format(datanm, th), bbox_inches='tight')
 fig.savefig("pics/dist/glbdegree_{}_{}_stat-shr.pdf".format(datanm, th), bbox_inches='tight')
 print()
 
