@@ -97,7 +97,7 @@ C0 = {"0": "salmon", "1": "tab:cyan"}
 RPS = {0: [{"rx": "East Africa", "ry": "India", "direction": "00", "clvl": (-1, 1.1, 0.1)}, #-0.5, 0.55, 0.05
            {"rx": "Australia", "ry": "South Africa", "direction": "11", "clvl": (-1, 1.1, 0.1)}], #-0.5, 0.55, 0.05
        1: [{"rx": "Canada", "ry": "Argentina", "direction": "01", "clvl": (-1, 1.1, 0.1)}, #-0.5, 0.55, 0.05
-           {"rx": "Mexico", "ry": "West US", "direction": "10", "clvl": (-1, 1.1, 0.1)}]} #-0.5, 0.55, 0.05
+           {"rx": "West US", "ry": "Mexico", "direction": "01", "clvl": (-1, 1.1, 0.1)}]} #-0.5, 0.55, 0.05
 LABELS = {0: ["f", "g"], 1: ["d", "e"]}
 SAVENMS = {0: "intra", 1: "inter"}
 

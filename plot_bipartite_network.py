@@ -142,7 +142,7 @@ if figcase == 0:
     cblabel = None
 elif figcase == 1:
     rps = [{"rx": "Canada", "ry": "Argentina", "direction": "01"},
-           {"rx": "Mexico", "ry": "West US", "direction": "10"},
+           {"rx": "West US", "ry": "Mexico", "direction": "01"},
            ]
     fs = (4.5, 3.75)
     rframe = "Canada", "Argentina"
@@ -215,7 +215,7 @@ for rp in rps:
     edgey = indices[ry][2][np.where(link_bundle)[1]]
     for e in range(0, link_bundle.sum(), 25):
         ax.plot(latlon[[edgex[e], edgey[e]], 1], latlon[[edgex[e], edgey[e]], 0],
-                LC[direc], alpha=0.075, **line_kw, transform=ccrs.Geodetic()) #'darkgrey'
+                LC[direc], alpha=0.075, **line_kw, transform=ccrs.Geodetic(), rasterized=True) #'darkgrey'
 
 ttl = ax.set_title(title)
 # ax.set(**ax_kw)
