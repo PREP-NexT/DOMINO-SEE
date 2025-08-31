@@ -11,10 +11,10 @@ print(f"Found dominosee module at: {dominosee.__file__}")
 
 # Project information
 project = 'DOMINO-SEE'
-copyright = '2025, Hui-Min Wang'
-author = 'Hui-Min Wang'
-version = '0.1'
-release = '0.1'
+copyright = '2025, Hui-Min Wang and Xiaogang He (GPL-3.0)'
+author = 'Hui-Min Wang and Xiaogang He'
+version = '0.0.1'
+release = '0.0.1'
 
 # General configuration
 extensions = [
@@ -41,7 +41,7 @@ source_suffix = ['.rst', '.md']
 
 # The master toctree document
 master_doc = 'index'
-html_title = "DOMINO-SEE official documentation"
+html_title = "Documentation"
 
 # List of patterns to exclude from source
 exclude_patterns = ['_build', '**.ipynb_checkpoints']
