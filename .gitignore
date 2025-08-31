@@ -10,6 +10,8 @@ pics
 
 # vscode
 .vscode
+PLT_*.py
+PLT_*.ipynb
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

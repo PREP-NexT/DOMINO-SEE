@@ -4,6 +4,7 @@
 # This file is part of pyunicorn.
 # Copyright (C) 2008--2015 Jonathan F. Donges and pyunicorn authors
 # URL: <http://www.pik-potsdam.de/members/donges/software>
+# Modification Copyright (C) 2025 Hui-Min Wang
 # License: BSD (3-clause)
 
 """
