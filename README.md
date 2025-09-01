@@ -37,7 +37,7 @@ This repository stores the code for reproducing the results in the paper. A more
 
 ## Prerequisites
 
-This section includes a brief tutorial on running your first DOMINO-SEE model.
+This section includes a brief tutorial on preparing the Python environment and data.
 
 1. Clone the repo
 
@@ -55,9 +55,13 @@ conda activate DOMINO-SEE
 
 3. Prepare the data
 
-+ SPI1 data: placed at `0data/SPI1_monthly_0.250deg_1950_2016.nc`.
-+ A boolean array of valid points with monthly precipitation data > 100mm: placed at `0data/prcpfkt_validpoint_annual_100.npy`.
-+ SST data: placed at `0data/sst.mnmean.nc`.
++ SPI1 data: placed at `0data/SPI1_monthly_0.250deg_1950_2016.nc`. Can be downloaded from [GDFC](https://global-drought-flood-catalogue.s3-us-west-2.amazonaws.com/Standardized-Indices/SPI/Monthly/SPI1_monthly_0.250deg_1950_2016.nc).
++ A boolean array of valid points with monthly precipitation data > 100mm: placed at `0data/prcp_validpoint_annual_100.npy`.
++ SST data: placed at `0data/sst.mnmean.nc`. Can be downloaded from [NOAA](https://psl.noaa.gov/repository/entry/get/sst.mnmean.nc?entryid=cac1c2a6-a864-4409-bb77-1fdead8eeb6e).
+
+<!-- 4. (Optional) Prepare the data in the Fekete Grid
+
+Note: This step is optional and only needed if you want to run the scripts in the Fekete Grid.  -->
 
 ## Run scripts
 
