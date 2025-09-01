@@ -67,31 +67,31 @@ Note: This step is optional and only needed if you want to run the scripts in th
 
 *The scripts should be run in the following order:*
 
-#### 1. `step0_spi_events.py`
+#### 1. `step1_event_identification.py`
 
 Loads SPI (Standardized Precipitation Index) data and identifies drought/flood events based on predefined thresholds (e.g., SPI ≤ -1.5 for drought, SPI ≥ 1.5 for flood). Calculates event timing, bursts, and durations, and saves results in `1events/`.
 
-#### 2. `step1_1_eca_rate.py`
+#### 2. `step2a_eca_rate.py`
 
-Implements Event Coincidence Analysis (ECA) to detect synchronous events across different locations, which are saved in `2eca/`. This is a MPI-parallelized script. Run the script with `mpirun -n <number_of_cores> python -u step1_1_eca_rate.py`.
+Implements Event Coincidence Analysis (ECA) to detect synchronous events across different locations, which are saved in `2eca/`. This is a MPI-parallelized script. Run the script with `mpirun -n <number_of_cores> python -u step2a_eca_rate.py`.
 
-#### 3. `step1_2_eca_null.py`
+#### 3. `step2b_eca_null_model.py`
 
 Generates a null model distribution for statistical significance testing of ECA, which are saved in `2eca/null/`.
 
-#### 4. `step1_3_eca_sig.py`
+#### 4. `step2c_eca_significance.py`
 
 Compares actual Event Coincidence Analysis results against the null model to identify statistically significant coincidence rates, which are saved in `3link/`.
 
-#### 5. `step2_1_link_network.py`
+#### 5. `step3a_network_construction.py`
 
 Constructs a network from significant ECA links and calculates the great circle distances between connected locations. Separates links into teleconnections (≥2500km) and short-distance connections (<2500km). 
 
-#### 6. `step2_2_global_degree.py`
+#### 6. `step3b_network_degree.py`
 
 Calculates the global degree of teleconnections and short-distance connections.
 
-#### 7. `step3_bipartite_network.py`
+#### 7. `step4_regional_bundle.py`
 
 Analyzes teleconnection networks between different geographical regions using kernel density estimation. Identifies significant spatial link densities and linked regional bundles between regions.
 
@@ -115,18 +115,18 @@ Analyzes teleconnection networks between different geographical regions using ke
 
 ### Estimated Running Time
 
-The following table provides estimated running times for the non-plotting scripts on a workstation with 56 cores (Intel Xeon W9-3495X 1.9GHz) and 512GB RAM. If there are less cores or less RAM, please increase the `noc` parameter in `1eca_rate.py` and reduce MPI cores or multiprocessing pool sizes, but these will significantly increase the running time.
+The following table provides estimated running times for the non-plotting scripts on a workstation with 56 cores (Intel Xeon W9-3495X 1.9GHz) and 512GB RAM. If there are less cores or less RAM, please increase the `noc` parameter in `step2a_eca_rate.py` and reduce MPI cores or multiprocessing pool sizes, but these will significantly increase the running time.
 
 | Script | Estimated Running Time | Notes |
 |--------|------------------------|-------|
 | Environment installation | < 10 minutes | Depends on the speed of conda solver and internet connection |
-| `step0_spi_events.py` | < 5 minutes | |
-| `step1_1_eca_rate.py` | ~36 hours | Highly dependent on number of cores used with MPI, which is 56 |
-| `step1_2_eca_null.py` | < 5 minutes | |
-| `step1_3_eca_sig.py` | ~2 hours | Depends on the pool size used with multiprocessing |
-| `step2_1_link_network.py` | ~4 hours | |
-| `step2_2_global_degree.py` | ~2 hours | |
-| `step3_bipartite_network.py` | ~48 hours | Depends on the pool size used with multiprocessing |
+| `step1_event_identification.py` | < 5 minutes | |
+| `step2a_eca_rate.py` | ~36 hours | Highly dependent on number of cores used with MPI, which is 56 |
+| `step2b_eca_null_model.py` | < 5 minutes | |
+| `step2c_eca_significance.py` | ~2 hours | Depends on the pool size used with multiprocessing |
+| `step3a_network_construction.py` | ~4 hours | |
+| `step3b_network_degree.py` | ~2 hours | |
+| `step4_regional_bundle.py` | ~48 hours | Depends on the pool size used with multiprocessing |
 
 ## Contact Us
 

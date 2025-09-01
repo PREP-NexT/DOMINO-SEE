@@ -16,7 +16,7 @@ for direc in ["00", "01", "11"]:
     print("Direction ", direc)
     link = sp.load_npz("{}3link/link{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th))
     print("Link Fraction: {:.2f}%".format(link.size / (vp.sum() ** 2) * 100))
-    degree0 = np.array(link.sum(axis=1))  # 这里axis一定不要弄错了
+    degree0 = np.array(link.sum(axis=1))
     degree1 = np.array(link.sum(axis=0))
     np.savez("{}3link/linkdeg{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th),
             degree0=degree0, degree1=degree1)
