@@ -5,7 +5,6 @@ import numpy as np
 from scipy.sparse import csr_matrix
 from numba import njit
 import mpi
-# import multiprocessing  # Slow compared to mpi
 
 
 @njit
@@ -16,9 +15,6 @@ def eca_nb(b1, b2, b1w, b2w):
         for k in range(b2.shape[0]):
             KRprec[j, k] = np.sum(b1[j, :] & b2w[k, :])
             KRtrig[j, k] = np.sum(b2[k, :] & b1w[j, :])
-    # print(j)
-    # KRprec[0, :] = np.sum(b1 & b2w, axis=1)  # 广播在大矩阵时浪费时间
-    # KRtrig[0, :] = np.sum(b2 & b1w, axis=1)
     return KRprec, KRtrig
 
 
@@ -35,16 +31,13 @@ def eca_mpnb_poisson(bX, bY, bwX, bwY, datanm, direc, th, core):
     path = '2eca'
     bX = bX.toarray()
     bY = bY.toarray()
-    # bY = bX if bY is bX else bY.toarray()  #目前无法避免
-    # assert (bY is bX) == (direc[0] == direc[1]), "Error in different data!"
     bwX = bwX.toarray()
     bwY = bwY.toarray()
-    # bwY = bwX if bwY is bwX else bwY.toarray()
 
     tic = time.time()
-    b1 = bX #[rows, :]
+    b1 = bX
     b2 = bY
-    b1w = bwX #[rows, :]
+    b1w = bwX
     b2w = bwY
     KRprec25, KRtrig25 = eca_nb(b1, b2, b1w, b2w)
     print("core: {}, Coincidence Event: {:.2f}".format(core, time.time() - tic))

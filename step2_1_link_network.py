@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-@Create   : 25/10/22 22:50 PM
+@Create   : 25/10/22
 @Author   : WANG HUI-MIN
-@Update   : This update is to separate dist calc with dist separation
+@Function : Get distances of links and separate distance into teleconnection and short-range
 """
 import time
 import sys
@@ -78,11 +78,6 @@ def direc_dist(direc):
     sp.save_npz("{}3link/linkdist{}_{}_glb_event{}_{}.npz".format(opath, sig, datanm, direc, th), dist)
     print("Link Distances: {:.2f}s".format(time.time() - tic))
     print("Link Ref: ", sys.getrefcount(link))
-
-    # %% Plot Distance Distribution
-    # plot_loghist(dist, cos_lat,
-    #              title="Drought-Drought Network",
-    #              figname='pics/dist{}/densities_angdist{}_{}_glb_event{}_{}.jpg'.format(opath, sig, datanm, direc, th))
     return dist
 
 
@@ -98,8 +93,6 @@ def dist_split(dist):
     sp.save_npz("{}3link/linkshr{}_{}_glb_event{}_{}.npz".format(path, sig, datanm, direc, th), lnk_sht)
     del lnk_sht
     print("Distribution Ref: ", sys.getrefcount(dist))
-    # del dist
-    # gc.collect()
     return None
 
 

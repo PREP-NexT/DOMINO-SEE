@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-@Create   : 25/10/22 10:50 PM
+@Create   : 25/10/22
 @Author   : WANG HUI-MIN
-@Update   : Get to links in one file
+@Function : Get links from ECA rates, comparing against ECA null
 """
 import numpy as np
 import time

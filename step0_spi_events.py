@@ -22,11 +22,8 @@ np.save('0data/{}_lon.npy'.format(datanm), np.array(lon))
 latlon = np.array(list(product(lat, lon))) if data.spi1.ndim == 3 else np.array([lat, lon]).T
 np.save('0data/{}_latlon.npy'.format(datanm), latlon)
 ddate = to_datetime(data.t.to_numpy())
-np.save('0data/{}_date.npy'.format(datanm), ddate)  # [ddate.year >= 1990]
+np.save('0data/{}_date.npy'.format(datanm), ddate)  
 spi = data.spi1.stack(latlon=("lat", "lon")).to_numpy().T if data.spi1.ndim == 3 else data.spi1.to_numpy().T # 先滚经度再滚纬度
-# ddate.year >= 1990
-# ddate = ddate[ddate.year >= 1990]
-# pcp = xr.open_dataarray("data/PGFv3_prec_yearly_0.250deg_1948_2016.nc").datanm[2:, :, :]
 
 t = ddate.shape[0]  # Time points
 la = lat.shape[0]  # Latitude points

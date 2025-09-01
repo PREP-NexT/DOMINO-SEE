@@ -3,7 +3,7 @@
 """
 @Create   : 28/2/23 9:09 PM
 @Author   : WANG HUI-MIN
-@Update   : This is to separate the bundle calculation from the bundle plots
+@Function : Regional bundle analysis for bipartite networks of breadbaskets
 """
 import os
 import numpy as np
@@ -67,8 +67,7 @@ def null_spherical_kde(seed, pos, nol, xy, bw_opt):
 if __name__ == "__main__":
     print("Start Time: ", time.asctime())
     RERUN = False
-    for direc in ["10", "00", "01", "11"]: #
-        #    direc = "00"
+    for direc in ["10", "00", "01", "11"]: 
         print('Direction ', direc)
         tic = time.time()
         if direc != "10":
@@ -121,12 +120,12 @@ if __name__ == "__main__":
                 print("NSam {}, Density in {}: {:.2f}s".format(nsam, ry, time.time() - tic))
 
                 # Null density
-                NNULL = 200
+                NNULL = 500
                 noly = link[:, indices[ry][2]].sum() # 非对称临接矩阵
                 nsam = np.round(noly * indices[rx][2].size / (N - indices[ry][2].size)).astype('int')  # 要用对方区域的期望links
                 posxnull = indices[rx][3][vp[indices[rx][2]], :] * np.pi / 180.
                 mp_kde_nullx = partial(null_spherical_kde, pos=posxnull, nol=nsam, xy=indices[rx][3] * np.pi / 180., bw_opt=bw_opt)
-                with multiprocessing.Pool(processes=40) as p:
+                with multiprocessing.Pool(processes=50) as p:
                     densxnull = np.vstack(p.map(mp_kde_nullx, np.arange(NNULL)*3, chunksize=1))
                 densxnull = densxnull.reshape(-1, indices[rx][0].size, indices[rx][1].size) * nsam
                 print("Nsam {}, Null KDE: {:.2f}s".format(nsam, time.time() - tic))
@@ -135,7 +134,7 @@ if __name__ == "__main__":
                 nsam = np.round(nolx * indices[ry][2].size / (N - indices[rx][2].size)).astype('int')  # 要用对方区域的期望links
                 posynull = indices[ry][3][vp[indices[ry][2]], :] * np.pi / 180.
                 mp_kde_nully = partial(null_spherical_kde, pos=posynull, nol=nsam, xy=indices[ry][3] * np.pi / 180., bw_opt=bw_opt)
-                with multiprocessing.Pool(processes=40) as p:
+                with multiprocessing.Pool(processes=50) as p:
                     densynull = np.vstack(p.map(mp_kde_nully, np.arange(NNULL)*3, chunksize=1))
                 densynull = densynull.reshape(-1, indices[ry][0].size, indices[ry][1].size) * nsam
                 print("Nsam {}, Null KDE: {:.2f}s".format(nsam, time.time() - tic))

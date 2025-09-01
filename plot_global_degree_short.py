@@ -1,5 +1,10 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# %%
 """
-This script is used to plot network degrees for links <= 2500km
+@Create   : 1/12/24
+@Author   : WANG HUI-MIN
+@Function : This script is used to plot network degrees for links <= 2500km
 """
 # %%
 import numpy as np

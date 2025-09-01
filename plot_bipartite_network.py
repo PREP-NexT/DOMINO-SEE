@@ -4,7 +4,7 @@
 """
 @Create   : 30/3/23 9:09 PM
 @Author   : WANG HUI-MIN
-@Update   : This is to separate the bundle calculation from the bundle plots
+@Function : Plot bipartite networks
 """
 import os
 import numpy as np

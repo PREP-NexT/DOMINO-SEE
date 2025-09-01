@@ -3,7 +3,7 @@
 """
 @Create   : 30/6/22 9:09 PM
 @Author   : WANG HUI-MIN
-@         : This script
+@Function : This script is used to plot pairwise network density
 """
 # %%
 import numpy as np
@@ -123,8 +123,7 @@ img1 = ax.tripcolor(triang1, value1,
                     cmap=colors0, norm=mpl.colors.BoundaryNorm(np.linspace(0, 1, 11), ncolors=255))
 img2 = ax.tripcolor(triang2, value2,
                     cmap=colors1, norm=mpl.colors.BoundaryNorm(np.linspace(0, 1, 11), ncolors=255))
-# cbarax = make_axes_locatable(ax).append_axes("right", 0.25, pad=0.05, axes_class=plt.Axes)
-# cbarax2 = make_axes_locatable(cbarax).append_axes("right", 0.25, pad=0.25, axes_class=plt.Axes)   这条路行不通
+
 cb = fig.colorbar(img1, cax=cax2, fraction=0.05, pad=0., label=CBLABELS[direc])
 if direc[0] == direc[1]:
     cax.axis('off')
