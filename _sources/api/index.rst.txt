@@ -21,6 +21,11 @@ Network construction
 
 - :doc:`network`: Network creation and analysis utilities
 
+Grid generation
+--------------
+
+- :doc:`grid`: Grid generation and manipulation utilities
+
 .. Utilities
 .. ---------
 
@@ -34,4 +39,5 @@ Network construction
    eca
    es
    network
+   grid
    .. utilities
