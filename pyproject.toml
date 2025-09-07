@@ -45,13 +45,15 @@ dev = [
     "cartopy",
 ]
 docs = [
-    "sphinx>=4.0.0",
-    "sphinx-rtd-theme>=1.0.0",
+    "sphinx>=6.0.0",
+    # "sphinx-rtd-theme>=1.0.0",  # Not currently used, using Furo instead
     "furo>=2023.9.10",
     "nbsphinx>=0.8.0",
     "sphinx-copybutton>=0.5.0",
     "jupyter-sphinx>=0.3.2",
     "sphinx-autodoc-typehints>=1.15.0",
+    "sphinx-design>=0.5.0",
+    "sphinxcontrib-bibtex>=2.5.0",
     "matplotlib",
     "cartopy"
 ]

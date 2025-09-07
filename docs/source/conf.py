@@ -31,6 +31,8 @@ extensions = [
     'sphinx_copybutton',         # Add copy button to code blocks
     'jupyter_sphinx',            # Execute code in the documentation
     'sphinx_autodoc_typehints',  # Better handling of type hints in docstrings
+    'sphinxcontrib.bibtex',      # Bibliography support
+    'sphinx_design',             # Grid layouts and design elements
 ]
 
 # Add any paths that contain templates
@@ -101,6 +103,9 @@ intersphinx_mapping = {
     'xarray': ('https://docs.xarray.dev/en/stable/', None),
     'dask': ('https://docs.dask.org/en/stable/', None),
 }
+
+# Bibliography configuration
+bibtex_bibfiles = ['references.bib']
 
 # Include documentation from both class docstring and __init__ docstring
 autoclass_content = 'both'
