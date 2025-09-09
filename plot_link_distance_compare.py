@@ -67,7 +67,8 @@ def output_figcase(figcase):
             dist = sp.load_npz("3link/{}linkdist{}_{}_glb_event{}_{}.npz".format(path2, sig, datanm, direc, th))
             angdist0 = dist.data[dist.data > 0]
             # new calculation
-            logbins = np.logspace(np.log10(angdist0.min()), np.log10(angdist0.max()), 50)
+            print("Min distance:", angdist0.min(), "Max distance:", angdist0.max())
+            logbins = np.logspace(np.log10(1.0), np.log10(20015.1), 50)
             loghist = np.histogram(angdist0, bins=logbins, density=density)
             print("Histogram Ended: {:.2f}s".format(time.time() - tic))
             logx = loghist[1][:-1] + (loghist[1][1:] - loghist[1][:-1]) / 2.0
@@ -84,7 +85,7 @@ def output_figcase(figcase):
                 label="Distance=2500 km")
     ax1.set_xlim(50, 30000)
     ax1.set_ylim(10**-5 if density else 10**4)
-    ax1.set(xlabel='Distance [km]', ylabel='Probability [-]' if density else "Frequency of link distances [-]",
+    ax1.set(xlabel='Distance [km]', ylabel='Probability [-]' if density else "Total frequency of link distances [-]",
             title=title)
     # xtks, xtklbs = ax1.get_xticks(), ax1.get_xticklabels()
     # xtks = np.concatenate((xtks, [2500]))
@@ -97,5 +98,5 @@ def output_figcase(figcase):
     print()
 
 if __name__ == '__main__':
-    for i in [0]: #range(5):
+    for i in range(5):
         output_figcase(i)

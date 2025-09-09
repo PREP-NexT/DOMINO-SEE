@@ -64,7 +64,7 @@ def output_figcase(figcase):
             print("Histogram Loaded: {:.2f}s".format(time.time() - tic))
         except:
             # new calculation
-            logbins = np.logspace(np.log10(angdist0.min()), np.log10(angdist0.max()), 50)
+            logbins = np.logspace(np.log10(1), np.log10(20015.1), 50)
             loghist = np.histogram(angdist0, bins=logbins, density=density)
             print("Histogram Ended: {:.2f}s".format(time.time() - tic))
             logx = loghist[1][:-1] + (loghist[1][1:] - loghist[1][:-1]) / 2.0
