@@ -8,16 +8,16 @@ def get_link_from_threshold(da_sig: xr.DataArray, threshold: float) -> xr.DataAr
     """
     Get the link from threshold DataArray
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     da_sig : xr.DataArray
         DataArray containing the values to compare
     threshold : float
         Threshold value
     
-    Returns:
-    --------
-    da_link : xr.DataArray
+    Returns
+    -------
+    xr.DataArray
         Boolean DataArray where True indicates a link
     """
     da_link = da_sig >= threshold
@@ -31,16 +31,16 @@ def get_link_from_significance(da_sig: xr.DataArray, p_threshold: float) -> xr.D
     """
     Get the link from significance DataArray
     
-    Parameters:
-    -----------
+    Parameters
+    ----------
     da_sig : xr.DataArray
         DataArray containing the values to compare
     p_threshold : float
         Significance level
     
-    Returns:
-    --------
-    da_link : xr.DataArray
+    Returns
+    -------
+    xr.DataArray
         Boolean DataArray where True indicates a link
     """
     # get link
@@ -51,16 +51,16 @@ def get_link_from_confidence(da_conf: xr.DataArray, confidence_level: float) -> 
     """
     Get the link from confidence DataArray
     
-    Parameters:
-    -----------
+    Parameters
+    ----------
     da_conf : xr.DataArray
         DataArray containing the values to compare
     confidence_level : float
         Confidence level
     
-    Returns:
-    --------
-    da_link : xr.DataArray
+    Returns
+    -------
+    xr.DataArray
         Boolean DataArray where True indicates a link
     """
     # get link
@@ -75,16 +75,16 @@ def get_link_from_quantile(da_quant: xr.DataArray, q: float) -> xr.DataArray:
     """
     Get the link from quantile DataArray
     
-    Parameters:
-    -----------
+    Parameters
+    ----------
     da_quant : xr.DataArray
         DataArray containing the values to compare
     q : float
         Quantile level
     
-    Returns:
-    --------
-    da_link : xr.DataArray
+    Returns
+    -------
+    xr.DataArray
         Boolean DataArray where True indicates a link
     """
     # get global quantile
@@ -101,8 +101,8 @@ def get_link_from_critical_values(da_valu: xr.DataArray, critical_value: xr.Data
     """
     Get the link from critical values DataArray
     
-    Parameters:
-    -----------
+    Parameters
+    ----------
     da_valu : xr.DataArray
         DataArray containing the values to compare
     critical_value : xr.DataArray
@@ -110,8 +110,8 @@ def get_link_from_critical_values(da_valu: xr.DataArray, critical_value: xr.Data
     rule : str, optional
         Comparison rule, either "greater" or "greater_equal" (default: "greater")
 
-    Returns:
-    --------
+    Returns
+    -------
     xr.DataArray
         Boolean DataArray where True indicates a link
     """
