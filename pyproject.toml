@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dominosee"
-version = "0.0.1"
+version = "0.0.1-alpha"
 description = "A tool for spatial climate network analysis"
 readme = "README.md"
 authors = [
@@ -54,6 +54,7 @@ docs = [
     "sphinx-autodoc-typehints>=1.15.0",
     "sphinx-design>=0.5.0",
     "sphinxcontrib-bibtex>=2.5.0",
+    "sphinxcontrib-video>=0.2.0",
     "matplotlib",
     "cartopy"
 ]

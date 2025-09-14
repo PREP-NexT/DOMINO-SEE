@@ -13,8 +13,8 @@ print(f"Found dominosee module at: {dominosee.__file__}")
 project = 'DOMINO-SEE'
 copyright = '2025, Hui-Min Wang and Xiaogang He (GPL-3.0)'
 author = 'Hui-Min Wang and Xiaogang He'
-version = '0.0.1'
-release = '0.0.1'
+version = '0.0.1-alpha'
+release = '0.0.1-alpha'
 
 # General configuration
 extensions = [
@@ -33,6 +33,7 @@ extensions = [
     'sphinx_autodoc_typehints',  # Better handling of type hints in docstrings
     'sphinxcontrib.bibtex',      # Bibliography support
     'sphinx_design',             # Grid layouts and design elements
+    'sphinxcontrib.video',       # Support for video embedding
 ]
 
 # Add any paths that contain templates
@@ -43,7 +44,7 @@ source_suffix = ['.rst', '.md']
 
 # The master toctree document
 master_doc = 'index'
-html_title = "Documentation"
+html_title = "DOMINO-SEE Official Documentation"
 
 # List of patterns to exclude from source
 exclude_patterns = ['_build', '**.ipynb_checkpoints']
@@ -58,7 +59,7 @@ html_theme = 'furo'
 
 # Theme options
 html_theme_options = {
-    "sidebar_hide_name": False,
+    "sidebar_hide_name": True,
     "light_logo": "logo.png",
     "dark_logo": "logo_dark.png",
     "light_css_variables": {
