@@ -323,16 +323,16 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the link from threshold DataArray</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    -----------</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
 <span class="sd">    da_sig : xr.DataArray</span>
 <span class="sd">        DataArray containing the values to compare</span>
 <span class="sd">    threshold : float</span>
 <span class="sd">        Threshold value</span>
 <span class="sd">    </span>
-<span class="sd">    Returns:</span>
-<span class="sd">    --------</span>
-<span class="sd">    da_link : xr.DataArray</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.DataArray</span>
 <span class="sd">        Boolean DataArray where True indicates a link</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">da_link</span> <span class="o">=</span> <span class="n">da_sig</span> <span class="o">&gt;=</span> <span class="n">threshold</span>
@@ -349,16 +349,16 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the link from significance DataArray</span>
 <span class="sd">    </span>
-<span class="sd">    Parameters:</span>
-<span class="sd">    -----------</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
 <span class="sd">    da_sig : xr.DataArray</span>
 <span class="sd">        DataArray containing the values to compare</span>
 <span class="sd">    p_threshold : float</span>
 <span class="sd">        Significance level</span>
 <span class="sd">    </span>
-<span class="sd">    Returns:</span>
-<span class="sd">    --------</span>
-<span class="sd">    da_link : xr.DataArray</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.DataArray</span>
 <span class="sd">        Boolean DataArray where True indicates a link</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># get link</span>
@@ -372,16 +372,16 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the link from confidence DataArray</span>
 <span class="sd">    </span>
-<span class="sd">    Parameters:</span>
-<span class="sd">    -----------</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
 <span class="sd">    da_conf : xr.DataArray</span>
 <span class="sd">        DataArray containing the values to compare</span>
 <span class="sd">    confidence_level : float</span>
 <span class="sd">        Confidence level</span>
 <span class="sd">    </span>
-<span class="sd">    Returns:</span>
-<span class="sd">    --------</span>
-<span class="sd">    da_link : xr.DataArray</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.DataArray</span>
 <span class="sd">        Boolean DataArray where True indicates a link</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># get link</span>
@@ -399,16 +399,16 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the link from quantile DataArray</span>
 <span class="sd">    </span>
-<span class="sd">    Parameters:</span>
-<span class="sd">    -----------</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
 <span class="sd">    da_quant : xr.DataArray</span>
 <span class="sd">        DataArray containing the values to compare</span>
 <span class="sd">    q : float</span>
 <span class="sd">        Quantile level</span>
 <span class="sd">    </span>
-<span class="sd">    Returns:</span>
-<span class="sd">    --------</span>
-<span class="sd">    da_link : xr.DataArray</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.DataArray</span>
 <span class="sd">        Boolean DataArray where True indicates a link</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># get global quantile</span>
@@ -428,8 +428,8 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the link from critical values DataArray</span>
 <span class="sd">    </span>
-<span class="sd">    Parameters:</span>
-<span class="sd">    -----------</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
 <span class="sd">    da_valu : xr.DataArray</span>
 <span class="sd">        DataArray containing the values to compare</span>
 <span class="sd">    critical_value : xr.DataArray</span>
@@ -437,8 +437,8 @@
 <span class="sd">    rule : str, optional</span>
 <span class="sd">        Comparison rule, either &quot;greater&quot; or &quot;greater_equal&quot; (default: &quot;greater&quot;)</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    --------</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
 <span class="sd">    xr.DataArray</span>
 <span class="sd">        Boolean DataArray where True indicates a link</span>
 <span class="sd">    &quot;&quot;&quot;</span>

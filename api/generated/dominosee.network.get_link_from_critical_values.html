@@ -324,29 +324,20 @@
 <span class="sig-prename descclassname"><span class="pre">dominosee.network.</span></span><span class="sig-name descname"><span class="pre">get_link_from_critical_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">da_valu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">critical_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rule</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'greater'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dominosee/network.html#get_link_from_critical_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dominosee.network.get_link_from_critical_values" title="Link to this definition">¶</a></dt>
 <dd><p>Get the link from critical values DataArray</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2025.9.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataArray</span></code></a></span></p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>da_valu</strong> (<em>xr.DataArray</em>) – DataArray containing the values to compare</p></li>
+<li><p><strong>critical_value</strong> (<em>xr.DataArray</em>) – DataArray containing the critical values</p></li>
+<li><p><strong>rule</strong> (<em>str, optional</em>) – Comparison rule, either “greater” or “greater_equal” (default: “greater”)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2025.9.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataArray</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>xr.DataArray</em> – Boolean DataArray where True indicates a link</p>
 </dd>
 </dl>
-<section id="parameters">
-<h2>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h2>
-<dl class="simple">
-<dt>da_valu<span class="classifier">xr.DataArray</span></dt><dd><p>DataArray containing the values to compare</p>
-</dd>
-<dt>critical_value<span class="classifier">xr.DataArray</span></dt><dd><p>DataArray containing the critical values</p>
-</dd>
-<dt>rule<span class="classifier">str, optional</span></dt><dd><p>Comparison rule, either “greater” or “greater_equal” (default: “greater”)</p>
-</dd>
-</dl>
-</section>
-<section id="returns">
-<h2>Returns:<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h2>
-<p>:
-xr.DataArray</p>
-<blockquote>
-<div><p>Boolean DataArray where True indicates a link</p>
-</div></blockquote>
-</section>
 </dd></dl>
 
 </section>
