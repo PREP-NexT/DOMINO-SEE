@@ -20,12 +20,12 @@ The name **DOMINO-SEE** represents our approach to detecting and analyzing inter
 
         Get started quickly with installation instructions and a quick overview.
 
-    .. grid-item-card:: :octicon:`book` User Guide
+    .. grid-item-card:: :octicon:`book` User Guide (In Development)
         :link: user_guide
         :link-type: ref
         :class-card: sd-bg-light
 
-        Learn how to use `dominosee`'s features in-depth.
+        Learn how to use DOMINO-SEE's features in-depth.
 
     .. grid-item-card:: :octicon:`code` API Reference
         :link: api_reference
@@ -60,6 +60,14 @@ Key Features
    api/index
    contributing
    changelog
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+   :caption: Publications
+
+   citations
+   references
 
 .. _getting_started:
 
