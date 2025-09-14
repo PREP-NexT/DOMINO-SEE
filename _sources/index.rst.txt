@@ -8,6 +8,11 @@ Welcome to DOMINO-SEE
 
 **DOMINO-SEE** is a framework for **D**\etection **O**\f **M**\ulti-layer **I**\nterconnected **N**\etwork **O**\ccurrences for **S**\patial **E**\xtreme **E**\vents, leveraging event coincidences analysis and complex networks. It is built using `xarray <https://xarray.pydata.org/en/stable/>`_ and can seamlessly benefit from the parallelization handling provided by `dask <https://dask.org/>`_. Its objective is to make it as simple as possible for users to construct event-based climate network analysis workflows.
 
+.. video:: https://github.com/PREP-NexT/DOMINO-SEE/releases/download/0.0.1-alpha/DOMINO-SEE.Logo.Animation.mp4
+   :width: 100%
+   :poster: ./_static/dominosee_logo.png
+   :alt: DOMINO-SEE introduction video
+
 The name **DOMINO-SEE** represents our approach to detecting and analyzing interconnected occurrences of hydroclimatic extreme events across spatial locations, inspired by the cascade effect of **DOMINO**\es falling in a chain reaction. The **SEE** highlights the framework's ability to capture the spatial synchronization and propagation of extreme events, emphasizing the interconnectedness inherent in complex environmental systems.
 
 .. grid:: 1 2 2 2
