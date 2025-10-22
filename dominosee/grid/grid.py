@@ -456,49 +456,208 @@ class FibonacciGrid(BaseGrid):
 
 class FeketeGrid(BaseGrid):
     """FeketeGrid creates a equidistance grid on a sphere.
+    
+    This class supports two primary use cases:
+    1. Creating a new FeketeGrid from scratch
+    2. Improving an existing FeketeGrid through additional iterations
 
     Parameters:
     -----------
     num_points: int
         Number of points to generate on the sphere
-    num_iter: int, optional
-        Number of iterations for grid optimization. Default: 1000
-    grid: None, dict, or tuple, optional
-        Grid initialization method:
-        - None: Create new grid from scratch (default)
+    initial_iterations: int, optional
+        Number of optimization iterations to perform during initialization. Default: 0
+    initial_grid: None, dict, tuple, str, or FeketeGrid, optional
+        Initial grid configuration:
+        - None: Create new random grid (default)
         - dict: Initialize from {'lat': [...], 'lon': [...]} dictionary
         - tuple: Initialize from fekete.bendito output (X, dq)
+        - str: Load from file path
+        - FeketeGrid: Copy from existing FeketeGrid instance
     parallel: bool or None, optional
         Whether to use parallel execution. None for auto-detect based on memory
+    convergence_threshold: float, optional
+        Convergence threshold for optimization. Default: 0.001
+    random_seed: int or None, optional
+        Random seed for reproducible grid generation
+    verbose: bool, optional
+        Whether to print progress information. Default: True
+    
+    Examples:
+    ---------
+    # Create grid with optional initial optimization
+    >>> grid = FeketeGrid(num_points=1000, initial_iterations=100)
+    
+    # Create without optimization and train later
+    >>> grid = FeketeGrid(num_points=1000)
+    >>> grid.optimize(iterations=100)
+    
+    # Load existing and continue optimization
+    >>> grid = FeketeGrid.load("saved_grid.pkl")
+    >>> grid.optimize(iterations=50)
     """
-    def __init__(self, num_points: int, num_iter: int = 0, 
-                 grid: Optional[Union[Dict[str, np.ndarray], Tuple]] = None, 
-                 parallel: Optional[bool] = None) -> None:
+    def __init__(self, num_points: int, initial_iterations: int = 0, 
+                 initial_grid: Optional[Union[Dict[str, np.ndarray], Tuple, str, 'FeketeGrid']] = None, 
+                 parallel: Optional[bool] = None,
+                 convergence_threshold: float = 0.001,
+                 random_seed: Optional[int] = None,
+                 verbose: bool = True) -> None:
         # Validate inputs
-        if not isinstance(num_points, int) or num_points <= 0:
-            raise ValueError("num_points must be a positive integer")
-        if not isinstance(num_iter, int) or num_iter < 0:
-            raise ValueError("num_iter must be a non-negative integer")
+        self._validate_num_points(num_points)
+        self._validate_iterations(initial_iterations)
             
         # Initialize basic parameters
         self.num_points = num_points
-        self.num_iter = num_iter
+        self.num_iter = 0  # Will be updated when optimization happens
+        self.total_iterations = 0  # Track total iterations
+        self.convergence_threshold = convergence_threshold
+        self.random_seed = random_seed
+        self.verbose = verbose
         self.grid: Optional[Dict[str, np.ndarray]] = None
-        self.dq: List[float] = []
+        self.dq: List[float] = []  # Keep for backward compatibility
+        self.optimization_history: List[float] = []  # New clearer name
         self._plys_coords: Optional[np.ndarray] = None
+        self._parallel_mode: Optional[bool] = None
+        
+        # Memory management
+        self._parallel_mode = self._determine_parallel_mode(parallel, num_points)
         
         # Create or load grid based on input type
-        if grid is None:
+        if initial_grid is None:
             # Case 1: Create new grid from scratch
-            self.create_grid(num_iter=num_iter, parallel=parallel)
-        elif isinstance(grid, dict):
+            self.create_grid(num_iter=initial_iterations, parallel=self._parallel_mode)
+            # Note: create_grid already handles iterations, so no need to call optimize
+        elif isinstance(initial_grid, dict):
             # Case 2: Initialize from lat/lon dictionary
-            self._create_from_dict(grid)
-        elif isinstance(grid, tuple):
+            self._create_from_dict(initial_grid)
+            if initial_iterations > 0:
+                self.optimize(iterations=initial_iterations, save=False)
+        elif isinstance(initial_grid, tuple):
             # Case 3: Initialize from fekete.py output tuple
-            self.grid = self.create_grid_from_tuple(grid)
+            self.grid = self.create_grid_from_tuple(initial_grid)
+            if initial_iterations > 0:
+                self.optimize(iterations=initial_iterations, save=False)
+        elif isinstance(initial_grid, str):
+            # Case 4: Load from file
+            self._load_from_file(initial_grid)
+            if initial_iterations > 0:
+                self.optimize(iterations=initial_iterations, save=False)
+        elif isinstance(initial_grid, FeketeGrid):
+            # Case 5: Copy from existing FeketeGrid
+            self._copy_from_fekete(initial_grid)
+            if initial_iterations > 0:
+                self.optimize(iterations=initial_iterations, save=False)
         else:
-            raise TypeError("Grid must be None, dict with 'lat'/'lon' keys, or tuple from fekete.py output")
+            raise TypeError("Initial grid must be None, dict, tuple, str (filepath), or FeketeGrid")
+    
+    # ============================================================================
+    # Class Method for Loading
+    # ============================================================================
+    
+    @classmethod
+    def load(cls, source: Union[str, Dict, Tuple, 'FeketeGrid']) -> 'FeketeGrid':
+        """Load FeketeGrid from various sources.
+        
+        Parameters
+        ----------
+        source : str, dict, tuple, or FeketeGrid
+            Source to load grid from:
+            - str: File path to saved grid
+            - dict: Dictionary with 'lat' and 'lon' keys
+            - tuple: (X, dq) from fekete.bendito output
+            - FeketeGrid: Another FeketeGrid instance
+            
+        Returns
+        -------
+        FeketeGrid
+            Loaded grid instance
+            
+        Examples
+        --------
+        >>> grid = FeketeGrid.load("saved_grid.pkl")
+        >>> grid.optimize(iterations=50)
+        """
+        if isinstance(source, str):
+            # Load from file to determine num_points
+            with open(source, 'rb') as f:
+                loaded = pickle.load(f)
+                if isinstance(loaded, cls):
+                    return cls(num_points=loaded.num_points, initial_grid=loaded)
+                elif isinstance(loaded, dict):
+                    return cls(num_points=len(loaded['lat']), initial_grid=loaded)
+                elif isinstance(loaded, tuple):
+                    X, _ = loaded
+                    return cls(num_points=X.shape[0], initial_grid=loaded)
+                else:
+                    raise ValueError(f"Cannot load grid from file: {source}")
+        elif isinstance(source, dict):
+            return cls(num_points=len(source['lat']), initial_grid=source)
+        elif isinstance(source, tuple):
+            X, _ = source
+            return cls(num_points=X.shape[0], initial_grid=source)
+        elif isinstance(source, cls):
+            return cls(num_points=source.num_points, initial_grid=source)
+        else:
+            raise TypeError(f"Cannot load from source type: {type(source)}")
+    
+    # ============================================================================
+    # Input Validation
+    # ============================================================================
+    
+    def _validate_num_points(self, num_points: int) -> None:
+        """Validate number of points parameter."""
+        if not isinstance(num_points, int) or num_points <= 0:
+            raise ValueError("num_points must be a positive integer")
+        if num_points < 3:
+            raise ValueError("num_points must be at least 3 for meaningful sphere coverage")
+        if num_points > 1_000_000:
+            warnings.warn(f"Large grid ({num_points} points) may require significant computation time")
+    
+    def _validate_iterations(self, iterations: int) -> None:
+        """Validate iterations parameter."""
+        if not isinstance(iterations, int) or iterations < 0:
+            raise ValueError("iterations must be a non-negative integer")
+        if iterations > 10000:
+            warnings.warn(f"Large iteration count ({iterations}) may take a long time")
+    
+    def _validate_grid_dict(self, grid_dict: Dict[str, np.ndarray]) -> None:
+        """Validate grid dictionary format and values."""
+        if not isinstance(grid_dict, dict) or 'lat' not in grid_dict or 'lon' not in grid_dict:
+            raise ValueError("Grid dict must contain 'lat' and 'lon' keys")
+        
+        # Convert to numpy arrays if needed
+        lat_arr = np.asarray(grid_dict['lat'])
+        lon_arr = np.asarray(grid_dict['lon'])
+        
+        if len(lat_arr) != len(lon_arr):
+            raise ValueError("Latitude and longitude arrays must have same length")
+        if not np.all((-90 <= lat_arr) & (lat_arr <= 90)):
+            raise ValueError("Latitude values must be in range [-90, 90]")
+        if not np.all((-180 <= lon_arr) & (lon_arr <= 180)):
+            raise ValueError("Longitude values must be in range [-180, 180]")
+    
+    # ============================================================================
+    # Memory Management
+    # ============================================================================
+    
+    def _estimate_memory_requirement(self, num_points: int) -> float:
+        """Estimate memory requirement in GB for serial execution."""
+        # Distance matrix: N×N float64 = 8N² bytes
+        # Working arrays: ~3N×3 float64 = 72N bytes  
+        # Overhead: ~20% for temporary arrays
+        distance_matrix_gb = (num_points ** 2 * 8) / (1024**3)
+        working_arrays_gb = (num_points * 72) / (1024**3)
+        overhead_factor = 1.2
+        return (distance_matrix_gb + working_arrays_gb) * overhead_factor
+    
+    def _get_available_memory(self) -> float:
+        """Get available system memory in GB."""
+        try:
+            import psutil
+            return psutil.virtual_memory().available / (1024**3)
+        except ImportError:
+            # Conservative fallback
+            return 4.0
     
     """
     properties and parameters
@@ -522,17 +681,62 @@ class FeketeGrid(BaseGrid):
         Returns:
             True if parallel execution should be used, False otherwise
         """
-        if parallel is None:
-            try:
-                # Test if we can allocate the required memory for serial execution
-                test_array = np.zeros((num_points, num_points), dtype=np.float64)
-                del test_array  # Clean up immediately
-                return False
-            except MemoryError:
-                print("Not enough memory to run serially. Running in parallel ...")
-                return True
-        return parallel
+        if parallel is not None:
+            return parallel
+        
+        # Estimate memory requirement
+        required_gb = self._estimate_memory_requirement(num_points)
+        available_gb = self._get_available_memory()
+        
+        # Use parallel if we need more than 80% of available memory
+        memory_threshold = 0.8
+        
+        if required_gb > available_gb * memory_threshold:
+            if self.verbose:
+                print(f"Memory requirement ({required_gb:.2f}GB) exceeds threshold "
+                      f"({available_gb * memory_threshold:.2f}GB). Using parallel execution.")
+            return True
+        
+        # Also use parallel for very large grids
+        large_grid_threshold = 10000
+        if num_points > large_grid_threshold:
+            if self.verbose:
+                print(f"Large grid ({num_points} points). Using parallel execution.")
+            return True
+        
+        return False
     
+    # ============================================================================
+    # Grid Loading Helpers
+    # ============================================================================
+    
+    def _load_from_file(self, filepath: str) -> None:
+        """Load grid from file."""
+        if not os.path.exists(filepath):
+            raise FileNotFoundError(f"File not found: {filepath}")
+        
+        with open(filepath, 'rb') as f:
+            data = pickle.load(f)
+        
+        if isinstance(data, FeketeGrid):
+            self._copy_from_fekete(data)
+        elif isinstance(data, dict):
+            self._validate_grid_dict(data)
+            self._create_from_dict(data)
+        elif isinstance(data, tuple):
+            self.grid = self.create_grid_from_tuple(data)
+        else:
+            raise ValueError(f"Unsupported file content type: {type(data)}")
+    
+    def _copy_from_fekete(self, other: 'FeketeGrid') -> None:
+        """Copy from another FeketeGrid instance."""
+        self.grid = other.grid.copy() if other.grid else None
+        self.dq = other.dq.copy() if hasattr(other, 'dq') else []
+        self.optimization_history = getattr(other, 'optimization_history', self.dq.copy())
+        self.num_iter = getattr(other, 'num_iter', 0)
+        self.total_iterations = getattr(other, 'total_iterations', self.num_iter)
+        self.num_points = other.num_points
+        
     """
     different ways to create FeketeGrid
     """
@@ -545,12 +749,7 @@ class FeketeGrid(BaseGrid):
         Raises:
             ValueError: If dictionary format is invalid or arrays have different lengths
         """
-        if not isinstance(grid_dict, dict) or 'lat' not in grid_dict or 'lon' not in grid_dict:
-            raise ValueError("Grid dict must contain 'lat' and 'lon' keys")
-        
-        # Validate that lat and lon arrays have the same length
-        if len(grid_dict['lat']) != len(grid_dict['lon']):
-            raise ValueError("Latitude and longitude arrays must have the same length")
+        self._validate_grid_dict(grid_dict)
         
         # Check if grid length matches num_points
         actual_points = len(grid_dict['lat'])
@@ -559,9 +758,10 @@ class FeketeGrid(BaseGrid):
                             f"Updating num_points to {actual_points}.")
             self.num_points = actual_points
         
-        # Store the grid and initialize dq as empty list
+        # Store the grid and initialize optimization history
         self.grid = {'lat': np.array(grid_dict['lat']), 'lon': np.array(grid_dict['lon'])}
         self.dq = []
+        self.optimization_history = []
     
     def create_grid_from_tuple(self, grid_tuple: Tuple[np.ndarray, List[float]]) -> Dict[str, np.ndarray]:
         """Create grid from fekete.bendito output tuple.
@@ -606,9 +806,9 @@ class FeketeGrid(BaseGrid):
         # Initialize with random configuration
         self.initialize_grid(save=False)  # TODO: save is kept for future development of `save_epoch`
         
-        # Improve the grid if iterations are requested
+        # Optimize the grid if iterations are requested
         if num_iter > 0:
-            self.improve_grid(num_iter=num_iter, save=False, parallel=parallel)
+            self.optimize(iterations=num_iter, save=False, parallel=parallel)
         
     
     """
@@ -662,46 +862,74 @@ class FeketeGrid(BaseGrid):
     Core: Initialize => Improve logic
     """
     def initialize_grid(self, save: bool = True) -> Dict[str, np.ndarray]:
-        print("Epochwise generation launched. Generating random initial configuration ...")
-        X = points_on_sphere(self.num_points)         # initial random configuration
+        if self.verbose:
+            print("Epochwise generation launched. Generating random initial configuration ...")
+        
+        X = points_on_sphere(self.num_points, seed=self.random_seed)  # initial random configuration
         lon, lat = cart_to_geo(X[:,0], X[:,1], X[:,2])
-        self.num_iter = 0
         self.grid = {'lon': lon, 'lat': lat}
-        self.dq = []
+        # Only reset optimization history if not already initialized in __init__
+        # This preserves counters when called from create_grid
+        if not hasattr(self, 'dq'):
+            self.dq = []
+            self.optimization_history = []
+            self.num_iter = 0
+            self.total_iterations = 0
+        
         if save:
             filepath = f'feketegrid_{self.num_points}_{0}.p'
             self.save_grid(filepath)
         return self.grid
     
 
-    def improve_grid(self, num_iter: int = 1000, save: bool = True, parallel: Optional[bool] = None) -> Dict[str, np.ndarray]:
-        """Improve existing grid through optimization iterations.
+    def optimize(self, iterations: int = 1000, save: bool = False, parallel: Optional[bool] = None, _internal: bool = False) -> Dict[str, np.ndarray]:
+        """Optimize existing grid through additional iterations.
         
         Args:
-            num_iter: Number of optimization iterations to perform
-            save: Whether to save the improved grid to file
+            iterations: Number of optimization iterations to perform
+            save: Whether to save the optimized grid to file
             parallel: Whether to use parallel execution (None for auto-detect)
             
         Returns:
             Updated grid dictionary with 'lat' and 'lon' keys
             
         Raises:
-            RuntimeError: If no grid exists to improve
+            RuntimeError: If no grid exists to optimize
         """
         if self.grid is None:
-            raise RuntimeError("No grid exists to improve. Call initialize_grid() first.")
+            raise RuntimeError("No grid exists to optimize. Call initialize_grid() first or create with initial_grid.")
             
         X0 = np.array(geo_to_cart(self.grid['lon'], self.grid['lat'])).T
-        parallel_mode = self._determine_parallel_mode(parallel, self.num_points) if parallel is not None else False
-        X, dq = bendito(N=self.num_points, maxiter=num_iter, X=X0, parallel=parallel_mode)
-        self.dq.append(dq)
+        parallel_mode = self._determine_parallel_mode(parallel, self.num_points) if parallel is not None else self._parallel_mode
+        
+        X, dq = bendito(
+            N=self.num_points, 
+            maxiter=iterations, 
+            X=X0, 
+            parallel=parallel_mode,
+            break_th=self.convergence_threshold,
+            verbose=self.verbose
+        )
+        
+        # Update optimization history
+        if isinstance(dq, list):
+            self.dq.extend(dq)
+            self.optimization_history.extend(dq)
+        else:
+            self.dq.append(dq)
+            self.optimization_history.append(dq)
+        
         lon, lat = cart_to_geo(X[:,0], X[:,1], X[:,2])
         self.grid = {'lon': lon, 'lat': lat}
-        self.num_iter = self.num_iter + num_iter
+        
+        # Update iteration counters
+        self.num_iter = self.num_iter + iterations
+        self.total_iterations = self.total_iterations + iterations
 
         if save:
             filepath = f'feketegrid_{self.num_points}_{self.num_iter}.p'
             self.save_grid(filepath)
+            
         return self.grid
         
 
