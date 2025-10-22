@@ -85,6 +85,48 @@ def compute_min_distance_numba(X):
     
     return min_dist
 
+@njit(parallel=True)
+def compute_min_distance_numba_parallel(X):
+    """
+    Parallel numba-accelerated minimum distance calculation.
+    Uses multiple CPU cores for better performance on large datasets.
+    
+    Parameters
+    ----------
+    X : numpy.ndarray, shape (N, 3)
+        Cartesian coordinates of points on unit sphere
+    
+    Returns
+    -------
+    min_dist : float
+        Minimum distance between any two points
+    """
+    n = X.shape[0]
+    
+    # Create array to store minimum distance found by each thread
+    # We'll use a reduction approach
+    min_distances = np.full(n - 1, 1e10)
+    
+    # Parallel loop over the outer index
+    for i in prange(n - 1):
+        local_min = 1e10
+        for j in range(i + 1, n):
+            # Compute Euclidean distance
+            dist = np.sqrt((X[i, 0] - X[j, 0])**2 + 
+                          (X[i, 1] - X[j, 1])**2 + 
+                          (X[i, 2] - X[j, 2])**2)
+            if dist < local_min:
+                local_min = dist
+        min_distances[i] = local_min
+    
+    # Find global minimum
+    global_min = 1e10
+    for i in range(n - 1):
+        if min_distances[i] < global_min:
+            global_min = min_distances[i]
+    
+    return global_min
+
 @njit
 def compute_min_distance_chunked(X, chunk_size=1000):
     """
@@ -120,6 +162,55 @@ def compute_min_distance_chunked(X, chunk_size=1000):
                     min_dist = dist
     
     return min_dist
+
+@njit(parallel=True)
+def compute_min_distance_chunked_parallel(X, chunk_size=1000):
+    """
+    Parallel memory-efficient chunked distance calculation for large datasets.
+    Uses multiple CPU cores while processing in chunks to avoid memory overflow.
+    
+    Parameters
+    ----------
+    X : numpy.ndarray, shape (N, 3)
+        Cartesian coordinates of points on unit sphere
+    chunk_size : int
+        Size of chunks to process at once
+    
+    Returns
+    -------
+    min_dist : float
+        Minimum distance between any two points
+    """
+    n = X.shape[0]
+    
+    # Calculate number of chunks
+    num_chunks = (n + chunk_size - 1) // chunk_size
+    chunk_mins = np.full(num_chunks, 1e10)
+    
+    # Process chunks in parallel
+    for chunk_idx in prange(num_chunks):
+        chunk_start = chunk_idx * chunk_size
+        chunk_end = min(chunk_start + chunk_size, n)
+        local_min = 1e10
+        
+        # Process this chunk against all subsequent points
+        for i in range(chunk_start, chunk_end):
+            for j in range(i + 1, n):
+                dist = np.sqrt((X[i, 0] - X[j, 0])**2 + 
+                              (X[i, 1] - X[j, 1])**2 + 
+                              (X[i, 2] - X[j, 2])**2)
+                if dist < local_min:
+                    local_min = dist
+        
+        chunk_mins[chunk_idx] = local_min
+    
+    # Find global minimum across all chunks
+    global_min = 1e10
+    for i in range(num_chunks):
+        if chunk_mins[i] < global_min:
+            global_min = chunk_mins[i]
+    
+    return global_min
 
 # ============================================================================
 # MEMORY MANAGEMENT UTILITIES
@@ -194,17 +285,12 @@ def determine_processing_strategy(N):
         chunk_size = max(chunk_size, 100)    # Minimum chunk size
         return {'method': 'numba_chunked', 'chunk_size': chunk_size, 'parallel': True}
 
-# ============================================================================
-# ORIGINAL FUNCTIONS (kept for backward compatibility)
-# ============================================================================
-
-# parallelable pairwise distance
+# parallelable pairwise distance (for legacy use_optimized=False)
 def cdist_min(X, row):
-    return cdist(X[[row], :], np.delete(X, row, axis=0)).min() #x0[np.newaxis, :]
+    return cdist(X[[row], :], np.delete(X, row, axis=0)).min()
 
 def bendito(N=100, a=1., X=None, maxiter=1000,
-            break_th=0.001, parallel=None,
-            use_optimized=True, verbose=True):
+            break_th=0.001, parallel=None, use_optimized=True, verbose=True):
     """
     Return the Fekete points according to the Bendito et al. (2007) algorithm.
     
@@ -236,7 +322,8 @@ def bendito(N=100, a=1., X=None, maxiter=1000,
         Convergence threshold for maximum disequilibrium. Default is 0.001.
     parallel : bool or None
         Whether to use parallel processing. If None, automatically determined
-        based on problem size and available memory. Default is None.
+        by strategy selection. If explicitly set, overrides strategy default.
+        For use_optimized=False, enables legacy multiprocessing. Default is None.
     use_optimized : bool
         Whether to use optimized numba functions. Set to False to fall back
         to original scipy implementation. Default is True.
@@ -265,26 +352,37 @@ def bendito(N=100, a=1., X=None, maxiter=1000,
     else:
         N = X.shape[0]
     
-    # Determine processing strategy if using optimized version
+    # Determine processing strategy and harmonize parallel behavior
     if use_optimized:
         strategy = determine_processing_strategy(N)
+        
+        # Override strategy parallel setting if explicitly specified
+        if parallel is not None:
+            strategy['parallel'] = parallel
+            
         if verbose:
             print(f"Processing strategy for N={N}: {strategy['method']}")
+            if strategy['parallel']:
+                print(f"  Using parallel processing with {mp.cpu_count()} cores")
             if strategy['chunk_size']:
                 print(f"  Chunk size: {strategy['chunk_size']}")
-        
-        # Override parallel setting if not specified
+    else:
+        # Legacy non-optimized version: determine parallel behavior
         if parallel is None:
-            parallel = strategy['parallel']
-    elif parallel is None:
-        # Original logic for determining parallel processing
-        try:
-            np.zeros((X.shape[0], X.shape[0]), dtype=np.float64)
-            parallel = False
-        except MemoryError:
-            if verbose:
-                print("Not enough memory to run serially. Running in parallel ...")
-            parallel = True
+            # Original logic for determining parallel processing
+            try:
+                np.zeros((X.shape[0], X.shape[0]), dtype=np.float64)
+                parallel = False
+            except MemoryError:
+                if verbose:
+                    print("Not enough memory to run serially. Running in parallel ...")
+                parallel = True
+        
+        # Create strategy for consistency
+        strategy = {'method': 'scipy', 'parallel': parallel, 'chunk_size': None}
+        
+        if verbose and parallel:
+            print(f"Using legacy parallel processing with {int(mp.cpu_count() * 0.5)} cores")
 
     # core loop
     # intializ parameters
@@ -295,8 +393,6 @@ def bendito(N=100, a=1., X=None, maxiter=1000,
     pb_desc = "Estimating Fekete points ..."
 
     # iterate
-    if parallel is True:
-        print("Number of cores to parallel = ", mp.cpu_count() * 0.5)
     # Configure tqdm to update every 50 iterations if maxiter > 300
     if maxiter > 300:
         miniters = 50
@@ -328,15 +424,21 @@ def bendito(N=100, a=1., X=None, maxiter=1000,
             if use_optimized:
                 # Use optimized numba functions based on strategy
                 if strategy['method'] == 'numba_full':
-                    d = compute_min_distance_numba(X)
+                    if strategy['parallel']:
+                        d = compute_min_distance_numba_parallel(X)
+                    else:
+                        d = compute_min_distance_numba(X)
                 elif strategy['method'] == 'numba_chunked':
-                    d = compute_min_distance_chunked(X, chunk_size=strategy['chunk_size'])
+                    if strategy['parallel']:
+                        d = compute_min_distance_chunked_parallel(X, chunk_size=strategy['chunk_size'])
+                    else:
+                        d = compute_min_distance_chunked(X, chunk_size=strategy['chunk_size'])
                 else:
                     # Fallback to scipy
                     d = np.min(pdist(X))
             else:
-                # Original implementation
-                if parallel is True:
+                # Original implementation with harmonized parallel behavior
+                if strategy['parallel']:
                     with mp.Pool(int(mp.cpu_count() * 0.5)) as p:
                         d = np.min(p.map(partial(cdist_min, X), np.arange(X.shape[0])))
                 else:
