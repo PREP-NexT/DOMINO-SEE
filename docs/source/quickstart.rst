@@ -1,7 +1,7 @@
 Quickstart
 ==========
 
-This quickstart guide will help you get up and running with dominosee for analyzing interconnected hydroclimatic extreme events.
+This quickstart guide will help you get up and running with `dominosee` for analyzing interconnected hydroclimatic extreme events.
 
 Basic Usage
 ----------
@@ -18,7 +18,7 @@ First, import the necessary packages:
 Event Analysis
 -------------
 
-One of the core functionalities of dominosee is selecting and analyzing event periods:
+One of the core functionalities of `dominosee` is selecting and analyzing event periods:
 
 .. code-block:: python
 
@@ -41,7 +41,7 @@ One of the core functionalities of dominosee is selecting and analyzing event pe
 Working with xarray DataArrays
 -----------------------------
 
-For multidimensional gridded climate data, dominosee provides xarray-compatible functions:
+For multidimensional gridded climate data, `dominosee` provides xarray-compatible functions:
 
 .. code-block:: python
 
@@ -76,7 +76,7 @@ For multidimensional gridded climate data, dominosee provides xarray-compatible 
     plt.show()
 
 Network Analysis
---------------
+----------------
 
 dominosee can generate and analyze networks from event data:
 
@@ -97,6 +97,6 @@ Next Steps
 
 To dive deeper into dominosee:
 
-- Explore the :doc:`user_guide/index` for detailed explanations
-- Check out the :doc:`examples/index` for practical examples
+.. - Explore the :doc:`user_guide/index` for detailed explanations
+.. - Check out the :doc:`examples/index` for practical examples
 - Refer to the :doc:`api/index` for complete function documentation

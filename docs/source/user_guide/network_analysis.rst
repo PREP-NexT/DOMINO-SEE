@@ -135,7 +135,7 @@ Analyze how your event networks evolve over time:
     ds.plot_network_evolution(evolution)
 
 Advanced Statistical Analysis
----------------------------
+-----------------------------
 
 Perform statistical tests on your networks to validate findings:
 
