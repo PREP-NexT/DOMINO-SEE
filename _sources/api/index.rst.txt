@@ -22,7 +22,7 @@ Network construction
 - :doc:`network`: Network creation and analysis utilities
 
 Grid generation
---------------
+---------------
 
 - :doc:`grid`: Grid generation and manipulation utilities
 

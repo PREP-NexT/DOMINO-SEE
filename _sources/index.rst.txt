@@ -6,11 +6,12 @@ Welcome to DOMINO-SEE
    :alt: dominosee Logo
    :width: 400px
 
-**DOMINO-SEE** is a framework for **D**\etection **O**\f **M**\ulti-layer **I**\nterconnected **N**\etwork **O**\ccurrences for **S**\patial **E**\xtreme **E**\vents, leveraging event coincidences analysis and complex networks. It is built using `xarray <https://xarray.pydata.org/en/stable/>`_ and can seamlessly benefit from the parallelization handling provided by `dask <https://dask.org/>`_. Its objective is to make it as simple as possible for users to construct event-based climate network analysis workflows.
+**DOMINO-SEE** is a framework for **D**\etection **O**\f **M**\ulti-layer **IN**\terconnected **N**\etwork **O**\ccurrences for **S**\patial **E**\xtreme **E**\vents, leveraging event coincidences analysis and complex networks. It is built using `xarray <https://xarray.pydata.org/en/stable/>`_ and can seamlessly benefit from the parallelization handling provided by `dask <https://dask.org/>`_. Its objective is to make it as simple as possible for users to construct event-based climate network analysis workflows.
 
-.. video:: https://github.com/PREP-NexT/DOMINO-SEE/releases/download/0.0.1-alpha/DOMINO-SEE.Logo.Animation.mp4
-   :width: 100%
-   :poster: ./_static/dominosee_logo.png
+.. video:: https://github.com/PREP-NexT/DOMINO-SEE/releases/download/0.0.1-alpha/DOMINO-SEE.Logo.Animation.Crop.mp4
+   :align: center
+   :width: 600px
+   :poster: ./_static/images/dominosee_logo_video_layout.svg
    :alt: DOMINO-SEE introduction video
 
 The name **DOMINO-SEE** represents our approach to detecting and analyzing interconnected occurrences of hydroclimatic extreme events across spatial locations, inspired by the cascade effect of **DOMINO**\es falling in a chain reaction. The **SEE** highlights the framework's ability to capture the spatial synchronization and propagation of extreme events, emphasizing the interconnectedness inherent in complex environmental systems.
@@ -32,13 +33,6 @@ The name **DOMINO-SEE** represents our approach to detecting and analyzing inter
 
         Learn how to use DOMINO-SEE's features in-depth.
 
-    .. grid-item-card:: :octicon:`code` API Reference
-        :link: api_reference
-        :link-type: ref
-        :class-card: sd-bg-light
-
-        Detailed documentation of functions, classes, and methods.
-
     .. grid-item-card:: :octicon:`beaker` Examples
         :link: examples
         :link-type: ref
@@ -46,13 +40,21 @@ The name **DOMINO-SEE** represents our approach to detecting and analyzing inter
 
         Explore example notebooks and tutorials.
 
-Key Features
------------
+    .. grid-item-card:: :octicon:`code` API Reference
+        :link: api_reference
+        :link-type: ref
+        :class-card: sd-bg-light
 
-- **Complex Network Generation**: Fast and memory-efficient functions to build spatial networks from event series among spatial locations and multiple types (layers) of climate extreme events
-- **Multi-dimensional Support**: Native support for ``xarray`` DataArrays to handle multi-dimensional gridded climate data
+        Detailed documentation of functions, classes, and methods.
+
+Key Features
+------------
+
+- **Complex Network Generation**: Fast and memory-efficient functions to build spatial networks of spatial locations and multiple layers of climate extreme events
+- **Event Coincidence Analysis**: Event Coincidence Analysis (ECA) and Event Synchronization (ES) for pairs of event time series
+- **Grid Generation**: Equidistant grid (Fekete) generation for proper spatial network embedding
+- **Multi-dimensional and Parallel Support**: Native support for ``xarray`` DataArrays to handle multi-dimensional gridded climate data
 - **Parallel Processing**: ``dask`` integration for efficient processing of large-scale climate datasets
-- **Blockwise Computation**: Utilities for splitting large spatial datasets into manageable blocks of netCDF datasets
 
 .. toctree::
    :maxdepth: 1
@@ -77,7 +79,7 @@ Key Features
 .. _getting_started:
 
 Getting Started
---------------
+---------------
 
 To get started with `dominosee`, check out the :doc:`installation` and :doc:`quickstart` guides.
 
@@ -162,7 +164,7 @@ Check out the examples to see `dominosee` in action:
 .. _api_reference:
 
 API Reference
-------------
+-------------
 
 The API Reference provides detailed documentation for all functions, classes, and methods in `dominosee`.
 
