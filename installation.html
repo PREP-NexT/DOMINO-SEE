@@ -316,56 +316,70 @@
 <h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h1>
 <section id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">¶</a></h2>
-<p>dominosee requires:</p>
+<p>DOMINO-SEE requires Python 3.9 or later and the following core dependencies:</p>
 <ul class="simple">
-<li><p>Python (&gt;=3.9)</p></li>
-<li><p>xarray</p></li>
-<li><p>dask</p></li>
-<li><p>SciPy</p></li>
-<li><p>numba</p></li>
-<li><p>netCDF4</p></li>
+<li><p><strong>xarray</strong> (&gt;=0.20.0) - Multi-dimensional labeled arrays</p></li>
+<li><p><strong>dask</strong> - Parallel computing</p></li>
+<li><p><strong>numpy</strong> (&gt;=1.20.0) - Numerical computing</p></li>
+<li><p><strong>scipy</strong> - Scientific computing</p></li>
+<li><p><strong>numba</strong> (&gt;=0.55.0) - JIT compilation for performance</p></li>
+<li><p><strong>netCDF4</strong> - NetCDF file I/O</p></li>
+<li><p><strong>pandas</strong> - Data structures</p></li>
+<li><p><strong>cf-xarray</strong> - CF conventions support</p></li>
+<li><p><strong>bottleneck</strong> - Fast array operations</p></li>
+<li><p><strong>tqdm</strong> - Progress bars</p></li>
 </ul>
+<p>All dependencies are automatically installed when you install DOMINO-SEE.</p>
 </section>
-<section id="id1">
-<h2>Installation<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
-<p>Since dominosee is currently in development, the recommended way to install it is directly from source:</p>
+<section id="installation-from-source">
+<h2>Installation from Source<a class="headerlink" href="#installation-from-source" title="Link to this heading">¶</a></h2>
+<p>DOMINO-SEE is currently in active development. Install directly from the GitHub repository:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clone the repository</span>
-git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Hem-W/dominosee-dev.git
-<span class="nb">cd</span><span class="w"> </span>dominosee-dev
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/PREP-NexT/DOMINO-SEE.git
+<span class="nb">cd</span><span class="w"> </span>DOMINO-SEE
 
 <span class="c1"># Create and activate a conda environment (recommended)</span>
 conda<span class="w"> </span>env<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>environment.yml
 conda<span class="w"> </span>activate<span class="w"> </span>dominosee
 
-<span class="c1"># Install the package from source</span>
+<span class="c1"># Install the package in editable mode</span>
 pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 </pre></div>
 </div>
-<section id="development-installation">
-<h3>Development Installation<a class="headerlink" href="#development-installation" title="Link to this heading">¶</a></h3>
-<p>For development, install with additional development dependencies:</p>
+<p>The conda environment includes Python 3.11 and all required dependencies.</p>
+</section>
+<section id="optional-dependencies">
+<h2>Optional Dependencies<a class="headerlink" href="#optional-dependencies" title="Link to this heading">¶</a></h2>
+<section id="development-tools">
+<h3>Development Tools<a class="headerlink" href="#development-tools" title="Link to this heading">¶</a></h3>
+<p>For contributing to DOMINO-SEE, install development dependencies:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
 </pre></div>
 </div>
 </section>
 <section id="documentation">
 <h3>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">¶</a></h3>
-<p>To build the documentation:</p>
+<p>To build the documentation locally:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[docs]&quot;</span>
 <span class="nb">cd</span><span class="w"> </span>docs
 make<span class="w"> </span>html
 </pre></div>
 </div>
+<p>The built documentation will be available in <code class="docutils literal notranslate"><span class="pre">docs/build/html/</span></code>.</p>
 </section>
 </section>
 <section id="verify-installation">
 <h2>Verify Installation<a class="headerlink" href="#verify-installation" title="Link to this heading">¶</a></h2>
-<p>To verify that dominosee is installed correctly, you can run:</p>
+<p>Verify your installation by importing the package:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">dominosee</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">dominosee</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>  <span class="c1"># Should print the version number</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dominosee</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>  <span class="c1"># Should print: 0.0.1</span>
 </pre></div>
 </div>
-<p>If you don’t see any error messages, you’re ready to start using dominosee!</p>
+<p>You can also run the test suite to ensure everything works correctly:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pytest<span class="w"> </span>tests/
+</pre></div>
+</div>
+<p>If all tests pass, you’re ready to use DOMINO-SEE!</p>
 </section>
 </section>
 
@@ -433,8 +447,9 @@ make<span class="w"> </span>html
             <ul>
 <li><a class="reference internal" href="#">Installation</a><ul>
 <li><a class="reference internal" href="#requirements">Requirements</a></li>
-<li><a class="reference internal" href="#id1">Installation</a><ul>
-<li><a class="reference internal" href="#development-installation">Development Installation</a></li>
+<li><a class="reference internal" href="#installation-from-source">Installation from Source</a></li>
+<li><a class="reference internal" href="#optional-dependencies">Optional Dependencies</a><ul>
+<li><a class="reference internal" href="#development-tools">Development Tools</a></li>
 <li><a class="reference internal" href="#documentation">Documentation</a></li>
 </ul>
 </li>
