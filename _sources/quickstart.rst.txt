@@ -1,10 +1,10 @@
 Quickstart
 ==========
 
-This quickstart guide will help you get up and running with `dominosee` for analyzing interconnected hydroclimatic extreme events.
+This quickstart guide will help you get up and running with `dominosee` for analyzing interconnected hydroclimatic extreme events using Event Coincidence Analysis (ECA).
 
-Basic Usage
-----------
+Basic Setup
+-----------
 
 First, import the necessary packages:
 
@@ -12,91 +12,110 @@ First, import the necessary packages:
 
     import numpy as np
     import xarray as xr
-    import matplotlib.pyplot as plt
     import dominosee as ds
 
-Event Analysis
--------------
+Creating Sample Data
+--------------------
 
-One of the core functionalities of `dominosee` is selecting and analyzing event periods:
-
-.. code-block:: python
-
-    # Create sample event data
-    events = np.random.randn(100, 10)  # 100 time steps, 10 events
-    duration = np.arange(1, 11)        # Duration of each event
-    
-    # Select the first few days of events based on duration
-    first_period = ds.select_first_period(events, duration, days=5)
-    
-    # Plot the results
-    plt.figure(figsize=(10, 6))
-    plt.plot(first_period)
-    plt.title('First 5 Days of Events')
-    plt.xlabel('Time Step')
-    plt.ylabel('Value')
-    plt.grid(True)
-    plt.show()
-
-Working with xarray DataArrays
------------------------------
-
-For multidimensional gridded climate data, `dominosee` provides xarray-compatible functions:
+Let's create a sample climate dataset with SPI (Standardized Precipitation Index) values:
 
 .. code-block:: python
 
-    # Create a sample xarray DataArray
-    times = pd.date_range('2025-01-01', periods=100)
-    events = np.random.randn(100, 5, 3)  # time, event, location
+    # Create a sample dataset
+    nx, ny, nt = 20, 20, 365  # 20x20 grid, 365 days
     
-    da = xr.DataArray(
-        events,
-        dims=('time', 'event', 'location'),
-        coords={
-            'time': times,
-            'event': np.arange(5),
-            'location': ['A', 'B', 'C']
-        }
+    # Create coordinates
+    lats = np.linspace(-90, 90, nx)
+    lons = np.linspace(-180, 180, ny)
+    times = xr.date_range("1950-01-01", periods=nt, freq="D")
+    
+    # Create standard normal data for SPI values
+    spi_data = np.random.normal(0, 1, size=(nx, ny, nt))
+    
+    # Create xarray Dataset
+    spi = xr.Dataset(
+        data_vars={"SPI1": (["lat", "lon", "time"], spi_data)},
+        coords={"lat": lats, "lon": lons, "time": times}
+    )
+
+Extracting Extreme Events
+--------------------------
+
+Identify extreme events using a threshold:
+
+.. code-block:: python
+
+    from dominosee.eventorize import get_event
+    
+    # Extract drought events (SPI < -1.0)
+    da_event = get_event(
+        spi.SPI1, 
+        threshold=-1.0, 
+        extreme="below", 
+        event_name="drought"
+    )
+
+Event Coincidence Analysis (ECA)
+---------------------------------
+
+Calculate event coincidences between location pairs:
+
+.. code-block:: python
+
+    from dominosee.eca import (
+        get_eca_precursor_from_events,
+        get_eca_trigger_from_events,
+        get_eca_precursor_confidence,
+        get_eca_trigger_confidence
     )
     
-    # Create duration array
-    duration = xr.DataArray(
-        np.array([3, 5, 2, 7, 4]),
-        dims=('event'),
-        coords={'event': np.arange(5)}
+    # Calculate precursor and trigger events
+    da_precursor = get_eca_precursor_from_events(
+        eventA=da_event, 
+        eventB=da_event, 
+        delt=2,  # Time window
+        sym=True,  # Symmetric window
+        tau=0
     )
     
-    # Select first period using xarray function
-    first_period_xr = ds.select_first_period_xr(da, duration, days=3)
+    da_trigger = get_eca_trigger_from_events(
+        eventA=da_event, 
+        eventB=da_event, 
+        delt=10, 
+        sym=True, 
+        tau=0
+    )
     
-    # Plot results for one location
-    first_period_xr.sel(location='A').plot.line(x='time')
-    plt.title('First 3 Days of Events at Location A')
-    plt.grid(True)
-    plt.show()
+    # Calculate statistical confidence
+    da_prec_conf = get_eca_precursor_confidence(
+        precursor=da_precursor, 
+        eventA=da_event, 
+        eventB=da_event
+    )
+    
+    da_trig_conf = get_eca_trigger_confidence(
+        trigger=da_trigger, 
+        eventA=da_event, 
+        eventB=da_event
+    )
 
-Network Analysis
-----------------
+Constructing Networks
+---------------------
 
-dominosee can generate and analyze networks from event data:
+Create network adjacency matrices from significant connections:
 
 .. code-block:: python
 
-    # Generate a sample network from event data
-    # This is a simplified example
-    network = ds.generate_network(da, threshold=0.5)
+    from dominosee.network import get_link_from_confidence
     
-    # Analyze network properties
-    centrality = ds.calculate_centrality(network)
+    # Create network from ECA confidence levels
+    da_link = (
+        get_link_from_confidence(da_prec_conf, 0.99) & 
+        get_link_from_confidence(da_trig_conf, 0.99)
+    )
     
-    # Visualize the network
-    ds.plot_network(network, centrality)
+    # Calculate network density
+    density = da_link.sum().values / da_link.size * 100
+    print(f"Network density: {density:.2f}%")
 
-Next Steps
-----------
 
-To dive deeper into dominosee:
-
-.. - Explore the :doc:`user_guide/index` for detailed explanations
-.. - Check out the :doc:`examples/index` for practical examples
-- Refer to the :doc:`api/index` for complete function documentation

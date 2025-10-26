@@ -314,94 +314,111 @@
         <article role="main" id="furo-main-content">
           <section id="quickstart">
 <h1>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading">¶</a></h1>
-<p>This quickstart guide will help you get up and running with <cite>dominosee</cite> for analyzing interconnected hydroclimatic extreme events.</p>
-<section id="basic-usage">
-<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading">¶</a></h2>
+<p>This quickstart guide will help you get up and running with <cite>dominosee</cite> for analyzing interconnected hydroclimatic extreme events using Event Coincidence Analysis (ECA).</p>
+<section id="basic-setup">
+<h2>Basic Setup<a class="headerlink" href="#basic-setup" title="Link to this heading">¶</a></h2>
 <p>First, import the necessary packages:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">dominosee</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ds</span>
 </pre></div>
 </div>
 </section>
-<section id="event-analysis">
-<h2>Event Analysis<a class="headerlink" href="#event-analysis" title="Link to this heading">¶</a></h2>
-<p>One of the core functionalities of <cite>dominosee</cite> is selecting and analyzing event periods:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create sample event data</span>
-<span class="n">events</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>  <span class="c1"># 100 time steps, 10 events</span>
-<span class="n">duration</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>        <span class="c1"># Duration of each event</span>
+<section id="creating-sample-data">
+<h2>Creating Sample Data<a class="headerlink" href="#creating-sample-data" title="Link to this heading">¶</a></h2>
+<p>Let’s create a sample climate dataset with SPI (Standardized Precipitation Index) values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a sample dataset</span>
+<span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nt</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">365</span>  <span class="c1"># 20x20 grid, 365 days</span>
 
-<span class="c1"># Select the first few days of events based on duration</span>
-<span class="n">first_period</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">select_first_period</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">days</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="c1"># Create coordinates</span>
+<span class="n">lats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="n">nx</span><span class="p">)</span>
+<span class="n">lons</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="n">ny</span><span class="p">)</span>
+<span class="n">times</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;1950-01-01&quot;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="n">nt</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;D&quot;</span><span class="p">)</span>
 
-<span class="c1"># Plot the results</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">first_period</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;First 5 Days of Events&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time Step&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Value&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c1"># Create standard normal data for SPI values</span>
+<span class="n">spi_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nt</span><span class="p">))</span>
+
+<span class="c1"># Create xarray Dataset</span>
+<span class="n">spi</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
+    <span class="n">data_vars</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;SPI1&quot;</span><span class="p">:</span> <span class="p">([</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">],</span> <span class="n">spi_data</span><span class="p">)},</span>
+    <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="n">lats</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="n">lons</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">times</span><span class="p">}</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </section>
-<section id="working-with-xarray-dataarrays">
-<h2>Working with xarray DataArrays<a class="headerlink" href="#working-with-xarray-dataarrays" title="Link to this heading">¶</a></h2>
-<p>For multidimensional gridded climate data, <cite>dominosee</cite> provides xarray-compatible functions:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a sample xarray DataArray</span>
-<span class="n">times</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s1">&#39;2025-01-01&#39;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">events</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># time, event, location</span>
+<section id="extracting-extreme-events">
+<h2>Extracting Extreme Events<a class="headerlink" href="#extracting-extreme-events" title="Link to this heading">¶</a></h2>
+<p>Identify extreme events using a threshold:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dominosee.eventorize</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_event</span>
 
-<span class="n">da</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
-    <span class="n">events</span><span class="p">,</span>
-    <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;event&#39;</span><span class="p">,</span> <span class="s1">&#39;location&#39;</span><span class="p">),</span>
-    <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
-        <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">times</span><span class="p">,</span>
-        <span class="s1">&#39;event&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span>
-        <span class="s1">&#39;location&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">]</span>
-    <span class="p">}</span>
+<span class="c1"># Extract drought events (SPI &lt; -1.0)</span>
+<span class="n">da_event</span> <span class="o">=</span> <span class="n">get_event</span><span class="p">(</span>
+    <span class="n">spi</span><span class="o">.</span><span class="n">SPI1</span><span class="p">,</span>
+    <span class="n">threshold</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">extreme</span><span class="o">=</span><span class="s2">&quot;below&quot;</span><span class="p">,</span>
+    <span class="n">event_name</span><span class="o">=</span><span class="s2">&quot;drought&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="event-coincidence-analysis-eca">
+<h2>Event Coincidence Analysis (ECA)<a class="headerlink" href="#event-coincidence-analysis-eca" title="Link to this heading">¶</a></h2>
+<p>Calculate event coincidences between location pairs:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dominosee.eca</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">get_eca_precursor_from_events</span><span class="p">,</span>
+    <span class="n">get_eca_trigger_from_events</span><span class="p">,</span>
+    <span class="n">get_eca_precursor_confidence</span><span class="p">,</span>
+    <span class="n">get_eca_trigger_confidence</span>
 <span class="p">)</span>
 
-<span class="c1"># Create duration array</span>
-<span class="n">duration</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">]),</span>
-    <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;event&#39;</span><span class="p">),</span>
-    <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;event&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">)}</span>
+<span class="c1"># Calculate precursor and trigger events</span>
+<span class="n">da_precursor</span> <span class="o">=</span> <span class="n">get_eca_precursor_from_events</span><span class="p">(</span>
+    <span class="n">eventA</span><span class="o">=</span><span class="n">da_event</span><span class="p">,</span>
+    <span class="n">eventB</span><span class="o">=</span><span class="n">da_event</span><span class="p">,</span>
+    <span class="n">delt</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>  <span class="c1"># Time window</span>
+    <span class="n">sym</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Symmetric window</span>
+    <span class="n">tau</span><span class="o">=</span><span class="mi">0</span>
 <span class="p">)</span>
 
-<span class="c1"># Select first period using xarray function</span>
-<span class="n">first_period_xr</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">select_first_period_xr</span><span class="p">(</span><span class="n">da</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">days</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">da_trigger</span> <span class="o">=</span> <span class="n">get_eca_trigger_from_events</span><span class="p">(</span>
+    <span class="n">eventA</span><span class="o">=</span><span class="n">da_event</span><span class="p">,</span>
+    <span class="n">eventB</span><span class="o">=</span><span class="n">da_event</span><span class="p">,</span>
+    <span class="n">delt</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">sym</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">tau</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
 
-<span class="c1"># Plot results for one location</span>
-<span class="n">first_period_xr</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;First 3 Days of Events at Location A&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c1"># Calculate statistical confidence</span>
+<span class="n">da_prec_conf</span> <span class="o">=</span> <span class="n">get_eca_precursor_confidence</span><span class="p">(</span>
+    <span class="n">precursor</span><span class="o">=</span><span class="n">da_precursor</span><span class="p">,</span>
+    <span class="n">eventA</span><span class="o">=</span><span class="n">da_event</span><span class="p">,</span>
+    <span class="n">eventB</span><span class="o">=</span><span class="n">da_event</span>
+<span class="p">)</span>
+
+<span class="n">da_trig_conf</span> <span class="o">=</span> <span class="n">get_eca_trigger_confidence</span><span class="p">(</span>
+    <span class="n">trigger</span><span class="o">=</span><span class="n">da_trigger</span><span class="p">,</span>
+    <span class="n">eventA</span><span class="o">=</span><span class="n">da_event</span><span class="p">,</span>
+    <span class="n">eventB</span><span class="o">=</span><span class="n">da_event</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </section>
-<section id="network-analysis">
-<h2>Network Analysis<a class="headerlink" href="#network-analysis" title="Link to this heading">¶</a></h2>
-<p>dominosee can generate and analyze networks from event data:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a sample network from event data</span>
-<span class="c1"># This is a simplified example</span>
-<span class="n">network</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">generate_network</span><span class="p">(</span><span class="n">da</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<section id="constructing-networks">
+<h2>Constructing Networks<a class="headerlink" href="#constructing-networks" title="Link to this heading">¶</a></h2>
+<p>Create network adjacency matrices from significant connections:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dominosee.network</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_link_from_confidence</span>
 
-<span class="c1"># Analyze network properties</span>
-<span class="n">centrality</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">calculate_centrality</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
+<span class="c1"># Create network from ECA confidence levels</span>
+<span class="n">da_link</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">get_link_from_confidence</span><span class="p">(</span><span class="n">da_prec_conf</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="n">get_link_from_confidence</span><span class="p">(</span><span class="n">da_trig_conf</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">)</span>
+<span class="p">)</span>
 
-<span class="c1"># Visualize the network</span>
-<span class="n">ds</span><span class="o">.</span><span class="n">plot_network</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">centrality</span><span class="p">)</span>
+<span class="c1"># Calculate network density</span>
+<span class="n">density</span> <span class="o">=</span> <span class="n">da_link</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">values</span> <span class="o">/</span> <span class="n">da_link</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Network density: </span><span class="si">{</span><span class="n">density</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="next-steps">
-<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading">¶</a></h2>
-<p>To dive deeper into dominosee:</p>
-<ul class="simple">
-<li><p>Refer to the <a class="reference internal" href="api/index.html"><span class="doc">API Reference</span></a> for complete function documentation</p></li>
-</ul>
 </section>
 </section>
 
@@ -468,11 +485,11 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Quickstart</a><ul>
-<li><a class="reference internal" href="#basic-usage">Basic Usage</a></li>
-<li><a class="reference internal" href="#event-analysis">Event Analysis</a></li>
-<li><a class="reference internal" href="#working-with-xarray-dataarrays">Working with xarray DataArrays</a></li>
-<li><a class="reference internal" href="#network-analysis">Network Analysis</a></li>
-<li><a class="reference internal" href="#next-steps">Next Steps</a></li>
+<li><a class="reference internal" href="#basic-setup">Basic Setup</a></li>
+<li><a class="reference internal" href="#creating-sample-data">Creating Sample Data</a></li>
+<li><a class="reference internal" href="#extracting-extreme-events">Extracting Extreme Events</a></li>
+<li><a class="reference internal" href="#event-coincidence-analysis-eca">Event Coincidence Analysis (ECA)</a></li>
+<li><a class="reference internal" href="#constructing-networks">Constructing Networks</a></li>
 </ul>
 </li>
 </ul>
