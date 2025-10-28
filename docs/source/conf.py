@@ -44,7 +44,7 @@ source_suffix = ['.rst', '.md']
 
 # The master toctree document
 master_doc = 'index'
-html_title = "DOMINO-SEE Official Documentation"
+html_title = "DOMINO-SEE Documentation"
 
 # List of patterns to exclude from source
 exclude_patterns = ['_build', '**.ipynb_checkpoints']
