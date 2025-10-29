@@ -5,7 +5,7 @@ If you use DOMINO-SEE for your work, please cite the core publication :cite:`wan
 
 **Citation:**
 
-   Wang, H.-M., & He, X. (2025). Spatially synchronized structures of global hydroclimatic extremes. TBA, X(X), XXX-XXX. doi:TBA.
+   Wang, H.-M., & He, X. (2025). Spatially synchronized structures of global hydroclimatic extremes. Nature Water. https://doi.org/10.1038/s44221-025-00520-w
 
 **BibTeX format:**
 
@@ -22,5 +22,5 @@ Publications by Topic
    * - Topic Keyword
      - Publication
    * - Spatial compound droughts & pluvials
-     - Wang, H.-M., & He, X. (TBA). Spatially synchronized structures of global hydroclimatic extremes. TBA, X(X), XXX-XXX. https://doi.org/TBA
+     - Wang, H.-M., & He, X. (2025). Spatially synchronized structures of global hydroclimatic extremes. Nature Water. https://doi.org/10.1038/s44221-025-00520-w
 
