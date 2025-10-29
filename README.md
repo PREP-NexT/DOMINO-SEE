@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/PREP-NexT/DOMINO-SEE">
-    <img src="https://raw.githubusercontent.com/Hem-W/dominosee-dev/refs/heads/main/docs/source/_static/DOMINO-SEE%20Horizontal.svg" width="550" alt="DOMINO-SEE logo">
+    <img src="https://raw.githubusercontent.com/PREP-NexT/DOMINO-SEE/refs/heads/main/docs/source/_static/DOMINO-SEE%20Horizontal.svg" width="550" alt="DOMINO-SEE logo">
   </a>
 </p>
 
@@ -71,6 +71,26 @@ This section includes a brief tutorial on running your first DOMINO-SEE model.
     ```bash
     pip install -e .
     ```
+
+## Citing DOMINO-SEE
+
+![DOMINO-SEE_logos_QR](https://raw.githubusercontent.com/PREP-NexT/DOMINO-SEE/refs/heads/main/docs/source/_static/images/dominosee_banner_qr_white.svg)
+
+If you use DOMINO-SEE in a scientific publication, we would appreciate citations. You can use the following BibTeX entry:
+
+```bibtex
+@article{wang_2025,
+	title = {Spatially synchronized structures of global hydroclimatic extremes},
+	issn = {2731-6084},
+	url = {https://www.nature.com/articles/s44221-025-00520-w},
+	doi = {10.1038/s44221-025-00520-w},
+	urldate = {2025-10-29},
+	journal = {Nature Water},
+	author = {Wang, Hui-Min and He, Xiaogang},
+	month = oct,
+	year = {2025},
+}
+```
 
 ## Contact Us
 
