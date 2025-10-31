@@ -4,6 +4,7 @@ This document outlines the planned future development for the DOMINO-SEE package
 
 ## Short-term Goals (Next Few Releases)
 
+- [ ] Define terminology: Map network terminology to proper xarray terminology
 - [ ] Support unsymmetric event synchronizations (ES)
 - [ ] Add regional bundle analysis
 - [x] Add basic tests to examine the correctness of calculations (In progress)
