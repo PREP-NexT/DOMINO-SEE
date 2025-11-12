@@ -35,7 +35,6 @@ from scipy.spatial.distance import pdist, cdist
 from tqdm import tqdm
 from numba import jit, njit, prange
 from scipy.spatial import SphericalVoronoi
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 # import geoutils.utils.general_utils as gut  # Removed dependency
 
 G = 6.67408 * 1E-11         # m^3 / kg / s^2
@@ -339,6 +338,7 @@ def spherical_to_cartesian(theta, phi, r=1.):
 
 
 def plot_spherical_voronoi(X, ax):
+    from mpl_toolkits.mplot3d.art3d import Poly3DCollection
     """
     Plot scipy.spatial.SphericalVoronoi output on the surface of a unit sphere.
 
