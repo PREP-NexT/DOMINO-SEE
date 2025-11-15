@@ -4,7 +4,7 @@ This document outlines the planned future development for the DOMINO-SEE package
 
 ## Short-term Goals (Next Few Releases)
 
-- [ ] Define terminology: Map network terminology to proper xarray terminology
+- [ ] Define terminology and conventions: Map network terminology to proper xarray terminology
 - [ ] Support unsymmetric event synchronizations (ES)
 - [ ] Add regional bundle analysis
 - [x] Add basic tests to examine the correctness of calculations (In progress)
@@ -15,6 +15,7 @@ This document outlines the planned future development for the DOMINO-SEE package
 - [ ] Add regrid utilities for remapping to Fekete grid
 - [ ] Introduce `xclim` for time period subsetting (specific months/days)
 - [ ] Introduce `xclim` for event sub-selection
+- [ ] Streamline blockwise computation utilities ( `dominosee/utils/blocking.py`) for splitting large spatial datasets into manageable blocks of netCDF datasets based on `dask`
 
 ## Long-term Vision
 
@@ -31,6 +32,7 @@ This document outlines the planned future development for the DOMINO-SEE package
 
 ## Community Features
 
+- [ ] Purge ROADMAP out to GitHub Discussion
 - [x] Create contribution guidelines
 - [x] Add examples directory with sample scripts
 

@@ -26,8 +26,6 @@
 
 **DOMINO-SEE** (**D**etection Of **M**ulti-layer **IN**terconnected **O**ccurrences for **S**patial **E**xtreme **E**vents) is a data-driven statistical framework for detecting spatially co-occurrences of hydroclimatic extreme events across locations, inspired by complex network science, powered by `xarray` architecture. It's developed by [Hui-Min Wang](https://orcid.org/0000-0002-5878-7542) and [Xiaogang He](https://cde.nus.edu.sg/cee/staff/he-xiaogang/) from the [PREP-NexT](https://github.com/PREP-NexT) Lab at the [National University of Singapore](https://nus.edu.sg/).
 
-This project is licensed under the [GNU General Public License 2.0](https://github.com/PREP-NexT/DOMINO-SEE/blob/main/LICENSE).
-
 ## Why the Name?
 
 The name **DOMINO-SEE** represents our approach to detecting and analyzing interconnected occurrences of hydroclimatic extreme events across spatial locations, inspired by the cascade effect of **DOMINO**es falling in a chain reaction. The **SEE** highlights the framework's ability to capture the spatial synchronization and propagation of extreme events, emphasizing the interconnectedness inherent in complex environmental systems.
@@ -37,16 +35,16 @@ The name **DOMINO-SEE** represents our approach to detecting and analyzing inter
 - **Complex Network Generation**: Fast and memory-efficient functions to build spatial networks from event series among spatial locations and multiple types (layers) of climate extreme events
 - **Multi-dimensional Support**: Native support for `xarray` DataArrays to handle multi-dimensional gridded climate data
 - **Parallel Processing**: `dask` integration for efficient processing of large-scale climate datasets
-- **Blockwise Computation**: Utilities for splitting large spatial datasets into manageable blocks of netCDF datasets (see `dominosee/utils/blocking.py`).
 - **Grid Generation**: Equidistant Fekete grid generation for alternative spatial embedding.
+<!-- - **Blockwise Computation**: Utilities for splitting large spatial datasets into manageable blocks of netCDF datasets (see `dominosee/utils/blocking.py`). -->
 
 <!-- ## Development Status
 
 This project is under active development. Current implementation status:
 
-- ✅ **FeketeGrid**: Equidistant grid on a sphere - fully implemented and tested -->
+- ✅ **FeketeGrid**: Equidistant grid on a sphere - fully implemented and tested
 
-The grid module is being uploaded as a work-in-progress to facilitate collaborative development. Only `BaseGrid` and `FeketeGrid` are currently recommended for production use.
+The grid module is being uploaded as a work-in-progress to facilitate collaborative development. Only `BaseGrid` and `FeketeGrid` are currently recommended for production use. -->
 
 ## Getting Started
 
@@ -76,7 +74,18 @@ This section includes a brief tutorial on running your first DOMINO-SEE model.
 
 ![DOMINO-SEE_logos_QR](https://raw.githubusercontent.com/PREP-NexT/DOMINO-SEE/refs/heads/main/docs/source/_static/images/dominosee_banner_qr_white.svg)
 
-If you use DOMINO-SEE in a scientific publication, we would appreciate citations. You can use the following BibTeX entry:
+If you use DOMINO-SEE in a scientific publication, we kindly ask that you cite our article published in Nature Water:
+
+<table>
+  <tr>
+    <td>
+      Wang, H.-M., &amp; He, X. (2025). Spatially synchronized structures of global hydroclimatic extremes.
+      <em>Nature Water</em>. https://doi.org/10.1038/s44221-025-00520-w
+    </td>
+  </tr>
+</table>
+
+You may also use the following BibTeX entry:
 
 ```bibtex
 @article{wang_2025,
@@ -94,10 +103,12 @@ If you use DOMINO-SEE in a scientific publication, we would appreciate citations
 
 ## Contact Us
 
-If you have any questions, comments, or suggestions that aren't suitable for public discussion in the Issues section, please feel free to contact [Hui-Min Wang](mailto:wanghuimin@u.nus.edu).
+DOMINO-SEE is in active development by [Hui-Min Wang](mailto:wanghuimin@u.nus.edu) in [PREP-NexT Lab](https://github.com/PREP-NexT).
 
-Please use the GitHub Issues for public discussions related to bugs, enhancements, or other project-related discussions.
+- If you're interested in suggesting new features or reporting bugs, please leave us a message on the [***issue tracker***](https://github.com/PREP-NexT/DOMINO-SEE/issues).
+
+- If you have any questions, comments, or suggestions that aren't suitable for public discussion in Issues, please feel free to contact [***Hui-Min Wang***](mailto:wanghuimin@u.nus.edu).
 
 ## Disclaimer
 
-The DOMINO-SEE model is an academic project and is not intended to be used as a precise prediction tool for risk assessment and management. The developers will not be held liable for any decisions made based on the use of this model. We recommend applying it in conjunction with expert judgment and other modeling tools in a decision-making context.
+This project is licensed under the [GNU General Public License 3.0](https://github.com/PREP-NexT/DOMINO-SEE/blob/main/LICENSE). The DOMINO-SEE model is an academic project and is not intended to be used as a precise prediction tool for risk assessment and management. The developers will not be held liable for any decisions made based on the use of this model. We recommend applying it in conjunction with expert judgment and other modeling tools in a decision-making context.
