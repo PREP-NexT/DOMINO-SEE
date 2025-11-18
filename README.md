@@ -103,11 +103,11 @@ You may also use the following BibTeX entry:
 
 ## Contact Us
 
-DOMINO-SEE is in active development by [Hui-Min Wang](mailto:wanghuimin@u.nus.edu) in [PREP-NexT Lab](https://github.com/PREP-NexT).
+DOMINO-SEE is still under active development by [Hui-Min Wang](mailto:wanghuimin@u.nus.edu) from the [PREP-NexT Lab](https://github.com/PREP-NexT).
 
 - If you're interested in suggesting new features or reporting bugs, please leave us a message on the [***issue tracker***](https://github.com/PREP-NexT/DOMINO-SEE/issues).
 
-- If you have any questions, comments, or suggestions that aren't suitable for public discussion in Issues, please feel free to contact [***Hui-Min Wang***](mailto:wanghuimin@u.nus.edu).
+- If you have any questions, comments, or suggestions that aren't suitable for public discussion in Issues, please feel free to contact [Hui-Min Wang](mailto:wanghuimin@u.nus.edu).
 
 ## Disclaimer
 
