@@ -58,9 +58,8 @@ def spherical_kde(values, xy, bw_opt):
     return datss
 
 
-def null_spherical_kde(seed, pos, nol, xy, bw_opt):
-    rng = np.random.default_rng(seed)
-    values = pos[rng.choice(np.arange(pos.shape[0]), nol), :]
+def null_spherical_kde(pos, nol, xy, bw_opt):
+    values = pos[np.random.choice(np.arange(pos.shape[0]), nol), :]
     datss = spherical_kde(values, xy, bw_opt)
     return datss
 
@@ -120,13 +119,13 @@ if __name__ == "__main__":
                 print("NSam {}, Density in {}: {:.2f}s".format(nsam, ry, time.time() - tic))
 
                 # Null density
-                NNULL = 500
+                NNULL = 200
                 noly = link[:, indices[ry][2]].sum() # 非对称临接矩阵
                 nsam = np.round(noly * indices[rx][2].size / (N - indices[ry][2].size)).astype('int')  # 要用对方区域的期望links
                 posxnull = indices[rx][3][vp[indices[rx][2]], :] * np.pi / 180.
                 mp_kde_nullx = partial(null_spherical_kde, pos=posxnull, nol=nsam, xy=indices[rx][3] * np.pi / 180., bw_opt=bw_opt)
                 with multiprocessing.Pool(processes=50) as p:
-                    densxnull = np.vstack(p.map(mp_kde_nullx, np.arange(NNULL)*3, chunksize=1))
+                    densxnull = np.vstack(p.map(mp_kde_nullx, chunksize=1))
                 densxnull = densxnull.reshape(-1, indices[rx][0].size, indices[rx][1].size) * nsam
                 print("Nsam {}, Null KDE: {:.2f}s".format(nsam, time.time() - tic))
 
@@ -135,7 +134,7 @@ if __name__ == "__main__":
                 posynull = indices[ry][3][vp[indices[ry][2]], :] * np.pi / 180.
                 mp_kde_nully = partial(null_spherical_kde, pos=posynull, nol=nsam, xy=indices[ry][3] * np.pi / 180., bw_opt=bw_opt)
                 with multiprocessing.Pool(processes=50) as p:
-                    densynull = np.vstack(p.map(mp_kde_nully, np.arange(NNULL)*3, chunksize=1))
+                    densynull = np.vstack(p.map(mp_kde_nully, chunksize=1))
                 densynull = densynull.reshape(-1, indices[ry][0].size, indices[ry][1].size) * nsam
                 print("Nsam {}, Null KDE: {:.2f}s".format(nsam, time.time() - tic))
 

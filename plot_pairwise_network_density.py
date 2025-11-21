@@ -21,6 +21,8 @@ import ultraplot as pplt # TODO: 这个会改变rcParams
 pplt.rc["font.sans-serif"] = "Myriad Pro"
 pplt.rc["font.largesize"] = "large"
 pplt.rc["tick.minor"] = False
+pplt.rc["pdf.fonttype"] = 42
+pplt.rc["ps.fonttype"]  = 42
 
 # %%
 datanm = "spimv2"
@@ -35,7 +37,7 @@ path = ''
 th = 1.5
 sig = 0.005
 
-direc = "10"
+direc = "01"
 print('Direction ', direc)
 tic = time.time()
 
@@ -64,6 +66,7 @@ region_list = list(regions.keys())
 indices = {i: get_index_for_square(lat, lon, *c) for (i, c) in regions.items()}
 NR = len(regions)
 
+# %%
 fracsx = np.zeros((NR, NR))
 fracsy = np.zeros((NR, NR))
 for x in range(NR):

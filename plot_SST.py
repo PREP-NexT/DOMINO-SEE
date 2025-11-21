@@ -14,7 +14,9 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 pplt.rc["font.family"] = "Myriad Pro"
 pplt.rc["font.largesize"] = "larger"
-pplt.rc["figure.dpi"] = 200
+pplt.rc["pdf.fonttype"] = 42
+pplt.rc["ps.fonttype"]  = 42
+pplt.rc["figure.dpi"] = 300
 
 
 datanm = "spimv2"
@@ -186,8 +188,8 @@ for i, rp in enumerate(rps):
     #                 add_colorbar=False, 
     #                 ax=ax)
     ax.set_extent([-180, 180, -60, 90], crs=ccrs.PlateCarree())
-    ttl = ax.set_title("Both {} {} and {} {}".format(rx, "drought" if direc[0] == "0" else "pluvial", 
-                                                    ry, "drought" if direc[1] == "0" else "pluvial", lag))
+    ttl = ax.set_title("Both {} {} and {} {}".format(rx.replace("US", "USA"), "drought" if direc[0] == "0" else "pluvial", 
+                                                    ry.replace("US", "USA"), "drought" if direc[1] == "0" else "pluvial", lag))
     _ = ax.add_feature(cfeature.LAND, facecolor=[0.8, 0.8, 0.8], edgecolor="black", zorder=5, lw=0.5)
     add_region_box(ax, rx, edgecolor=C0[direc[0]])
     add_region_box(ax, ry, edgecolor=C0[direc[1]])

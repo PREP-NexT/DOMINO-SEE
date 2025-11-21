@@ -17,7 +17,9 @@ import cartopy.feature as cfeature
 from utils.plot import truncate_colormap
 mpl.rcParams['font.family'] = 'Myriad Pro'
 mpl.rcParams['font.size'] = 9
-mpl.rcParams["figure.dpi"] = 300
+mpl.rcParams["pdf.fonttype"] = 42
+mpl.rcParams["ps.fonttype"]  = 42
+mpl.rcParams["figure.dpi"] = 600
 mpl.rcParams["axes.titlesize"] = "large"
 mpl.rcParams["xtick.labelsize"] = "medium"
 mpl.rcParams["ytick.labelsize"] = "medium"

@@ -6,7 +6,9 @@ import scipy.optimize as so
 import time
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-mpl.rcParams['font.sans-serif'] = "Myriad Pro"
+mpl.rcParams["font.sans-serif"] = "Myriad Pro"
+mpl.rcParams["pdf.fonttype"] = 42
+mpl.rcParams["ps.fonttype"]  = 42
 mpl.rcParams['font.size'] = 9
 
 

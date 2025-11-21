@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/PREP-NexT/DOMINO-SEE">
-    <img src="https://raw.githubusercontent.com/Hem-W/dominosee-dev/refs/heads/main/docs/source/_static/DOMINO-SEE%20Horizontal.svg" width="550" alt="DOMINO-SEE logo">
+    <img src="https://raw.githubusercontent.com/PREP-NexT/DOMINO-SEE/refs/heads/main/docs/source/_static/DOMINO-SEE%20Horizontal.svg" width="550" alt="DOMINO-SEE logo">
   </a>
 </p>
 
@@ -15,31 +15,38 @@
 
 <p align="center">
   <a href="#overview">Overview</a> |
-  <a href="#how-to-use">How to Use?</a> |
+  <a href="#scope-of-this-branch">Scope of This Branch</a> |
   <a href="#prerequisites">Prerequisites</a> |
   <a href="#run-scripts">Run Scripts</a> |
-  <a href="#contact-us">Contact Us</a>
+  <a href="#contact-us">Contact Us</a> | 
+  <a href="#disclaimer">Disclaimer</a>
 </p>
 
 ## Overview
 
 **DOMINO-SEE** (**D**etection Of **M**ulti-layer **IN**terconnected **O**ccurrences for **S**patial **E**xtreme **E**vents) is a data-driven statistical framework for detecting spatially co-occurrences of hydroclimatic extreme events across locations, inspired by complex network science, powered by `xarray` architecture. It's developed by [Hui-Min Wang](https://orcid.org/0000-0002-5878-7542) and [Xiaogang He](https://cde.nus.edu.sg/cee/staff/he-xiaogang/) from the [PREP-NexT](https://github.com/PREP-NexT) Lab at the [National University of Singapore](https://nus.edu.sg/).
 
-This project is licensed under the [GNU General Public License 3.0](https://github.com/PREP-NexT/DOMINO-SEE/blob/main/LICENSE).
 
-## Why the Name?
+## Scope of This Branch
 
-The name **DOMINO-SEE** represents our approach to detecting and analyzing interconnected occurrences of hydroclimatic extreme events across spatial locations, inspired by the cascade effect of **DOMINO**es falling in a chain reaction. The **SEE** highlights the framework's ability to capture the spatial synchronization and propagation of extreme events, emphasizing the interconnectedness inherent in complex environmental systems.
+This branch stores the Python code for reproducing the complex climate networks of hydroclimatic extremes in our research article published in Nature Water:
 
-## How to Use?
+<table>
+  <tr>
+    <td>
+      Wang, H.-M., &amp; He, X. (2025). Spatially synchronized structures of global hydroclimatic extremes.
+      <em>Nature Water</em>. https://doi.org/10.1038/s44221-025-00520-w
+    </td>
+  </tr>
+</table>
 
-This repository stores the code for reproducing the results in the paper. A more general repository for constructing event-based climate networks using `xarray` can be found [here](https://prep-next.github.io/DOMINO-SEE/).
+A more general version of DOMINO-SEE for constructing event-based complex climate networks is being actively developed and can be found [here](https://prep-next.github.io/DOMINO-SEE/).
 
 ## Prerequisites
 
 This section includes a brief tutorial on preparing the Python environment and data.
 
-1. Clone the repo
+1. Clone the `paper` branch of this repository
 
 ```bash
 git clone -b paper https://github.com/PREP-NexT/DOMINO-SEE.git
@@ -126,13 +133,12 @@ The following table provides estimated running times for the non-plotting script
 | `step2c_eca_significance.py` | ~2 hours | Depends on the pool size used with multiprocessing |
 | `step3a_network_construction.py` | ~4 hours | |
 | `step3b_network_degree.py` | ~2 hours | |
-| `step4_regional_bundle.py` | ~48 hours | Depends on the pool size used with multiprocessing |
+| `step4_regional_bundle.py` | ~32 hours | Depends on the pool size used with multiprocessing |
 
 ## Contact Us
 
-If you have any questions, comments, or suggestions that aren't suitable for public discussion in the Issues section, please feel free to contact [Hui-Min Wang](mailto:wanghuimin@u.nus.edu).
+If you have any questions, comments, or suggestions that aren't suitable for public discussion, please feel free to contact [Hui-Min Wang](mailto:wanghuimin@u.nus.edu).
 
 ## Disclaimer
 
-The DOMINO-SEE model is an academic project and is not intended to be used as a precise prediction tool for commercial or policy-making purposes without expert oversight. The developers will not be held liable for any decisions made based on the use of this model. We recommend applying it in conjunction with expert judgment and other modeling tools in a decision-making context.
-
+This project is licensed under the [GNU General Public License 3.0](https://github.com/PREP-NexT/DOMINO-SEE/blob/main/LICENSE). The DOMINO-SEE model is an academic project and is not intended to be used as a precise prediction tool for risk assessment and management. The developers will not be held liable for any decisions made based on the use of this model. We recommend applying it in conjunction with expert judgment and other modeling tools in a decision-making context.

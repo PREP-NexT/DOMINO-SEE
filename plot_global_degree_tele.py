@@ -18,7 +18,9 @@ import colormaps as cmaps
 pplt.rc["font.sans-serif"] = "Myriad Pro"
 pplt.rc["font.largesize"] = "large"
 pplt.rc["axes.labelsize"] = "med-large"
-pplt.rc["savefig.dpi"] = 300
+pplt.rc["savefig.dpi"] = 600
+pplt.rc_matplotlib["pdf.fonttype"] = 42
+pplt.rc_matplotlib["ps.fonttype"]  = 42
 # pplt.rc["font.size"] = 12
 
 datanm = "spimv2"
