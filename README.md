@@ -80,7 +80,7 @@ If you use DOMINO-SEE in a scientific publication, we kindly ask that you cite o
   <tr>
     <td>
       Wang, H.-M., &amp; He, X. (2025). Spatially synchronized structures of global hydroclimatic extremes.
-      <em>Nature Water</em>. https://doi.org/10.1038/s44221-025-00520-w
+      <em>Nature Water</em>, 3(12), 1376–1388. https://doi.org/10.1038/s44221-025-00520-w
     </td>
   </tr>
 </table>

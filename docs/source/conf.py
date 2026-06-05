@@ -34,6 +34,7 @@ extensions = [
     'sphinxcontrib.bibtex',      # Bibliography support
     'sphinx_design',             # Grid layouts and design elements
     'sphinxcontrib.video',       # Support for video embedding
+    'sphinxext.opengraph',       # Open Graph meta tags for social media previews
 ]
 
 # Add any paths that contain templates
@@ -88,6 +89,7 @@ html_theme_options = {
 
 # Add any paths that contain custom static files
 html_static_path = ['_static']
+html_favicon = '_static/favicon.svg'
 
 # Ensure static files are copied to the root of the build directory
 html_extra_path = ['_static']
@@ -96,6 +98,18 @@ html_extra_path = ['_static']
 html_css_files = [
     'css/custom.css',
 ]
+
+# -- Open Graph / social media preview ---------------------------------------
+# Base URL of the published documentation (must end with a slash)
+ogp_site_url = "https://prep-next.github.io/DOMINO-SEE/"
+# Absolute URL to the preview image shown when the link is shared.
+# Social platforms require a raster image (PNG/JPG); SVG is not supported,
+# so this is a PNG rendered from the favicon logo (_static/favicon.svg).
+ogp_image = "https://prep-next.github.io/DOMINO-SEE/_static/images/og_image.png"
+ogp_image_alt = "DOMINO-SEE logo"
+ogp_site_name = "DOMINO-SEE Documentation"
+ogp_use_first_image = False
+ogp_enable_meta_description = True
 
 # Set up intersphinx mapping
 intersphinx_mapping = {
